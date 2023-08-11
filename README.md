@@ -1,4 +1,4 @@
-# PayrollPro - Payroll Management System
+# Salary Solutions - Payroll Management System
 
 ## Description
 PayrollPro is a comprehensive and efficient payroll management system designed to streamline the process of calculating, managing, and disbursing salaries for employees and workers within your organization. This repository contains the source code and resources for the PayrollPro system.
@@ -35,4 +35,4 @@ We welcome contributions to enhance the features and functionalities of the Payr
 This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
-For any inquiries or suggestions, please reach out to us at contact@payrollpro.com.
+For any inquiries or suggestions, please reach out to us at hassangomaa974@gmail.com.
