@@ -9,7 +9,7 @@
   <!-- Add your custom CSS if needed -->
 </head>
 <body>
-    <a href="{{ url('/ar') }}" class="btn btn-primary">Switch to Arabic</a>
+    <a href="{{ route('welcome_ar') }}" class="btn btn-primary">Switch to Arabic</a>
 
 <!-- Navigation bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

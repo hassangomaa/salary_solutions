@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/en', function () {
     return view('welcome');
-});
-Route::get('/ar', function () {
-    return view('welcome_ar');
-});
+})->name('welcome');
+Route::get('/', function () {
+    return view('welcome_ar')
+    ;
+})->name('welcome_ar');

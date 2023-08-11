@@ -9,7 +9,7 @@
   <!-- إضافة الـ CSS المخصص إذا كنت بحاجة إليه -->
 </head>
 <body dir="rtl">
-        <a href="{{ url('/') }}" class="btn btn-primary">التبديل للعرض الافتراضي</a>
+        <a href="{{ route('welcome') }}" class="btn btn-primary">التبديل للعرض الافتراضي</a>
 
 
 <!-- شريط التنقل -->
