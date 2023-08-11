@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('kpi_deductions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('safe_value')->default(0);
-            $table->rememberToken();
+            $table->unsignedBigInteger('employee_id');
+            $table->decimal('amount', 8, 2);
+            $table->unsignedBigInteger('reason_id');
             $table->timestamps();
+            $table->softDeletes(); // Add this line for soft deletes
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('kpi_deductions');
     }
 };
