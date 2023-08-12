@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->integer('daily_fare');
-            $table->integer('credit');
+            $table->integer('credit')->default(0);
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

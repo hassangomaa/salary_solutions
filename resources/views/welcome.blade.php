@@ -1,57 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SalarySolutions</title>
-  <!-- Add Bootstrap CSS link -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Add your custom CSS if needed -->
-</head>
-<body>
-    <a href="{{ route('welcome_ar') }}" class="btn btn-primary">Switch to Arabic</a>
+@extends('layouts.app')
+@section('content')
+    <div class="login-box">
+        <div class="login-logo">
+            <div class="login-logo">
+                <a href="{{ route('admin.home') }}">
+                    {{ trans('panel.site_title') }}
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">
+                    {{ trans('global.login') }}
+                </p>
 
-<!-- Navigation bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">SalarySolutions</a>
-</nav>
+                @if(session()->has('message'))
+                    <p class="alert alert-info">
+                        {{ session()->get('message') }}
+                    </p>
+                @endif
 
-<!-- Welcome Section -->
-<section class="jumbotron text-center bg-primary text-white">
-  <div class="container">
-    <h1 class="display-4">Welcome to SalarySolutions</h1>
-    <p class="lead">Your Solution for Efficient Payroll Management</p>
-  </div>
-</section>
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
 
-<!-- About Us Section -->
-<section class="container mt-5">
-  <div class="row">
-    <div class="col-md-6">
-      <h2>About Us</h2>
-      <p>At SalarySolutions, we specialize in providing comprehensive payroll management solutions that help businesses streamline their compensation processes.</p>
+                    <div class="form-group">
+                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" name="email" value="{{ old('email', null) }}">
+
+                        @if($errors->has('email'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('email') }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ trans('global.login_password') }}">
+
+                        @if($errors->has('password'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('password') }}
+                            </div>
+                        @endif
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" name="remember" id="remember">
+                                <label for="remember">{{ trans('global.remember_me') }}</label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">
+                                {{ trans('global.login') }}
+                            </button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+
+                @if(Route::has('password.request'))
+                    <p class="mb-1">
+                        <a href="{{ route('password.request') }}">
+                            {{ trans('global.forgot_password') }}
+                        </a>
+                    </p>
+                @endif
+                <p class="mb-1">
+
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
     </div>
-    <div class="col-md-6">
-      <i class="fas fa-chart-line fa-5x"></i>
-    </div>
-  </div>
-</section>
-
-<!-- Coming Soon Section -->
-<section class="jumbotron text-center bg-secondary text-white">
-  <div class="container">
-    <h2>Coming Soon</h2>
-    <p class="lead">Stay tuned for exciting updates!</p>
-  </div>
-</section>
-
-<!-- Add your footer if needed -->
-
-<!-- Add Font Awesome icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- Add Bootstrap JS scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+@endsection

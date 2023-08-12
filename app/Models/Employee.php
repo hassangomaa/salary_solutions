@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name', 'position', 'daily_fare', 'credit'];
+    protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','phone'];
 
-    public function presences()
+    public function attendances()
     {
-        return $this->hasMany(Presence::class, 'employee_id');
+        return $this->hasMany(Attendance::class, 'employee_id');
     }
 
     public function kpiDeductions()

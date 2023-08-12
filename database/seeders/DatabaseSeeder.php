@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +19,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'safe_value' => 0
         ]);
+        Employee::factory()->count(20)->create();
+
     }
 }
