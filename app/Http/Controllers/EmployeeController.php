@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MassDestroyUserRequest;
 use App\Models\Employee;
-use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,7 +11,10 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+
 //        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+//        return $request;
 
         if ($request->ajax()) {
             $query = Employee::select('*');

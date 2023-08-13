@@ -21,5 +21,9 @@ class Employee extends Model
         return $this->hasMany(KpiDeduction::class, 'employee_id');
     }
 
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
+
 
 }

@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('position');
-            $table->integer('daily_fare');
-            $table->integer('debit')->default(0);
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->unsignedBigInteger('company_id')->default(1);
+            $table->string('address');
+            $table->string('phone');
+            $table->integer('credit');
             $table->softDeletes();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('companies');
     }
 };

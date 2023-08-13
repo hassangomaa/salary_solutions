@@ -18,7 +18,7 @@ class AuthenticationController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication successful, redirect to dashboard
-            return view('admin-login');
+            return redirect(route('company.index'));
         } else {
             // Authentication failed, redirect back with errors
             return redirect()->back()->withInput($request->only('email'))->withErrors([

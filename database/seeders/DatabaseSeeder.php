@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        Company::factory(50)->create();
         \App\Models\User::create([
             'name' => 'User',
             'email' => 'admin@app.com',
@@ -20,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'safe_value' => 0
         ]);
         Employee::factory()->count(20)->create();
+
 
     }
 }

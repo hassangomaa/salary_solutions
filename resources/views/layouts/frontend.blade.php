@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+{{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+{{--    <title>{{ config('app.name', 'Laravel') }}</title>--}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -27,8 +27,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
-    @yield('styles')
+{{--    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />--}}
+{{--    @yield('styles')--}}
 </head>
 
 <body>
@@ -77,56 +77,56 @@
 
                                     <a class="dropdown-item" href="{{ route('frontend.profile.index') }}">{{ __('My profile') }}</a>
 
-                                    @can('user_management_access')
+{{--                                    @can('user_management_access')--}}
                                         <a class="dropdown-item disabled" href="#">
                                             {{ trans('cruds.userManagement.title') }}
                                         </a>
-                                    @endcan
-                                    @can('permission_access')
+{{--                                    @endcan--}}
+{{--                                    @can('permission_access')--}}
                                         <a class="dropdown-item ml-3" href="{{ route('frontend.permissions.index') }}">
                                             {{ trans('cruds.permission.title') }}
                                         </a>
-                                    @endcan
-                                    @can('role_access')
+{{--                                    @endcan--}}
+{{--                                    @can('role_access')--}}
                                         <a class="dropdown-item ml-3" href="{{ route('frontend.roles.index') }}">
                                             {{ trans('cruds.role.title') }}
                                         </a>
-                                    @endcan
-                                    @can('user_access')
+{{--                                    @endcan--}}
+{{--                                    @can('user_access')--}}
                                         <a class="dropdown-item ml-3" href="{{ route('frontend.users.index') }}">
                                             {{ trans('cruds.user.title') }}
                                         </a>
-                                    @endcan
-                                    @can('product_access')
+{{--                                    @endcan--}}
+{{--                                    @can('product_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.products.index') }}">
                                             {{ trans('cruds.product.title') }}
                                         </a>
-                                    @endcan
-                                    @can('category_access')
+{{--                                    @endcan--}}
+{{--                                    @can('category_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.categories.index') }}">
                                             {{ trans('cruds.category.title') }}
                                         </a>
-                                    @endcan
-                                    @can('detail_access')
+{{--                                    @endcan--}}
+{{--                                    @can('detail_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.details.index') }}">
                                             {{ trans('cruds.detail.title') }}
                                         </a>
-                                    @endcan
-                                    @can('variation_access')
+{{--                                    @endcan--}}
+{{--                                    @can('variation_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.variations.index') }}">
                                             {{ trans('cruds.variation.title') }}
                                         </a>
-                                    @endcan
-                                    @can('service_access')
+{{--                                    @endcan--}}
+{{--                                    @can('service_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.services.index') }}">
                                             {{ trans('cruds.service.title') }}
                                         </a>
-                                    @endcan
-                                    @can('image_access')
+{{--                                    @endcan--}}
+{{--                                    @can('image_access')--}}
                                         <a class="dropdown-item" href="{{ route('frontend.images.index') }}">
                                             {{ trans('cruds.image.title') }}
                                         </a>
-                                    @endcan
+{{--                                    @endcan--}}
 
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
