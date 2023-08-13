@@ -4,7 +4,8 @@
     <div class="login-logo">
         <div class="login-logo">
             <a href="{{ route('admin.home') }}">
-                {{ trans('panel.site_title') }}
+{{--                {{ trans('panel.site_title') }}--}}
+                Salary Solution
             </a>
         </div>
     </div>
@@ -24,7 +25,7 @@
                 @csrf
 
                 <div class="form-group">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" name="email" value="{{ old('email', null) }}">
+                    <input id="email" type="email" value="admin@app.com" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" name="email" value="{{ old('email', null) }}">
 
                     @if($errors->has('email'))
                         <div class="invalid-feedback">
@@ -34,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ trans('global.login_password') }}">
+                    <input id="password" type="password" value="12345678" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ trans('global.login_password') }}">
 
                     @if($errors->has('password'))
                         <div class="invalid-feedback">

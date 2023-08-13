@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'mkan-wahed',
+    'site_title' => 'Salary Solution',
 ];

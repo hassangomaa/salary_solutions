@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::get('/login',function (){})->name('login');
-Route::get('/logout',function (){})->name('logout');
+//Authentication
+Route::get('/loginBlade',[AuthenticationController::class,'loginBlade'])->name('loginBlade');
+Route::post('/login',[AuthenticationController::class,'login'])->name('login');
+Route::post('/logout',[AuthenticationController::class,'logout'])->name('logout');
 
 Route::get('/en', function () {
     return view('welcome');
@@ -24,6 +26,7 @@ Route::get('/', function () {
     return view('welcome_ar')
     ;
 })->name('welcome_ar');
+
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class,'index'])->name('home');
@@ -93,7 +96,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], fu
     Route::get('messenger/{topic}/reply', 'MessengerController@showReply')->name('messenger.showReply');
 });
 
-Route::group(['prefix' => 'employee', 'as' => 'employee.', 'namespace' => 'Employee'], function (){
+Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth'], 'namespace' => 'Employee'], function (){
 
     Route::get('/index',[\App\Http\Controllers\EmployeeController::class,'index'])->name('index');
     Route::get('/show/{employee}',[\App\Http\Controllers\EmployeeController::class,'show'])->name('show');
