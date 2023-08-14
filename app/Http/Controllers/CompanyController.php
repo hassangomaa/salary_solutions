@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class CompanyController extends Controller
 {
     static $companyId = null;
+
+    public function __construct()
+    {
+        self::$companyId = null;
+    }
 
     public function companyDashboard()
     {
@@ -19,11 +25,14 @@ class CompanyController extends Controller
     }
 
     public function indexBlade(){
-        return view('company.index');
+        $flag = 1;
+
+        return view('company.index',compact('flag'));
     }
 
     public function index(Request $request)
     {
+        self::setCompanyId(null);
 //        return  $request;
         if ($request->ajax()) {
             $query = Company::select('*');
@@ -56,8 +65,6 @@ class CompanyController extends Controller
 
             return $table->make(true);
         }
-
-//            return 'error';
         return redirect(route('company.companyDashboard'));
     }
     public function show(Company $company)
@@ -98,5 +105,22 @@ class CompanyController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
+    public function clickOnCompany($companyId)
+    {
+////        return $companyId;
+//        self::setCompanyId($companyId);
+//        return redirect(route('employee.index'));
+        return redirect()->route('employee.index', ['companyId' => $companyId]);
+
+    }
+
+    public static function setCompanyId($id)
+    {
+        self::$companyId = $id;
+    }
+public static function getCompanyId()
+{
+    return self::$companyId;
+}
 
 }

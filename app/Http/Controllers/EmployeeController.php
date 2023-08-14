@@ -12,11 +12,8 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
 
-//        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-//        return $request;
-
         if ($request->ajax()) {
+            //TODO: Add Company Id For filtering
             $query = Employee::select('*');
             $table = Datatables::of($query);
 
@@ -40,6 +37,9 @@ class EmployeeController extends Controller
             });
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
+            });
+            $table->editColumn('debit', function ($row) {
+                return $row->debit ? $row->debit : '';
             });
 
 //            $table->editColumn('roles', function ($row) {

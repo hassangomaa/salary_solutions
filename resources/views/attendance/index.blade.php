@@ -26,16 +26,16 @@
                         ID
                     </th>
                     <th>
-                        Company Name
+                         Name
                     </th>
                     <th>
-                        Credit
+                        Daily Fare
                     </th>
                     <th>
-                      Phone
+                        Phone
                     </th>
                     <th>
-                        Address
+                        Position
                     </th>
                     <th>
                         Actions
@@ -86,7 +86,7 @@
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('company.massDestroy') }}",
+                url: "{{ route('attendance.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -121,14 +121,14 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('company.index') }}",
+                ajax: "{{ route('attendance.getUsersForAttendance') }}",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'credit', name: 'credit'},
+                    {data: 'daily_fare', name: 'daily_fare'},
                     {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
+                    {data: 'position', name: 'position'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,

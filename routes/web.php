@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 
@@ -19,6 +21,7 @@ Route::get('/loginBlade',[AuthenticationController::class,'loginBlade'])->name('
 Route::post('/login',[AuthenticationController::class,'login'])->name('login');
 Route::post('/logout',[AuthenticationController::class,'logout'])->name('logout');
 
+Route::get('/',[\App\Http\Controllers\CompanyController::class,'companyDashboard']);
 
 
 Route::group(['prefix' => 'company', 'as' => 'company.','middleware'=>['auth'], 'namespace' => 'Company'], function (){
@@ -33,6 +36,25 @@ Route::group(['prefix' => 'company', 'as' => 'company.','middleware'=>['auth'], 
     Route::put('/update/{company}',[\App\Http\Controllers\CompanyController::class,'update'])->name('update');
     Route::delete('/destroy/{company}',[\App\Http\Controllers\CompanyController::class,'destroy'])->name('destroy');
     Route::delete('/massDestroy',[\App\Http\Controllers\CompanyController::class,'massDestroy'])->name('massDestroy');
+    Route::get('/clickOnCompany/{id}',[\App\Http\Controllers\CompanyController::class,'clickOnCompany'])->name('clickOnCompany');
+
+
+
+});
+
+Route::group(['prefix' => 'attendance', 'as' => 'attendance.','middleware'=>['auth'], 'namespace' => 'Attendance'], function (){
+
+    Route::get('/index',[\App\Http\Controllers\AttendanceController::class,'index'])->name('index');
+    Route::get('/getUsersForAttendance',[\App\Http\Controllers\AttendanceController::class,'getUsersForAttendance'])->name('getUsersForAttendance');
+    Route::get('/attendEmployee/{employeeId}',[\App\Http\Controllers\AttendanceController::class,'attendEmployee'])->name('attendEmployee');
+
+    Route::get('/show/{company}',[\App\Http\Controllers\AttendanceController::class,'show'])->name('show');
+    Route::get('/create',[\App\Http\Controllers\AttendanceController::class,'create'])->name('create');
+    Route::post('/store',[\App\Http\Controllers\AttendanceController::class,'store'])->name('store');
+    Route::get('/edit/{company}',[\App\Http\Controllers\AttendanceController::class,'edit'])->name('edit');
+    Route::put('/update/{company}',[\App\Http\Controllers\AttendanceController::class,'update'])->name('update');
+    Route::delete('/destroy/{company}',[\App\Http\Controllers\AttendanceController::class,'destroy'])->name('destroy');
+    Route::delete('/massDestroy',[\App\Http\Controllers\AttendanceController::class,'massDestroy'])->name('massDestroy');
 
 
 
@@ -133,7 +155,13 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth']
 
 
 
-Route::get('/test',function ($a)
+Route::get('/test',function ()
 {
-    echo 'anything' . $a;
+    $currentDate = Carbon::now()->toDateString();
+
+    $employeesNotAttendedToday = Employee::whereDoesntHave('attendances', function ($query) use ($currentDate) {
+        $query->where('date', $currentDate);
+
+    })->get();
+    return $employeesNotAttendedToday;
 })->name('test');

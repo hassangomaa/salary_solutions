@@ -34,7 +34,7 @@
                         Daily Fare
                     </th>
                     <th>
-                        Credit
+                        Debit
                     </th>
                     <th>
                         Phone
@@ -138,7 +138,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'credit', name: 'credit'},
+                    {data: 'debit', name: 'debit'},
                     {data: 'phone', name: 'phone'},
                     {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}

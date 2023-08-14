@@ -14,7 +14,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @if(\App\Http\Controllers\CompanyController::$companyId == null)
+{{--                @if($flag == 0)--}}
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs("company.companyDashboard") ? "active" : "" }}"
@@ -37,7 +37,7 @@
                         </p>
                     </a>
                 </li>
-                @else
+{{--                @else--}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"
                            href="{{ route("employee.index") }}">
@@ -58,7 +58,18 @@
                             </p>
                         </a>
                     </li>
-                @endif
+
+                <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("attendance.index") ? "active" : "" }}"
+                           href="{{ route("attendance.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                               Attendance
+                            </p>
+                        </a>
+                    </li>
+{{--                @endif--}}
                 <li class="nav-item">
                     <a href="#" class="nav-link"
                        onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
