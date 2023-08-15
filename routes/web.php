@@ -4,6 +4,7 @@ use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,24 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.','middleware'=>['au
 
 });
 
+Route::group(['prefix' => 'users', 'as' => 'users.','middleware'=>['auth']/*, 'namespace' => 'Users'*/], function (){
+
+    Route::get('/index',[\App\Http\Controllers\UsersController::class,'index'])->name('index');
+    Route::get('/getUsersForAttendance',[\App\Http\Controllers\UsersController::class,'getUsersForAttendance'])->name('getUsersForAttendance');
+    Route::get('/attendEmployee/{employeeId}',[\App\Http\Controllers\UsersController::class,'attendEmployee'])->name('attendEmployee');
+
+    Route::get('/show/{userId}',[\App\Http\Controllers\UsersController::class,'show'])->name('show');
+    Route::get('/create',[\App\Http\Controllers\UsersController::class,'create'])->name('create');
+    Route::post('/store',[\App\Http\Controllers\UsersController::class,'store'])->name('store');
+    Route::get('/edit/{userId}',[\App\Http\Controllers\UsersController::class,'edit'])->name('edit');
+    Route::put('/update/{userId}',[\App\Http\Controllers\UsersController::class,'update'])->name('update');
+    Route::delete('/destroy/{userId}',[\App\Http\Controllers\UsersController::class,'destroy'])->name('destroy');
+    Route::delete('/massDestroy',[\App\Http\Controllers\UsersController::class,'massDestroy'])->name('massDestroy');
+
+
+
+});
+
 
 //Route::get('/en', function () {
 //    return view('welcome');
@@ -70,19 +89,21 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.','middleware'=>['au
 //})->name('welcome_ar');
 
 
-/*Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'/*, 'namespace' => 'Admin'*/], function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class,'index'])->name('home');
-    // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
+    // Permissions //Working
+    Route::delete('permissions/destroy', [Controllers\PermissionsController::class,'massDestroy'])->name('permissions.massDestroy');
+    Route::resource('permissions', Controllers\PermissionsController::class);
 
     // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
+    Route::delete('roles/destroy', [Controllers\RolesController::class,'massDestroy'])->name('roles.massDestroy');
+    Route::resource('roles', \App\Http\Controllers\RolesController::class);
 
-    // Users
-    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-    Route::resource('users', 'UsersController');
+//    //// Users //Dont use it
+//    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+//    Route::resource('users', Controllers\UsersController::class);
 
 //    //salaries
 //    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -136,7 +157,7 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.','middleware'=>['au
     Route::delete('messenger/{topic}', 'MessengerController@destroyTopic')->name('messenger.destroyTopic');
     Route::post('messenger/{topic}/reply', 'MessengerController@replyToTopic')->name('messenger.reply');
     Route::get('messenger/{topic}/reply', 'MessengerController@showReply')->name('messenger.showReply');
-});*/
+});
 
 Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth'], 'namespace' => 'Employee'], function (){
 
@@ -148,8 +169,6 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth']
     Route::put('/update/{employee}',[\App\Http\Controllers\EmployeeController::class,'update'])->name('update');
     Route::delete('/destroy/{employee}',[\App\Http\Controllers\EmployeeController::class,'destroy'])->name('destroy');
     Route::delete('/massDestroy',[\App\Http\Controllers\EmployeeController::class,'massDestroy'])->name('massDestroy');
-
-
 
 });
 

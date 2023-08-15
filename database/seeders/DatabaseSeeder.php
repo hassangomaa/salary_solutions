@@ -14,14 +14,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        Company::factory(50)->create();
-        \App\Models\User::create([
+        $user = \App\Models\User::create([
             'name' => 'User',
             'email' => 'admin@app.com',
             'password' => bcrypt('12345678'),
             'safe_value' => 0
         ]);
+        $user->save();
+        $this->call([
+            PermissionsTableSeeder::class,
+            RolesTableSeeder::class,
+            PermissionRoleTableSeeder::class,
+            RoleUserTableSeeder::class,
+//            UsersTableSeeder::class,
+
+        ]);
+        Company::factory(50)->create();
+
         Employee::factory()->count(20)->create();
 
 

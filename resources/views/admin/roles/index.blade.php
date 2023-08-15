@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('role_create')
+{{--@can('role_create')--}}
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('admin.roles.create') }}">
@@ -8,7 +8,7 @@
             </a>
         </div>
     </div>
-@endcan
+{{--@endcan--}}
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.role.title_singular') }} {{ trans('global.list') }}
@@ -54,25 +54,25 @@
                                 @endforeach
                             </td>
                             <td>
-                                @can('role_show')
+{{--                                @can('role_show')--}}
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.roles.show', $role->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+{{--                                @endcan--}}
 
-                                @can('role_edit')
+{{--                                @can('role_edit')--}}
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.roles.edit', $role->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
-                                @endcan
+{{--                                @endcan--}}
 
-                                @can('role_delete')
+{{--                                @can('role_delete')--}}
                                     <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
-                                @endcan
+{{--                                @endcan--}}
 
                             </td>
 
@@ -92,7 +92,7 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('role_delete')
+{{--@can('role_delete')--}}
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
@@ -111,7 +111,7 @@
 
       if (confirm('{{ trans('global.areYouSure') }}')) {
         $.ajax({
-          headers: {'x-csrf-token': _token},
+            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
@@ -120,7 +120,7 @@
     }
   }
   dtButtons.push(deleteButton)
-@endcan
+{{--@endcan--}}
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
@@ -132,7 +132,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>
