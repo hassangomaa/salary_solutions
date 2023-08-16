@@ -18,4 +18,8 @@ class Company extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function payments(){
+        return $this->hasMany(CompanyPayment::class);
+    }
 }

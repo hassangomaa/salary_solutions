@@ -6,22 +6,29 @@ use App\Models\Attendance;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class AttendanceController extends Controller
 {
+
+
     public function index()
     {
-        return view('attendance.index');
+        $flag = 1 ;
+
+        return view('attendance.index',compact('flag'));
     }
 
     public function getUsersForAttendance(Request $request)
     {
+        $companyId = Session::get('companyId');
+
         if ($request->ajax()) {
             $currentDate = Carbon::now()->toDateString();
 
             //TODO: filter by column id
-            $employeesNotAttendedToday = Employee::whereDoesntHave('attendances', function ($query) use ($currentDate) {
+            $employeesNotAttendedToday = Employee::where('company_id',$companyId)->whereDoesntHave('attendances', function ($query) use ($currentDate) {
                 $query->where('date', $currentDate);
 
             });

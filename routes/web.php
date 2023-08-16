@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::group(['prefix' => 'company', 'as' => 'company.','middleware'=>['auth'], 
     Route::delete('/destroy/{company}',[\App\Http\Controllers\CompanyController::class,'destroy'])->name('destroy');
     Route::delete('/massDestroy',[\App\Http\Controllers\CompanyController::class,'massDestroy'])->name('massDestroy');
     Route::get('/clickOnCompany/{id}',[\App\Http\Controllers\CompanyController::class,'clickOnCompany'])->name('clickOnCompany');
+    Route::get('/receiveMoneyBlade',[\App\Http\Controllers\CompanyController::class,'receiveMoneyBlade'])->name('receiveMoneyBlade');
+
 
 
 
@@ -172,15 +175,23 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth']
 
 });
 
+Route::group(['prefix' => 'companyPayments/deposit', 'as' => 'companyPayments.deposit.', 'middleware' => ['auth'], 'namespace' => 'Employee'], function () {
+    Route::get('/index', [\App\Http\Controllers\CompanyDepositsController::class, 'index'])->name('index');
+    Route::get('/show/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'show'])->name('show');
+    Route::get('/create', [\App\Http\Controllers\CompanyDepositsController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\CompanyDepositsController::class, 'store'])->name('store');
+    Route::get('/edit/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'edit'])->name('edit');
+    Route::put('/update/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'update'])->name('update');
+    Route::delete('/destroy/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\CompanyDepositsController::class, 'massDestroy'])->name('massDestroy');
+});
+
+
+
 
 
 Route::get('/test',function ()
 {
-    $currentDate = Carbon::now()->toDateString();
-
-    $employeesNotAttendedToday = Employee::whereDoesntHave('attendances', function ($query) use ($currentDate) {
-        $query->where('date', $currentDate);
-
-    })->get();
-    return $employeesNotAttendedToday;
+        $query = \App\Models\CompanyPayment::first();
+        return $query->created_at->format('D, M j, Y g:i A');
 })->name('test');

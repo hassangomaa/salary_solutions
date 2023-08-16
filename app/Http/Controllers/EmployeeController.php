@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -11,10 +12,9 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-
+        $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            //TODO: Add Company Id For filtering
-            $query = Employee::select('*');
+            $query = Employee::select('*')->where('company_id',$companyId);
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -61,8 +61,8 @@ class EmployeeController extends Controller
         }
 
 //        $roles = Role::get();
-
-        return view('employees.index');//, compact('roles'));
+        $flag = 1;
+        return view('employees.index',compact('flag'));//, compact('roles'));
     }
 
     public function create()
@@ -81,8 +81,8 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-//        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('employees.show', compact('employee'));
+        $flag = 1;
+        return view('employees.show', compact('employee','flag'));
     }
 
     public function edit(Employee $employee)

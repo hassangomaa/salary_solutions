@@ -72,8 +72,8 @@ class UsersController extends Controller
         }
 
         $roles = Role::get();
-
-        return view('users.index', compact('roles'));
+        $flag = 1;
+        return view('users.index', compact('roles','flag'));
     }
 
     public function create()

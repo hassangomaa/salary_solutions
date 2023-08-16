@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->integer('credit');
+            //TODO: Add those in Create and edit blade
+            $table->integer('start_month');
+            $table->integer('end_month');
+            $table->boolean('isSameMonth');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -21,6 +21,9 @@ class CompanyFactory extends Factory
             'address' => $this->faker->address,
             'phone' => $this->faker->phoneNumber,
             'credit' => $this->faker->randomNumber(),
+            'start_month' => $this->faker->randomNumber(),
+            'end_month' => $this->faker->randomNumber(),
+            'isSameMonth' => $this->faker->boolean,
         ];
     }
 }

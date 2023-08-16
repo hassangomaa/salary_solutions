@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('safe_value')->default(0); //TODO: remove this column
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,17 +2,23 @@
 @section('content')
     @include('partials.menu')
     {{--@can('user_create')--}}
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('company.create') }}">
-                Add Company
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-lg-2">
+            <a class="btn btn-success" href="{{ route('companyPayments.deposit.create') }}">
+                Add Deposit
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <a class="btn btn-success" href="#">
+                Current Credit =  {{$company->credit}}
             </a>
         </div>
     </div>
+
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            Company List
+            Deposits List
         </div>
 
         <div class="card-body">
@@ -26,17 +32,17 @@
                         ID
                     </th>
                     <th>
-                        Company Name
+                        Amount
                     </th>
                     <th>
-                        Credit
+                        Statement
                     </th>
                     <th>
-                      Phone
+                        Type
+                    </th>      <th>
+                        Created At
                     </th>
-                    <th>
-                        Address
-                    </th>
+
                     <th>
                         Actions
                     </th>
@@ -61,8 +67,8 @@
 
                     </td>
                     <td>
+{{--&nbsp;--}}
                         <input class="search" type="text" placeholder="Search">
-
                     </td>
 
 
@@ -86,7 +92,7 @@
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('company.massDestroy') }}",
+                url: "{{ route('companyPayments.deposit.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -121,14 +127,14 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('company.index') }}",
+                ajax: "{{ route('companyPayments.deposit.index') }}",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'credit', name: 'credit'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'statement', name: 'statement'},
+                    {data: 'type', name: 'type'},
+                    {data: 'created_at', name: 'created_at'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,

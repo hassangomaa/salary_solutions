@@ -1,6 +1,6 @@
-@parent
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
     {{--@can('user_create')--}}
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">

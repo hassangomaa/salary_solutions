@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\CompanyPayment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,18 +23,19 @@ class CompanyController extends Controller
     {
         CompanyController::$companyId = null;
         $companies = Company::all();
-        return view('company.companyDashboard', compact('companies'));
+        $flag = 0;
+        return view('company.companyDashboard', compact('companies', 'flag'));
     }
 
-    public function indexBlade(){
-        $flag = 1;
+    public function indexBlade()
+    {
+        $flag = 0;
 
-        return view('company.index',compact('flag'));
+        return view('company.index', compact('flag'));
     }
 
     public function index(Request $request)
     {
-        self::setCompanyId(null);
 //        return  $request;
         if ($request->ajax()) {
             $query = Company::select('*');
@@ -67,9 +70,11 @@ class CompanyController extends Controller
         }
         return redirect(route('company.companyDashboard'));
     }
+
     public function show(Company $company)
     {
-        return view('company.show', compact('company'));
+        $flag = 0;
+        return view('company.show', compact('company', 'flag'));
     }
 
     public function create()
@@ -79,7 +84,7 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-       Company::create($request->all());
+        Company::create($request->all());
 
         return redirect(route('company.indexBlade'));
 
@@ -87,7 +92,9 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        return view('company.edit', compact('company'));
+        $flag = 1;
+
+        return view('company.edit', compact('company', 'flag'));
     }
 
     public function update(Request $request, Company $company)
@@ -95,6 +102,8 @@ class CompanyController extends Controller
         $company->update($request->all());
         return redirect(route('company.indexBlade'));
     }
+
+
 
     public function massDestroy(Request $request)
     {
@@ -107,20 +116,9 @@ class CompanyController extends Controller
 
     public function clickOnCompany($companyId)
     {
-////        return $companyId;
-//        self::setCompanyId($companyId);
-//        return redirect(route('employee.index'));
-        return redirect()->route('employee.index', ['companyId' => $companyId]);
+        Session::put('companyId', $companyId);
+        return redirect()->route('employee.index');
 
     }
-
-    public static function setCompanyId($id)
-    {
-        self::$companyId = $id;
-    }
-public static function getCompanyId()
-{
-    return self::$companyId;
-}
 
 }

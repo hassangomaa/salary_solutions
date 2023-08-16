@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
     <div class="row">
         @foreach ($companies as $company)
             <div class="col-md-4 mb-4">

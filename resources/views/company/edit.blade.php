@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
 
     <div class="card">
         <div class="card-header">

@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'User',
             'email' => 'admin@app.com',
             'password' => bcrypt('12345678'),
-            'safe_value' => 0
         ]);
         $user->save();
         $this->call([
