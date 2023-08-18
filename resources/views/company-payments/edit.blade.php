@@ -4,11 +4,11 @@
     @include('partials.menu')
     <div class="card">
         <div class="card-header">
-            {{ trans('global.edit') }} {{ trans('cruds.company_payment.title_singular') }}
+Edit Payment Data
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("companyPayments.deposit.update", $deposit->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("companyPayments.update", $deposit->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
@@ -27,11 +27,16 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="type">Type</label>
-                    <input class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" type="text" name="type" id="statement" value="{{ old('type', $deposit->type) }}" required>
+                    <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" id="type" required>
+                            <option value="{{ $deposit->type }}" selected>
+                                {{ ucfirst($deposit->type) }}
+                            </option>
+                    </select>
                     @if($errors->has('type'))
                         <span class="text-danger">{{ $errors->first('type') }}</span>
                     @endif
                 </div>
+
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.update') }}

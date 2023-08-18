@@ -1,21 +1,21 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu')
-    {{--@can('user_create')--}}
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-lg-2">
-            <a class="btn btn-success" href="{{ route('companyPayments.deposit.create') }}">
-                Add Deposit
+            <a class="btn btn-success" href="<?php echo e(route('companyPayments.create')); ?>">
+                Add Payment
             </a>
         </div>
         <div class="col-lg-6">
             <a class="btn btn-success" href="#">
-                Current Credit =  {{$company->credit}}
+                Current Credit =  <?php echo e($company->credit); ?>
+
             </a>
         </div>
     </div>
 
-    {{--@endcan--}}
+    
     <div class="card">
         <div class="card-header">
             Deposits List
@@ -39,7 +39,8 @@
                     </th>
                     <th>
                         Type
-                    </th>      <th>
+                    </th>
+                    <th>
                         Created At
                     </th>
 
@@ -63,11 +64,16 @@
 
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="Search">
+                        <select class="search">
+                            <option value><?php echo e(trans('global.all')); ?></option>
+                            <?php $__currentLoopData = $paymentTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($type); ?>"><?php echo e($type); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
 
                     </td>
                     <td>
-{{--&nbsp;--}}
+
                         <input class="search" type="text" placeholder="Search">
                     </td>
 
@@ -82,17 +88,17 @@
         </div>
     </div>
 
-@endsection
-@section('scripts')
-    {{--    @parent--}}
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            {{--@can('user_delete')--}}
+            
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('companyPayments.deposit.massDestroy') }}",
+                url: "<?php echo e(route('companyPayments.massDestroy')); ?>",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -105,7 +111,7 @@
                         return
                     }
 
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                    if (confirm('<?php echo e(trans('global.areYouSure')); ?>')) {
                         $.ajax({
                             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
@@ -119,7 +125,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            {{--@endcan--}}
+            
 
             let dtOverrideGlobals = {
                 buttons: dtButtons,
@@ -127,7 +133,7 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('companyPayments.deposit.index') }}",
+                ajax: "<?php echo e(route('companyPayments.index')); ?>",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
@@ -171,4 +177,6 @@
         });
 
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/company-payments/index.blade.php ENDPATH**/ ?>

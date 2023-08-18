@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("companyPayments.deposit.store") }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("companyPayments.store") }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label class="required" for="amount">Amount</label>
@@ -25,11 +25,17 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="type">Type</label>
-                    <input class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" type="text" name="type" id="statement" value="deposit" required>
-
-                @if($errors->has('type'))
+                    <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" id="type" required>
+                        @foreach($paymentTypes as $type)
+                            <option value="{{ $type }}" selected >
+                                {{ ucfirst($type) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('type'))
                         <span class="text-danger">{{ $errors->first('type') }}</span>
                     @endif
+                </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">

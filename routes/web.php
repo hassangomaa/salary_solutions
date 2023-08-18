@@ -175,15 +175,15 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth']
 
 });
 
-Route::group(['prefix' => 'companyPayments/deposit', 'as' => 'companyPayments.deposit.', 'middleware' => ['auth'], 'namespace' => 'Employee'], function () {
-    Route::get('/index', [\App\Http\Controllers\CompanyDepositsController::class, 'index'])->name('index');
-    Route::get('/show/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'show'])->name('show');
-    Route::get('/create', [\App\Http\Controllers\CompanyDepositsController::class, 'create'])->name('create');
-    Route::post('/store', [\App\Http\Controllers\CompanyDepositsController::class, 'store'])->name('store');
-    Route::get('/edit/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'edit'])->name('edit');
-    Route::put('/update/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'update'])->name('update');
-    Route::delete('/destroy/{deposit}', [\App\Http\Controllers\CompanyDepositsController::class, 'destroy'])->name('destroy');
-    Route::delete('/massDestroy', [\App\Http\Controllers\CompanyDepositsController::class, 'massDestroy'])->name('massDestroy');
+Route::group(['prefix' => 'companyPayments', 'as' => 'companyPayments.', 'middleware' => ['auth'], 'namespace' => 'Company'], function () {
+    Route::get('/index', [\App\Http\Controllers\CompanyPaymentsController::class, 'index'])->name('index');
+    Route::get('/show/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'show'])->name('show');
+    Route::get('/create', [\App\Http\Controllers\CompanyPaymentsController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\CompanyPaymentsController::class, 'store'])->name('store');
+    Route::get('/edit/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'edit'])->name('edit');
+    Route::put('/update/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'update'])->name('update');
+    Route::delete('/destroy/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\CompanyPaymentsController::class, 'massDestroy'])->name('massDestroy');
 });
 
 

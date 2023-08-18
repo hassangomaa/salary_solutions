@@ -11,6 +11,7 @@ class Company extends Model
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes trait
 
+
     protected $fillable = ['name','credit','address','phone',];
     protected $dates = ['deleted_at']; // Add 'deleted_at' to dates array
 
@@ -22,4 +23,6 @@ class Company extends Model
     public function payments(){
         return $this->hasMany(CompanyPayment::class);
     }
+
+
 }
