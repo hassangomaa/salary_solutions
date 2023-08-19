@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MassDestroyUserRequest;
 use App\Models\Employee;
-use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
-
+//use Yajra\DataTables\DataTables;
 class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-//        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = Employee::select('*');
+            $query = Employee::select('*')->where('company_id', $companyId);
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -41,15 +38,18 @@ class EmployeeController extends Controller
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
+            $table->editColumn('debit', function ($row) {
+                return $row->debit ? $row->debit : '';
+            });
 
-//            $table->editColumn('roles', function ($row) {
-//                $labels = [];
-//                foreach ($row->roles as $role) {
-//                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $role->title);
-//                }
-
-//                return implode(' ', $labels);
+//            $table->editColumn('amount', function ($row) {
+//                return $row->commission->amount ? $row->commission->amount : '';
 //            });
+//            $table->editColumn('commission', function ($row) {
+//                return $row->commission->reason ? $row->commission->reason : '';
+//            });
+
+
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
@@ -61,13 +61,15 @@ class EmployeeController extends Controller
         }
 
 //        $roles = Role::get();
-
-        return view('employees.index');//, compact('roles'));
+        $flag = 1;
+        return view('employees.index', compact('flag'));//, compact('roles'));
     }
 
     public function create()
     {
-        return view('employees.create');
+        $flag = 1;
+
+        return view('employees.create', compact('flag'));
     }
 
     public function store(Request $request)
@@ -81,13 +83,15 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-//        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('employees.show', compact('employee'));
+        $flag = 1;
+        $employee->load('commissions','deductions');
+        return view('employees.show', compact('employee', 'flag'));
     }
 
     public function edit(Employee $employee)
     {
-        return view('employees.edit', compact('employee'));
+        $flag = 1;
+        return view('employees.edit', compact('employee', 'flag'));
     }
 
     public function update(Request $request, Employee $employee)

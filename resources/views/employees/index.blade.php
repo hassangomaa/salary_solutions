@@ -1,17 +1,19 @@
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
+
     {{--@can('user_create')--}}
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('employee.create') }}">
-                Add User
+                Add Employee
             </a>
         </div>
     </div>
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            User List
+            Employee List
         </div>
 
         <div class="card-body">
@@ -34,7 +36,7 @@
                         Daily Fare
                     </th>
                     <th>
-                        Credit
+                        Debit
                     </th>
                     <th>
                         Phone
@@ -138,7 +140,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'credit', name: 'credit'},
+                    {data: 'debit', name: 'debit'},
                     {data: 'phone', name: 'phone'},
                     {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}

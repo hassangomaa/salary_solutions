@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
 
     <div class="card">
         <div class="card-header">
-        Show Employee
+            Show Employee
         </div>
 
         <div class="card-body">
@@ -17,7 +18,7 @@
                     <tbody>
                     <tr>
                         <th>
-                           ID
+                            ID
                         </th>
                         <td>
                             {{ $employee->id }}
@@ -25,7 +26,7 @@
                     </tr>
                     <tr>
                         <th>
-                        Name
+                            Name
                         </th>
                         <td>
                             {{ $employee->name }}
@@ -33,35 +34,35 @@
                     </tr>
                     <tr>
                         <th>
-                        Position
+                            Position
                         </th>
                         <td>
                             {{ $employee->position }}
                         </td>
                     </tr>
 
-<tr>
+                    <tr>
                         <th>
-                        Daily Fare
+                            Daily Fare
                         </th>
                         <td>
                             {{ $employee->daily_fare }}
                         </td>
                     </tr>
 
-<tr>
-                        <th>
-                        Credit
-                        </th>
-                        <td>
-                            {{ $employee->credit }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            Credit--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $employee->credit }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
 
 
                     <tr>
                         <th>
-                           Phone
+                            Phone
                         </th>
                         <td>
                             {{ $employee->phone }}
@@ -69,7 +70,7 @@
                     </tr>
                     <tr>
                         <th>
-                          Address
+                            Address
                         </th>
                         <td>
                             {{ $employee->address }}
@@ -77,31 +78,49 @@
                     </tr>
                     </tbody>
                 </table>
-{{--                <div class="form-group">--}}
-{{--                    <a class="btn btn-default" href="{{ route('employee.index') }}">--}}
-{{--                       Go Back--}}
-{{--                    </a>--}}
-{{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <a class="btn btn-default" href="{{ route('employee.index') }}">--}}
+                {{--                       Go Back--}}
+                {{--                    </a>--}}
+                {{--                </div>--}}
             </div>
         </div>
     </div>
 
-{{--    <div class="card">--}}
-{{--        <div class="card-header">--}}
-{{--            {{ trans('global.relatedData') }}--}}
-{{--        </div>--}}
-{{--        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">--}}
-{{--                    {{ trans('cruds.product.title') }}--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--        <div class="tab-content">--}}
-{{--            <div class="tab-pane" role="tabpanel" id="seller_products">--}}
-{{--                @includeIf('admin.employees.relationships.sellerProducts', ['products' => $employee->sellerProducts])--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="card">
+        <div class="card-header">
+            {{ trans('global.relatedData') }}
+        </div>
+        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#commissions" role="tab" data-toggle="tab">
+                    Commissions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#deductions" role="tab" data-toggle="tab">
+                    Deductions
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="commissions">
+                @includeIf('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id])
+            </div>
+            <div class="tab-pane" role="tabpanel" id="deductions">
+                @includeIf('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id])
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#relationship-tabs a").click(function(e) {
+                e.preventDefault();
+                $(this).tab("show");
+            });
+        });
+    </script>
+
 
 @endsection

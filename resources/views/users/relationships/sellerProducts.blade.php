@@ -1,13 +1,13 @@
 <div class="m-3">
-    @can('product_create')
+{{--    @can('product_create')--}}
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.products.create') }}">
+                <a class="btn btn-success" href="{{ route('admin.commissions.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.product.title_singular') }}
                 </a>
             </div>
         </div>
-    @endcan
+{{--    @endcan--}}
     <div class="card">
         <div class="card-header">
             {{ trans('cruds.product.title_singular') }} {{ trans('global.list') }}
@@ -15,7 +15,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class=" table table-bordered table-striped table-hover datatable datatable-sellerProducts">
+                <table class=" table table-bordered table-striped table-hover datatable datatable-sellercommissions">
                     <thead>
                         <tr>
                             <th width="10">
@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($products as $key => $product)
+                        @foreach($commissions as $key => $product)
                             <tr data-entry-id="{{ $product->id }}">
                                 <td>
 
@@ -81,25 +81,25 @@
                                     {{ App\Models\Product::FEATURED_RADIO[$product->featured] ?? '' }}
                                 </td>
                                 <td>
-                                    @can('product_show')
-                                        <a class="btn btn-xs btn-primary" href="{{ route('admin.products.show', $product->id) }}">
+{{--                                    @can('product_show')--}}
+                                        <a class="btn btn-xs btn-primary" href="{{ route('admin.commissions.show', $product->id) }}">
                                             {{ trans('global.view') }}
                                         </a>
-                                    @endcan
+{{--                                    @endcan--}}
 
-                                    @can('product_edit')
-                                        <a class="btn btn-xs btn-info" href="{{ route('admin.products.edit', $product->id) }}">
+{{--                                    @can('product_edit')--}}
+                                        <a class="btn btn-xs btn-info" href="{{ route('admin.commissions.edit', $product->id) }}">
                                             {{ trans('global.edit') }}
                                         </a>
-                                    @endcan
+{{--                                    @endcan--}}
 
-                                    @can('product_delete')
-                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+{{--                                    @can('product_delete')--}}
+                                        <form action="{{ route('admin.commissions.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                         </form>
-                                    @endcan
+{{--                                    @endcan--}}
 
                                 </td>
 
@@ -120,7 +120,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.products.massDestroy') }}",
+    url: "{{ route('admin.commissions.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -151,12 +151,12 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  let table = $('.datatable-sellerProducts:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-sellercommissions:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>
