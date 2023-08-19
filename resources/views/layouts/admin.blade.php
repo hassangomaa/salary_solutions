@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Salary Solution</title>
+    <title>Salary Solution </title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -51,7 +51,7 @@
 
         </nav>
 
-        @include('partials.menu')
+{{--        @include('partials.menu')--}}
         <div class="content-wrapper" style="min-height: 917px;">
             <!-- Main content -->
             <section class="content" style="padding-top: 20px">

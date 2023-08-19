@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Company;
+use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,31 +18,95 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Authentication
+Route::get('/loginBlade',[AuthenticationController::class,'loginBlade'])->name('loginBlade');
+Route::post('/login',[AuthenticationController::class,'login'])->name('login');
+Route::post('/logout',[AuthenticationController::class,'logout'])->name('logout');
 
-Route::get('/login',function (){})->name('login');
-Route::get('/logout',function (){})->name('logout');
+Route::get('/',[\App\Http\Controllers\CompanyController::class,'companyDashboard']);
 
-Route::get('/en', function () {
-    return view('welcome');
-})->name('welcome');
-Route::get('/', function () {
-    return view('welcome_ar')
-    ;
-})->name('welcome_ar');
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => 'company', 'as' => 'company.','middleware'=>['auth'], 'namespace' => 'Company'], function (){
+
+    Route::get('/companyDashboard',[\App\Http\Controllers\CompanyController::class,'companyDashboard'])->name('companyDashboard');
+    Route::get('/index',[\App\Http\Controllers\CompanyController::class,'index'])->name('index');
+    Route::get('/indexBlade',[\App\Http\Controllers\CompanyController::class,'indexBlade'])->name('indexBlade');
+    Route::get('/show/{company}',[\App\Http\Controllers\CompanyController::class,'show'])->name('show');
+    Route::get('/create',[\App\Http\Controllers\CompanyController::class,'create'])->name('create');
+    Route::post('/store',[\App\Http\Controllers\CompanyController::class,'store'])->name('store');
+    Route::get('/edit/{company}',[\App\Http\Controllers\CompanyController::class,'edit'])->name('edit');
+    Route::put('/update/{company}',[\App\Http\Controllers\CompanyController::class,'update'])->name('update');
+    Route::delete('/destroy/{company}',[\App\Http\Controllers\CompanyController::class,'destroy'])->name('destroy');
+    Route::delete('/massDestroy',[\App\Http\Controllers\CompanyController::class,'massDestroy'])->name('massDestroy');
+    Route::get('/clickOnCompany/{id}',[\App\Http\Controllers\CompanyController::class,'clickOnCompany'])->name('clickOnCompany');
+    Route::get('/receiveMoneyBlade',[\App\Http\Controllers\CompanyController::class,'receiveMoneyBlade'])->name('receiveMoneyBlade');
+
+
+
+
+});
+
+Route::group(['prefix' => 'attendance', 'as' => 'attendance.','middleware'=>['auth'], 'namespace' => 'Attendance'], function (){
+
+    Route::get('/index',[\App\Http\Controllers\AttendanceController::class,'index'])->name('index');
+    Route::get('/getUsersForAttendance',[\App\Http\Controllers\AttendanceController::class,'getUsersForAttendance'])->name('getUsersForAttendance');
+    Route::get('/attendEmployee/{employeeId}',[\App\Http\Controllers\AttendanceController::class,'attendEmployee'])->name('attendEmployee');
+
+    Route::get('/show/{company}',[\App\Http\Controllers\AttendanceController::class,'show'])->name('show');
+    Route::get('/create',[\App\Http\Controllers\AttendanceController::class,'create'])->name('create');
+    Route::post('/store',[\App\Http\Controllers\AttendanceController::class,'store'])->name('store');
+    Route::get('/edit/{company}',[\App\Http\Controllers\AttendanceController::class,'edit'])->name('edit');
+    Route::put('/update/{company}',[\App\Http\Controllers\AttendanceController::class,'update'])->name('update');
+    Route::delete('/destroy/{company}',[\App\Http\Controllers\AttendanceController::class,'destroy'])->name('destroy');
+    Route::delete('/massDestroy',[\App\Http\Controllers\AttendanceController::class,'massDestroy'])->name('massDestroy');
+
+
+
+});
+
+Route::group(['prefix' => 'users', 'as' => 'users.','middleware'=>['auth']/*, 'namespace' => 'Users'*/], function (){
+
+    Route::get('/index',[\App\Http\Controllers\UsersController::class,'index'])->name('index');
+    Route::get('/getUsersForAttendance',[\App\Http\Controllers\UsersController::class,'getUsersForAttendance'])->name('getUsersForAttendance');
+    Route::get('/attendEmployee/{employeeId}',[\App\Http\Controllers\UsersController::class,'attendEmployee'])->name('attendEmployee');
+
+    Route::get('/show/{userId}',[\App\Http\Controllers\UsersController::class,'show'])->name('show');
+    Route::get('/create',[\App\Http\Controllers\UsersController::class,'create'])->name('create');
+    Route::post('/store',[\App\Http\Controllers\UsersController::class,'store'])->name('store');
+    Route::get('/edit/{userId}',[\App\Http\Controllers\UsersController::class,'edit'])->name('edit');
+    Route::put('/update/{userId}',[\App\Http\Controllers\UsersController::class,'update'])->name('update');
+    Route::delete('/destroy/{userId}',[\App\Http\Controllers\UsersController::class,'destroy'])->name('destroy');
+    Route::delete('/massDestroy',[\App\Http\Controllers\UsersController::class,'massDestroy'])->name('massDestroy');
+
+
+
+});
+
+
+//Route::get('/en', function () {
+//    return view('welcome');
+//})->name('welcome');
+//Route::get('/', function () {
+//    return view('welcome_ar')
+//    ;
+//})->name('welcome_ar');
+
+
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['auth']/*, 'namespace' => 'Admin'*/], function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class,'index'])->name('home');
-    // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
+    // Permissions //Working
+    Route::delete('permissions/destroy', [Controllers\PermissionsController::class,'massDestroy'])->name('permissions.massDestroy');
+    Route::resource('permissions', Controllers\PermissionsController::class);
 
     // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
+    Route::delete('roles/destroy', [Controllers\RolesController::class,'massDestroy'])->name('roles.massDestroy');
+    Route::resource('roles', \App\Http\Controllers\RolesController::class);
 
-    // Users
-    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-    Route::resource('users', 'UsersController');
+//    //// Users //Dont use it
+//    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+//    Route::resource('users', Controllers\UsersController::class);
 
 //    //salaries
 //    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -93,7 +162,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], fu
     Route::get('messenger/{topic}/reply', 'MessengerController@showReply')->name('messenger.showReply');
 });
 
-Route::group(['prefix' => 'employee', 'as' => 'employee.', 'namespace' => 'Employee'], function (){
+Route::group(['prefix' => 'employee', 'as' => 'employee.','middleware'=>['auth'], 'namespace' => 'Employee'], function (){
 
     Route::get('/index',[\App\Http\Controllers\EmployeeController::class,'index'])->name('index');
     Route::get('/show/{employee}',[\App\Http\Controllers\EmployeeController::class,'show'])->name('show');
@@ -104,11 +173,47 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'namespace' => 'Emplo
     Route::delete('/destroy/{employee}',[\App\Http\Controllers\EmployeeController::class,'destroy'])->name('destroy');
     Route::delete('/massDestroy',[\App\Http\Controllers\EmployeeController::class,'massDestroy'])->name('massDestroy');
 
-
-
 });
 
-Route::get('/test',function ($a)
+Route::group(['prefix' => 'companyPayments', 'as' => 'companyPayments.', 'middleware' => ['auth'], 'namespace' => 'Company'], function () {
+    Route::get('/index', [\App\Http\Controllers\CompanyPaymentsController::class, 'index'])->name('index');
+    Route::get('/show/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'show'])->name('show');
+    Route::get('/create', [\App\Http\Controllers\CompanyPaymentsController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\CompanyPaymentsController::class, 'store'])->name('store');
+    Route::get('/edit/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'edit'])->name('edit');
+    Route::put('/update/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'update'])->name('update');
+    Route::delete('/destroy/{deposit}', [\App\Http\Controllers\CompanyPaymentsController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\CompanyPaymentsController::class, 'massDestroy'])->name('massDestroy');
+});
+
+Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => ['auth'], ], function () {
+    Route::get('/index/{id}', [\App\Http\Controllers\CommissionController::class, 'index'])->name('index');
+    Route::get('/show/{commission}', [\App\Http\Controllers\CommissionController::class, 'show'])->name('show');
+    Route::get('/create/{employeeId}', [\App\Http\Controllers\CommissionController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\CommissionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\CommissionController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [\App\Http\Controllers\CommissionController::class, 'update'])->name('update');
+    Route::delete('/destroy/{commission}', [\App\Http\Controllers\CommissionController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\CommissionController::class, 'massDestroy'])->name('massDestroy');
+});
+
+Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth'], ], function () {
+    Route::get('/index/{id}', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
+    Route::get('/show/{deduction}', [\App\Http\Controllers\DeductionController::class, 'show'])->name('show');
+    Route::get('/create/{employeeId}', [\App\Http\Controllers\DeductionController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\DeductionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\DeductionController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [\App\Http\Controllers\DeductionController::class, 'update'])->name('update');
+    Route::delete('/destroy/{deduction}', [\App\Http\Controllers\DeductionController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\DeductionController::class, 'massDestroy'])->name('massDestroy');
+});
+
+
+
+
+
+Route::get('/test',function ()
 {
-    echo 'anything' . $a;
+            return$query = Employee::with('commissions')->select('*')->where('company_id', 1)->get();
+
 })->name('test');
