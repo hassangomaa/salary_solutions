@@ -6,8 +6,8 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
-//use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables;
+//use Yajra\DataTables\DataTables;
 class EmployeeController extends Controller
 {
     public function index(Request $request)
