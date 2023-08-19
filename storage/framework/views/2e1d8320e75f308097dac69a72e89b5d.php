@@ -237,4 +237,4 @@
 </body>
 
 </html>
-<?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/layouts/admin.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/hassan/AE24833A24830515/php_Projects/htdocs/projects/salary_solutions/resources/views/layouts/admin.blade.php ENDPATH**/ ?>
