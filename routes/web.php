@@ -94,7 +94,7 @@ Route::group(['prefix' => 'users', 'as' => 'users.','middleware'=>['auth']/*, 'n
 
 
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'/*, 'namespace' => 'Admin'*/], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['auth']/*, 'namespace' => 'Admin'*/], function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class,'index'])->name('home');
     // Permissions //Working
     Route::delete('permissions/destroy', [Controllers\PermissionsController::class,'massDestroy'])->name('permissions.massDestroy');
