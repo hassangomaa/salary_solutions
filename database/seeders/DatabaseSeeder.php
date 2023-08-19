@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Commission;
 use App\Models\Company;
+use App\Models\Deduction;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
@@ -28,9 +30,12 @@ class DatabaseSeeder extends Seeder
 //            UsersTableSeeder::class,
 
         ]);
-        Company::factory(50)->create();
+        Company::factory(3)->create();
 
         Employee::factory()->count(20)->create();
+        Commission::factory(50)->create();
+        Deduction::factory(50)->create();
+
 
 
     }

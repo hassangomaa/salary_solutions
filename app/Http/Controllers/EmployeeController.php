@@ -14,7 +14,7 @@ class EmployeeController extends Controller
     {
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = Employee::select('*')->where('company_id',$companyId);
+            $query = Employee::select('*')->where('company_id', $companyId);
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -42,14 +42,14 @@ class EmployeeController extends Controller
                 return $row->debit ? $row->debit : '';
             });
 
-//            $table->editColumn('roles', function ($row) {
-//                $labels = [];
-//                foreach ($row->roles as $role) {
-//                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $role->title);
-//                }
-
-//                return implode(' ', $labels);
+//            $table->editColumn('amount', function ($row) {
+//                return $row->commission->amount ? $row->commission->amount : '';
 //            });
+//            $table->editColumn('commission', function ($row) {
+//                return $row->commission->reason ? $row->commission->reason : '';
+//            });
+
+
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
@@ -62,12 +62,14 @@ class EmployeeController extends Controller
 
 //        $roles = Role::get();
         $flag = 1;
-        return view('employees.index',compact('flag'));//, compact('roles'));
+        return view('employees.index', compact('flag'));//, compact('roles'));
     }
 
     public function create()
     {
-        return view('employees.create');
+        $flag = 1;
+
+        return view('employees.create', compact('flag'));
     }
 
     public function store(Request $request)
@@ -82,12 +84,14 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         $flag = 1;
-        return view('employees.show', compact('employee','flag'));
+        $employee->load('commissions','deductions');
+        return view('employees.show', compact('employee', 'flag'));
     }
 
     public function edit(Employee $employee)
     {
-        return view('employees.edit', compact('employee'));
+        $flag = 1;
+        return view('employees.edit', compact('employee', 'flag'));
     }
 
     public function update(Request $request, Employee $employee)

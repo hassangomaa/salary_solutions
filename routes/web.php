@@ -186,12 +186,34 @@ Route::group(['prefix' => 'companyPayments', 'as' => 'companyPayments.', 'middle
     Route::delete('/massDestroy', [\App\Http\Controllers\CompanyPaymentsController::class, 'massDestroy'])->name('massDestroy');
 });
 
+Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => ['auth'], ], function () {
+    Route::get('/index/{id}', [\App\Http\Controllers\CommissionController::class, 'index'])->name('index');
+    Route::get('/show/{commission}', [\App\Http\Controllers\CommissionController::class, 'show'])->name('show');
+    Route::get('/create/{employeeId}', [\App\Http\Controllers\CommissionController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\CommissionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\CommissionController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [\App\Http\Controllers\CommissionController::class, 'update'])->name('update');
+    Route::delete('/destroy/{commission}', [\App\Http\Controllers\CommissionController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\CommissionController::class, 'massDestroy'])->name('massDestroy');
+});
+
+Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth'], ], function () {
+    Route::get('/index/{id}', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
+    Route::get('/show/{deduction}', [\App\Http\Controllers\DeductionController::class, 'show'])->name('show');
+    Route::get('/create/{employeeId}', [\App\Http\Controllers\DeductionController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\DeductionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\DeductionController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [\App\Http\Controllers\DeductionController::class, 'update'])->name('update');
+    Route::delete('/destroy/{deduction}', [\App\Http\Controllers\DeductionController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\DeductionController::class, 'massDestroy'])->name('massDestroy');
+});
+
 
 
 
 
 Route::get('/test',function ()
 {
-        $query = \App\Models\CompanyPayment::first();
-        return $query->created_at->format('D, M j, Y g:i A');
+            return$query = Employee::with('commissions')->select('*')->where('company_id', 1)->get();
+
 })->name('test');

@@ -81,6 +81,7 @@ class UsersController extends Controller
 //        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
+        $flag = 1;
 
         return view('users.create', compact('roles'));
     }
@@ -100,6 +101,8 @@ class UsersController extends Controller
         $roles = Role::pluck('title', 'id');
         $user = User::find($userId);
         $user->load('roles');
+        $flag = 1;
+
         return view('users.edit', compact('roles', 'user'));
     }
 
@@ -117,8 +120,9 @@ class UsersController extends Controller
 //        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $user = User::find($userId);
         $user->load('roles'/*, 'sellerProducts'*/);
+        $flag = 1;
 
-        return view('users.show', compact('user'));
+        return view('users.show', compact('user','flag'));
     }
 
     public function destroy($userId)

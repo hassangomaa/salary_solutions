@@ -12,7 +12,7 @@ class Company extends Model
     use SoftDeletes; // Use SoftDeletes trait
 
 
-    protected $fillable = ['name','credit','address','phone',];
+    protected $fillable = ['name','credit','address','phone','start_month','end_month'];
     protected $dates = ['deleted_at']; // Add 'deleted_at' to dates array
 
     public function employees()

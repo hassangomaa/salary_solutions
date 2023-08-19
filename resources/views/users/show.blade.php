@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+    @include('partials.menu',[$flag])
 
     <div class="card">
         <div class="card-header">
@@ -84,22 +85,22 @@
         </div>
     </div>
 
-{{--    <div class="card">--}}
-{{--        <div class="card-header">--}}
-{{--            {{ trans('global.relatedData') }}--}}
-{{--        </div>--}}
-{{--        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">--}}
-{{--                    {{ trans('cruds.product.title') }}--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--        <div class="tab-content">--}}
-{{--            <div class="tab-pane" role="tabpanel" id="seller_products">--}}
-{{--                @includeIf('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts])--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="card">
+        <div class="card-header">
+            {{ trans('global.relatedData') }}
+        </div>
+        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">
+                    {{ trans('cruds.product.title') }}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" role="tabpanel" id="seller_products">
+                @includeIf('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts])
+            </div>
+        </div>
+    </div>
 
 @endsection

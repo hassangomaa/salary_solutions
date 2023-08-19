@@ -1,6 +1,5 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu',[$flag])
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
@@ -10,8 +9,9 @@
         <div class="card-body">
             <div class="form-group">
                 <div class="form-group">
-                    <a class="btn btn-default" href="{{ route('employee.index') }}">
-                        {{ trans('global.back_to_list') }}
+                    <a class="btn btn-default" href="<?php echo e(route('employee.index')); ?>">
+                        <?php echo e(trans('global.back_to_list')); ?>
+
                     </a>
                 </div>
                 <table class="table table-bordered table-striped">
@@ -21,7 +21,8 @@
                             ID
                         </th>
                         <td>
-                            {{ $employee->id }}
+                            <?php echo e($employee->id); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -29,7 +30,8 @@
                             Name
                         </th>
                         <td>
-                            {{ $employee->name }}
+                            <?php echo e($employee->name); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -37,7 +39,8 @@
                             Position
                         </th>
                         <td>
-                            {{ $employee->position }}
+                            <?php echo e($employee->position); ?>
+
                         </td>
                     </tr>
 
@@ -46,18 +49,19 @@
                             Daily Fare
                         </th>
                         <td>
-                            {{ $employee->daily_fare }}
+                            <?php echo e($employee->daily_fare); ?>
+
                         </td>
                     </tr>
 
-{{--                    <tr>--}}
-{{--                        <th>--}}
-{{--                            Credit--}}
-{{--                        </th>--}}
-{{--                        <td>--}}
-{{--                            {{ $employee->credit }}--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
+
+
+
+
+
+
+
+
 
 
                     <tr>
@@ -65,7 +69,8 @@
                             Phone
                         </th>
                         <td>
-                            {{ $employee->phone }}
+                            <?php echo e($employee->phone); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -73,23 +78,25 @@
                             Address
                         </th>
                         <td>
-                            {{ $employee->address }}
+                            <?php echo e($employee->address); ?>
+
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                {{--                <div class="form-group">--}}
-                {{--                    <a class="btn btn-default" href="{{ route('employee.index') }}">--}}
-                {{--                       Go Back--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
+                
+                
+                
+                
+                
             </div>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            {{ trans('global.relatedData') }}
+            <?php echo e(trans('global.relatedData')); ?>
+
         </div>
         <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
             <li class="nav-item">
@@ -105,10 +112,10 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" role="tabpanel" id="commissions">
-                @includeIf('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id])
+                <?php if ($__env->exists('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id])) echo $__env->make('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
             <div class="tab-pane" role="tabpanel" id="deductions">
-                @includeIf('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id])
+                <?php if ($__env->exists('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id])) echo $__env->make('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </div>
     </div>
@@ -123,4 +130,6 @@
     </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/employees/show.blade.php ENDPATH**/ ?>

@@ -20,7 +20,7 @@ return new class extends Migration
             //TODO: Add those in Create and edit blade
             $table->integer('start_month');
             $table->integer('end_month');
-            $table->boolean('isSameMonth');
+            $table->boolean('isSameMonth')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

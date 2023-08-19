@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-@include('partials.menu')
+    @include('partials.menu',[$flag])
+
     <div class="card">
         <div class="card-header">
             {{ trans('global.create') }} {{ trans('cruds.user.title_singular') }}

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kpi_deductions', function (Blueprint $table) {
+        Schema::create('commissions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->decimal('amount', 8, 2);
-            $table->unsignedBigInteger('reason_id');
+            $table->integer('amount');
+            $table->string('reason');
+//            $table->unsignedBigInteger('reason_id');
             $table->timestamps();
             $table->softDeletes(); // Add this line for soft deletes
         });
