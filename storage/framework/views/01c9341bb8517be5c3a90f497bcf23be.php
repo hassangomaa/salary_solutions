@@ -5,8 +5,7 @@
            <a href="#">
 
                 Salary Solution
-            </a> <img src="/salary_solutions.png" width="15%"> 
-
+            </a> <img src="/salary_solutions.png" width="15%">
         </div>
     </div>
     <div class="card">
@@ -16,8 +15,7 @@
 
 
             </p>
-
-            <?php if(session()->has('message')): ?>
+             <?php if(session()->has('message')): ?>
                 <p class="alert alert-info">
                     <?php echo e(session()->get('message')); ?>
 

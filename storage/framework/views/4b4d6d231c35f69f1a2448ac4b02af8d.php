@@ -5,14 +5,14 @@
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="<?php echo e(route('employee.create')); ?>">
-                Add User
+                Add Employee
             </a>
         </div>
     </div>
     
     <div class="card">
         <div class="card-header">
-            User List
+            Employee List
         </div>
 
         <div class="card-body">
