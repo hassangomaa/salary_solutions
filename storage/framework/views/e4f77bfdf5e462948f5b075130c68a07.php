@@ -1,18 +1,17 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+    <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="<?php echo e(route('employee.create')); ?>">
-                Add User
+            <a class="btn btn-success" href="<?php echo e(route('company.create')); ?>">
+                Add Company
             </a>
         </div>
     </div>
     
     <div class="card">
         <div class="card-header">
-            User List
+            Company List
         </div>
 
         <div class="card-body">
@@ -26,19 +25,13 @@
                         ID
                     </th>
                     <th>
-                        Name
+                        Company Name
                     </th>
                     <th>
-                        Position
+                        Credit
                     </th>
                     <th>
-                        Daily Fare
-                    </th>
-                    <th>
-                        Debit
-                    </th>
-                    <th>
-                        Phone
+                      Phone
                     </th>
                     <th>
                         Address
@@ -69,16 +62,11 @@
                     <td>
                         <input class="search" type="text" placeholder="Search">
 
-                    </td>    <td>
-                        <input class="search" type="text" placeholder="Search">
-
                     </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
 
-                    </td>
+
                     <td>
-&nbsp;
+                        &nbsp;
                     </td>
 
                 </tr>
@@ -89,7 +77,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-
+    
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -97,7 +85,7 @@
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "<?php echo e(route('employee.massDestroy')); ?>",
+                url: "<?php echo e(route('company.massDestroy')); ?>",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -132,14 +120,12 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "<?php echo e(route('employee.index')); ?>",
+                ajax: "<?php echo e(route('company.index')); ?>",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'position', name: 'position'},
-                    {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'debit', name: 'debit'},
+                    {data: 'credit', name: 'credit'},
                     {data: 'phone', name: 'phone'},
                     {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}
@@ -180,4 +166,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/employees/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/u114681142/domains/waselly-app.com/public_html/salary_solutions/resources/views/company/index.blade.php ENDPATH**/ ?>

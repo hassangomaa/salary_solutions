@@ -21,4 +21,4 @@
     <?php echo $__env->yieldContent('scripts'); ?>
 </body>
 
-</html><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /home/u114681142/domains/waselly-app.com/public_html/salary_solutions/resources/views/layouts/app.blade.php ENDPATH**/ ?>

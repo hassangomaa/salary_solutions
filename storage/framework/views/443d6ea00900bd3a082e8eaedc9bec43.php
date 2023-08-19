@@ -32,4 +32,4 @@
         </div>
     </body>
 </html>
-<?php /**PATH D:\Laragon_Projects\salary_solutions\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions/views/minimal.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/u114681142/domains/waselly-app.com/public_html/salary_solutions/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/views/minimal.blade.php ENDPATH**/ ?>

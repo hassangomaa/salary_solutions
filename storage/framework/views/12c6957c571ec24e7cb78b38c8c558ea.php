@@ -327,4 +327,4 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-<?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/partials/menu.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/u114681142/domains/waselly-app.com/public_html/salary_solutions/resources/views/partials/menu.blade.php ENDPATH**/ ?>

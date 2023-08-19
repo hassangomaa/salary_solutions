@@ -1,24 +1,18 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    
-    <div class="row" style="margin-bottom: 10px;">
-        <div class="col-lg-2">
-            <a class="btn btn-success" href="<?php echo e(route('companyPayments.create')); ?>">
-                Add Payment
-            </a>
-        </div>
-        <div class="col-lg-6">
-            <a class="btn btn-success" href="#">
-                Current Credit =  <?php echo e($company->credit); ?>
+    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
+    
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-success" href="<?php echo e(route('employee.create')); ?>">
+                Add Employee
             </a>
         </div>
     </div>
-
     
     <div class="card">
         <div class="card-header">
-            Deposits List
+            Employee List
         </div>
 
         <div class="card-body">
@@ -32,18 +26,23 @@
                         ID
                     </th>
                     <th>
-                        Amount
+                        Name
                     </th>
                     <th>
-                        Statement
+                        Position
                     </th>
                     <th>
-                        Type
+                        Daily Fare
                     </th>
                     <th>
-                        Created At
+                        Debit
                     </th>
-
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+                        Address
+                    </th>
                     <th>
                         Actions
                     </th>
@@ -64,22 +63,22 @@
 
                     </td>
                     <td>
-                        <select class="search">
-                            <option value><?php echo e(trans('global.all')); ?></option>
-                            <?php $__currentLoopData = $paymentTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($type); ?>"><?php echo e($type); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </select>
-
-                    </td>
-                    <td>
-
                         <input class="search" type="text" placeholder="Search">
+
                     </td>
-
-
                     <td>
-                        &nbsp;
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+                    <td>
+&nbsp;
                     </td>
 
                 </tr>
@@ -90,7 +89,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-    
+
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -98,7 +97,7 @@
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "<?php echo e(route('companyPayments.massDestroy')); ?>",
+                url: "<?php echo e(route('employee.massDestroy')); ?>",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -133,14 +132,16 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "<?php echo e(route('companyPayments.index')); ?>",
+                ajax: "<?php echo e(route('employee.index')); ?>",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'statement', name: 'statement'},
-                    {data: 'type', name: 'type'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'name', name: 'name'},
+                    {data: 'position', name: 'position'},
+                    {data: 'daily_fare', name: 'daily_fare'},
+                    {data: 'debit', name: 'debit'},
+                    {data: 'phone', name: 'phone'},
+                    {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,
@@ -179,4 +180,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/company-payments/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/u114681142/domains/waselly-app.com/public_html/salary_solutions/resources/views/employees/index.blade.php ENDPATH**/ ?>
