@@ -214,6 +214,6 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test',function ()
 {
-            return view('welcome');
+            return view('welcome_ar');
 
 })->name('test');

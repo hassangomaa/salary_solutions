@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 917px;">
     <!-- Brand Logo -->
     <div class="d-flex justify-content-center">
-        <a href="#" class="brand-link">
+        <a href="/admin" class="brand-link">
             <span class="brand-text font-weight-light">{{ trans('panel.site_title') }}</span>
         </a>
     </div>

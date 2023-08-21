@@ -12,6 +12,7 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
             $query = Employee::select('*')->where('company_id', $companyId);
@@ -64,6 +65,8 @@ class EmployeeController extends Controller
         $flag = 1;
         return view('employees.index', compact('flag'));//, compact('roles'));
     }
+
+    
 
     public function create()
     {

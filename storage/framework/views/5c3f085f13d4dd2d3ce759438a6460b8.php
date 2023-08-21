@@ -17,4 +17,4 @@
         <input type="submit" class="btn btn-xs btn-danger" value="<?php echo e(trans('global.delete')); ?>">
     </form>
 
-<?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/partials/datatablesActions.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/hassan/AE24833A24830515/php_Projects/htdocs/projects/salary_solutions/resources/views/partials/datatablesActions.blade.php ENDPATH**/ ?>

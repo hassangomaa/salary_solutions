@@ -3,19 +3,19 @@
 <div class="login-box">
     <div class="login-logo">
         <div class="login-logo">
-            <a href="#">
+           <a href="#">
 {{--                {{ trans('panel.site_title') }}--}}
                 Salary Solution
-            </a>
+            </a> <img src="/salary_solutions.png" width="15%">
         </div>
     </div>
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">
                 {{ trans('global.login') }}
-            </p>
 
-            @if(session()->has('message'))
+            </p>
+             @if(session()->has('message'))
                 <p class="alert alert-info">
                     {{ session()->get('message') }}
                 </p>

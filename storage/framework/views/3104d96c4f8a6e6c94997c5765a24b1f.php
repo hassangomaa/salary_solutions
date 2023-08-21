@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 917px;">
     <!-- Brand Logo -->
     <div class="d-flex justify-content-center">
-        <a href="#" class="brand-link">
+        <a href="/admin" class="brand-link">
             <span class="brand-text font-weight-light"><?php echo e(trans('panel.site_title')); ?></span>
         </a>
     </div>
@@ -327,4 +327,4 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-<?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/partials/menu.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/hassan/AE24833A24830515/php_Projects/htdocs/projects/salary_solutions/resources/views/partials/menu.blade.php ENDPATH**/ ?>
