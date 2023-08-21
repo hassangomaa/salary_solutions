@@ -214,6 +214,6 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test',function ()
 {
-            return$query = Employee::with('commissions')->select('*')->where('company_id', 1)->get();
+            return view('welcome');
 
 })->name('test');
