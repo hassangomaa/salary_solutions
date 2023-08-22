@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\CompanyPayment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,10 +22,14 @@ class CompanyController extends Controller
 
     public function companyDashboard()
     {
-        CompanyController::$companyId = null;
-        $companies = Company::all();
-        $flag = 0;
-        return view('company.companyDashboard', compact('companies', 'flag'));
+        if (auth()->check()) {
+
+            CompanyController::$companyId = null;
+            $companies = Company::all();
+            $flag = 0;
+            return view('company.companyDashboard', compact('companies', 'flag'));
+        }
+        return view('welcome_ar');
     }
 
     public function indexBlade()
@@ -102,7 +107,6 @@ class CompanyController extends Controller
         $company->update($request->all());
         return redirect(route('company.indexBlade'));
     }
-
 
 
     public function massDestroy(Request $request)

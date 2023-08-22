@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->integer('daily_fare');
-            $table->integer('debit')->default(0);
+            $table->integer('overtime_hour_fare')->default(0);
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->unsignedBigInteger('company_id')->default(1);
