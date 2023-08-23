@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('total_extras')->comment('hours');
             $table->integer('total_salary');
             $table->integer('net_salary');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

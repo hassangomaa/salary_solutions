@@ -61,6 +61,17 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("borrowing.index") ? "active" : "" }}"
+                           href="{{ route("borrowing.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                Borrowing
+                            </p>
+                        </a>
+                    </li>
+
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
 
@@ -159,7 +170,8 @@
                                 <p>{{ trans('global.logout') }}</p>
                             </a>
                         </li>
-
+</ul>
+</ul>
             {{--                @can('user_management_access')--}}
             {{--                    <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">--}}
             {{--                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"--}}

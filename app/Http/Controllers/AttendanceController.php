@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\FollowUp;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,12 +17,26 @@ class AttendanceController extends Controller
 
     public function index()
     {
-        $flag = 1 ;
+        $companyId = Session::get('companyId');
 
-        return view('attendance.index',compact('flag'));
+        $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
+            $query->where('company_id',$companyId);
+        })->where('month',8)
+            ->get();
+        $flag = 1 ;
+        return view('attendance.index',compact('flag','followUps'));
     }
 
-    public function getUsersForAttendance(Request $request)
+    public function updateNumberOfDays(Request $request)
+    {
+        $followUp =FollowUp::find($request->follow_up_id);
+        $followUp->attended_days = $request->number_of_days;
+        $followUp->save();
+
+    }
+
+
+    /*public function getUsersForAttendance(Request $request)
     {
         $companyId = Session::get('companyId');
 
@@ -83,5 +99,5 @@ class AttendanceController extends Controller
         $attendance->save();
         return redirect(route('attendance.index'));
 
-    }
+    }*/
 }

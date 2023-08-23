@@ -36,7 +36,7 @@
                         Daily Fare
                     </th>
                     <th>
-                        Debit
+                        Overtime Hour Fare
                     </th>
                     <th>
                         Phone
@@ -140,7 +140,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'debit', name: 'debit'},
+                    {data: 'overtime_hour_fare', name: 'overtime_hour_fare'},
                     {data: 'phone', name: 'phone'},
                     {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}

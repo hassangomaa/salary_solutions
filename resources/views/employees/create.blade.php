@@ -30,17 +30,23 @@
                     @if($errors->has('daily_fare'))
                         <span class="text-danger">{{ $errors->first('daily_fare') }}</span>
                     @endif
+                </div>    <div class="form-group">
+                    <label class="required" for="overtime_hour_fare"> Overtime Hour Fare</label>
+                    <input class="form-control {{ $errors->has('overtime_hour_fare') ? 'is-invalid' : '' }}" type="number" name="overtime_hour_fare" id="overtime_hour_fare" value="{{ old('overtime_hour_fare', '') }}" required>
+                    @if($errors->has('overtime_hour_fare'))
+                        <span class="text-danger">{{ $errors->first('overtime_hour_fare') }}</span>
+                    @endif
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Employee Phone</label>
+                    <label class="required" for="phone">Employee Phone</label>
                     <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', '') }}">
                     @if($errors->has('phone'))
                         <span class="text-danger">{{ $errors->first('phone') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="address">Employee Address</label>
+                    <label class="required" for="address">Employee Address</label>
                     <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" name="address" id="address">{{ old('address') }}</textarea>
                     @if($errors->has('address'))
                         <span class="text-danger">{{ $errors->first('address') }}</span>

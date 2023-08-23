@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('start_month');
             $table->integer('end_month');
             $table->boolean('isSameMonth')->default(0);
+            $table->integer('current_month')->default(8)->comment('save the current month');
+
             $table->softDeletes();
             $table->timestamps();
         });

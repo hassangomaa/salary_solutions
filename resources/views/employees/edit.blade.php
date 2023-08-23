@@ -30,12 +30,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="credit">Credit</label>
-                    <input class="form-control {{ $errors->has('credit') ? 'is-invalid' : '' }}" type="text"
-                           name="credit" id="credit" value="{{ old('credit', $employee->credit) }}"
+                    <label class="required" for="overtime_hour_fare">Overtime Hour Fare</label>
+                    <input class="form-control {{ $errors->has('overtime_hour_fare') ? 'is-invalid' : '' }}" type="text"
+                           name="overtime_hour_fare" id="overtime_hour_fare" value="{{ old('overtime_hour_fare', $employee->overtime_hour_fare) }}"
                            required>
-                    @if($errors->has('credit'))
-                        <span class="text-danger">{{ $errors->first('credit') }}</span>
+                    @if($errors->has('overtime_hour_fare'))
+                        <span class="text-danger">{{ $errors->first('overtime_hour_fare') }}</span>
                     @endif
                 </div>
                 <div class="form-group">

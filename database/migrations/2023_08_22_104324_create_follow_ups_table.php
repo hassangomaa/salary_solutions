@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('follow_ups', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->integer('month');
-            $table->integer('attended_days');
-            $table->integer('extra_hours');
-            $table->integer('borrow_week_one');
-            $table->integer('borrow_week_two');
-            $table->integer('borrow_week_three');
-            $table->integer('borrow_week_four');
-            $table->integer('incentives')->comment('7wafez');
-            $table->integer('deductions')->comment('5osomat');
+            $table->integer('month')->default(8);
+            $table->integer('attended_days')->default(0);
+            $table->integer('extra_hours')->default(0);
+            $table->integer('borrow_week_one')->default(0);
+            $table->integer('borrow_week_two')->default(0);
+            $table->integer('borrow_week_three')->default(0);
+            $table->integer('borrow_week_four')->default(0);
+            $table->integer('incentives')->default(0)->comment('7wafez');
+            $table->integer('deductions')->default(0)->comment('5osomat');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

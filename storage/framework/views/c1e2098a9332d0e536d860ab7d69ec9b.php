@@ -62,6 +62,17 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo e(request()->routeIs("borrowing.index") ? "active" : ""); ?>"
+                           href="<?php echo e(route("borrowing.index")); ?>">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                Borrowing
+                            </p>
+                        </a>
+                    </li>
+
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
 
@@ -160,7 +171,8 @@
                                 <p><?php echo e(trans('global.logout')); ?></p>
                             </a>
                         </li>
-
+</ul>
+</ul>
             
             
             

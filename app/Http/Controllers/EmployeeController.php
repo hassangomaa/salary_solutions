@@ -39,8 +39,8 @@ class EmployeeController extends Controller
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
-            $table->editColumn('debit', function ($row) {
-                return $row->debit ? $row->debit : '';
+            $table->editColumn('overtime_hour_fare', function ($row) {
+                return $row->overtime_hour_fare ? $row->overtime_hour_fare : '';
             });
 
 //            $table->editColumn('amount', function ($row) {
@@ -66,7 +66,7 @@ class EmployeeController extends Controller
         return view('employees.index', compact('flag'));//, compact('roles'));
     }
 
-    
+
 
     public function create()
     {
