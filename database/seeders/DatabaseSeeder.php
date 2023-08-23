@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Borrow;
 use App\Models\Commission;
 use App\Models\Company;
 use App\Models\Deduction;
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
         Employee::factory()->count(20)->create();
         Commission::factory(50)->create();
         Deduction::factory(50)->create();
+        Borrow::factory(20)->create();
 
 
 

@@ -2,100 +2,171 @@
 @section('content')
     @include('partials.menu',[$flag])
 
-
+    {{--@can('user_create')--}}
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-success" href="{{ route('borrowing.create') }}">
+                Add Borrowing Money
+            </a>
+        </div>
+    </div>
+    {{--@endcan--}}
     <div class="card">
         <div class="card-header">
             Borrowing List
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Week 1</th>
-                    <th>Week 2</th>
-                    <th>Week 3</th>
-                    <th>Week 4</th>
-                    <th>Actions</th>
-                    {{--                    <th>Actions</th>--}}
+                    <th width="10">
+
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Position
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Month
+                    </th>
+                    <th>
+                        Created At
+                    </th> <th>
+                        Actions
+                    </th>
+
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+                    </td>
+
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="Search">
+
+                    </td>
+<td></td>
+
                 </tr>
                 </thead>
-                <tbody>
-                <!-- Loop through companies -->
-                @foreach($followUps as $followUp)
-                    <tr>
-
-                        <td>{{ $followUp->employee->name }}</td>
-                        <td>{{ $followUp->employee->position }}</td>
-                        <td><input type="number" class="week-input" id="week1_{{$followUp->id}}" data-week="1" value="{{ $followUp->borrow_week_one }}"></td>
-                        <td><input type="number" class="week-input" id="week2_{{$followUp->id}}" data-week="2" value="{{ $followUp->borrow_week_two }}"></td>
-                        <td><input type="number" class="week-input" id="week3_{{$followUp->id}}" data-week="3" value="{{ $followUp->borrow_week_three }}"></td>
-                        <td><input type="number" class="week-input" id="week4_{{$followUp->id}}" data-week="4" value="{{ $followUp->borrow_week_four }}"></td>
-                        <td>
-                            <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">Save</button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
             </table>
         </div>
     </div>
-@endsection
 
+@endsection
 @section('scripts')
-    @parent
+    {{--    @parent--}}
     <script>
         $(function () {
-            // Handle Save Button Click
-            $('.datatable-User').on('click', '.save-days-btn', function () {
-                // const followUpId = $(this).data('followUp-id');
-            // const followUpId = $(this).attr('.followUp').val()
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            {{--@can('user_delete')--}}
+            let deleteButtonTrans = 'Delete Selected';
+            let deleteButton = {
+                text: deleteButtonTrans,
+                url: "{{ route('borrowing.massDestroy') }}",
+                className: 'btn-danger',
+                action: function (e, dt, node, config) {
+                    var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
+                        return entry.id
+                    });
 
-                const followUpId = $(this).attr('data-followUp-id');
+                    if (ids.length === 0) {
+                        alert(' No Rows Selected ')
 
-                const weeksData = {};
-
-                // console.log('follow up '+followUpId )
-
-                const week1Value = $('#week1_' + followUpId).val();
-                const week2Value = $('#week2_' + followUpId).val();
-                const week3Value = $('#week3_' + followUpId).val();
-                const week4Value = $('#week4_' + followUpId).val();
-
-
-                console.log('Week 1:', week1Value);
-                console.log('Week 2:', week2Value);
-                console.log('Week 3:', week3Value);
-                console.log('Week 4:', week4Value);
-                // Perform Ajax Request
-                $.ajax({
-                    url: "{{ route('borrowing.store') }}",
-                    method: 'POST',
-                    data: {
-                        follow_up_id: followUpId,
-                        week1: week1Value,
-                        week2: week2Value,
-                        week3: week3Value,
-                        week4: week4Value,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function (response) {
-                        // Handle success response, if needed
-                        alert('Data saved successfully.');
-
-                        console.log(response);
-                    },
-                    error: function (xhr) {
-                        // Handle error response, if needed
-                        console.error(xhr);
+                        return
                     }
-                });
-            });
-        });
 
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                        $.ajax({
+                            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
+                            method: 'POST',
+                            url: config.url,
+                            data: {ids: ids, _method: 'DELETE'}
+                        })
+                            .done(function () {
+                                location.reload()
+                            })
+                    }
+                }
+            }
+            dtButtons.push(deleteButton)
+            {{--@endcan--}}
+
+            let dtOverrideGlobals = {
+                buttons: dtButtons,
+                processing: true,
+                serverSide: true,
+                retrieve: true,
+                aaSorting: [],
+                ajax: "{{ route('borrowing.index') }}",
+                columns: [
+                    {data: 'placeholder', name: 'placeholder'},
+                    {data: 'id', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {data: 'position', name: 'position'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'month', name: 'month'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'actions', name: 'actions'}
+                ],
+                orderCellsTop: true,
+                order: [[1, 'desc']],
+                pageLength: 100,
+            };
+            let table = $('.datatable-User').DataTable(dtOverrideGlobals);
+            $('a[data-toggle="tab"]').on('shown.bs.tab click', function (e) {
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+
+            let visibleColumnsIndexes = null;
+            $('.datatable thead').on('input', '.search', function () {
+                let strict = $(this).attr('strict') || false
+                let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+                let index = $(this).parent().index()
+                if (visibleColumnsIndexes !== null) {
+                    index = visibleColumnsIndexes[index]
+                }
+
+                table
+                    .column(index)
+                    .search(value, strict)
+                    .draw()
+            });
+            table.on('column-visibility.dt', function (e, settings, column, state) {
+                visibleColumnsIndexes = []
+                table.columns(":visible").every(function (colIdx) {
+                    visibleColumnsIndexes.push(colIdx);
+                });
+            })
+        });
 
     </script>
 @endsection

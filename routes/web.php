@@ -57,7 +57,13 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => [
 Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\BorrowingController::class, 'index'])->name('index');
+    Route::get('/show/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'show'])->name('show');
+    Route::get('/create', [\App\Http\Controllers\BorrowingController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\BorrowingController::class, 'store'])->name('store');
+    Route::get('/edit/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'edit'])->name('edit');
+    Route::put('/update/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'update'])->name('update');
+    Route::delete('/destroy/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\BorrowingController::class, 'massDestroy'])->name('massDestroy');
 
 
 
@@ -161,6 +167,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']/*,
 
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth'], 'namespace' => 'Employee'], function () {
 
+    Route::get('/getAllEmployees', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees'])->name('getAllEmployees');
     Route::get('/index', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('index');
     Route::get('/show/{employee}', [\App\Http\Controllers\EmployeeController::class, 'show'])->name('show');
     Route::get('/create', [\App\Http\Controllers\EmployeeController::class, 'create'])->name('create');
@@ -208,11 +215,12 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test', function () {
 
-    $companyId = Session::get('companyId');
-return  \App\Models\FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
-    $query->where('company_id',$companyId);
-})->where('month',8)
-    ->get();
+   $companyId = Session::get('companyId');
+        $search = 'gw';
 
+        $employees = Employee::where('company_id', $companyId)
+            ->where('name', 'like', "%$search%")
+            ->get(['id', 'name']);
 
+        return response()->json($employees);
 })->name('test');

@@ -120,4 +120,26 @@ class EmployeeController extends Controller
         return back();
     }
 
+    public function getAllEmployees(Request $request){
+        $companyId = Session::get('companyId');
+        $search = $request->get('term');
+
+
+
+
+        $employees = Employee::where('company_id', $companyId)
+            ->where('name', 'like', "%$search%")
+            ->get(['id', 'name']);
+
+        $response = [];
+        foreach ($employees as $employee) {
+            $response[] = [
+                'name' => $employee->name,
+                'id' => $employee->id,
+            ];
+        }
+        return response()->json($response);
+//        return Employee::where('company_id',$companyId)->get();
+    }
+
 }

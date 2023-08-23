@@ -33,5 +33,9 @@ class Employee extends Model
         return $this->hasMany(FollowUp::class);
     }
 
+    public function borrows(){
+        return $this->hasMany(Borrow::class);
+    }
+
 
 }
