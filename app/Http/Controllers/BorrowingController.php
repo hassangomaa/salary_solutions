@@ -60,16 +60,29 @@ class BorrowingController extends Controller
     }
 
     public function create(){
-        $employees = Employee::all();
+        $companyId = Session::get('companyId');
+
+        $employees = Employee::where('company_id',$companyId)->get();
+        $currntMonth = $this->getCurrentMonth($companyId);
+        $months = [$currntMonth%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13];
         $flag = 1;
-        return view('borrowing.create',compact('employees','flag'));
+        return view('borrowing.create',compact('employees','flag','months'));
     }
 
     public function store(Request $request)
     {
         $companyId = Session::get('companyId');
         $this->decreaseCompanyCredit($companyId,$request->amount);
-        Borrow::create($request->all());
+        $borrowing = new Borrow();
+
+        $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
+        $borrowing->month = $request['month'];
+        $borrowing->amount = $request['amount'];
+        $borrowing->statement = $request['statement'];
+
+        // Save the new borrowing record
+        $borrowing->save();
+
 
         return redirect(route('borrowing.index'));
     }
@@ -128,6 +141,24 @@ class BorrowingController extends Controller
         $company->save();
     }
 
+    private function getCurrentMonth($companyID)
+    {
+        $company = Company::find($companyID);
+        $day = Carbon::today()->day;
+        $companyLastDay =(int)$company->end_month;
+        $lastDayOfTheMonth =  Carbon::today()->endOfMonth()->day;
+        $isSameMonth = $company->isSameMonth;
+        if($isSameMonth == 1)
+        {
+            return Carbon::today()->month;
+        }
+        if($companyLastDay <= $day && $day <= $lastDayOfTheMonth)
+        {
+            return ++Carbon::today()->month;
+        }else{
+            return Carbon::today()->month;
+        }
+    }
 
     //TODO : dont remove until finishing the system
     public function indexAjax()

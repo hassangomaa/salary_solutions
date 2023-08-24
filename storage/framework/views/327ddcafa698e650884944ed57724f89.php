@@ -1,23 +1,6 @@
 <?php $__env->startSection('content'); ?>
     <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <style>
-        .suggestion-list {
-            border: 1px solid #ccc; /* Add a border to the suggestion list */
-            max-height: 150px; /* Limit the max height to control overflow */
-            overflow-y: auto; /* Add vertical scrollbar if content exceeds max height */
-            padding: 5px; /* Add some padding for better appearance */
-            background-color: white; /* Set the background color */
-        }
 
-        .suggestion {
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .suggestion:hover {
-            background-color: #f0f0f0; /* Highlight on hover */
-        }
-    </style>
     <div class="card">
         <div class="card-header">
             <?php echo e(trans('global.create')); ?> Borrow
@@ -26,37 +9,53 @@
         <div class="card-body">
             <form method="POST" action="<?php echo e(route('borrowing.store')); ?>">
                 <?php echo csrf_field(); ?>
-
-
-
-
-
-
-
-
-
-
-
-
                 <div class="form-group">
                     <label class="required" for="employee_id">Employee</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="employee_name"
-                        id="employee_name"
-                        placeholder="Type employee name..."
-                    >
-                    <input type="hidden" name="employee_id" id="employee_id">
-                    <div id="employee_suggestions"></div>
+                    <select class="form-control <?php echo e($errors->has('employee_id') ? 'is-invalid' : ''); ?>" name="employee_id" id="employee_id" required>
+                        <option value="" disabled selected>Select an employee</option>
+                        <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($employee->id); ?>"><?php echo e($employee->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <option value="0">Other</option>
+                    </select>
+                    <?php if($errors->has('employee_id')): ?>
+                        <span class="text-danger"><?php echo e($errors->first('employee_id')); ?></span>
+                    <?php endif; ?>
                 </div>
+
+                <div class="form-group" id="otherEmployeeContainer" style="display: none;">
+                    <label class="required" for="other_employee_id">Other Employee ID</label>
+                    <input type="text" class="form-control" name="other_employee_id" id="other_employee_id">
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="form-group">
                     <label class="required" for="month">Month</label>
-                    <input class="form-control <?php echo e($errors->has('month') ? 'is-invalid' : ''); ?>" type="number" name="month" id="month" value="<?php echo e(old('month', \Carbon\Carbon::now()->month)); ?>" required>
+                    <select class="form-control <?php echo e($errors->has('month') ? 'is-invalid' : ''); ?>" name="month" id="month" required>
+                        <option value="" disabled selected>Select an month</option>
+                        <?php $__currentLoopData = $months; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $month): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($month==0): ?>
+                                <?php continue; ?>
+                            <?php endif; ?>
+                            <option value="<?php echo e($month); ?>"><?php echo e($month); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                    </select>
                     <?php if($errors->has('month')): ?>
                         <span class="text-danger"><?php echo e($errors->first('month')); ?></span>
                     <?php endif; ?>
                 </div>
+
                 <div class="form-group">
                     <label class="required" for="amount">Amount</label>
                     <input class="form-control <?php echo e($errors->has('amount') ? 'is-invalid' : ''); ?>" type="number" name="amount" id="amount" value="<?php echo e(old('amount')); ?>" required>
@@ -84,31 +83,19 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
     <script>
-        $(function() {
-            $("#employee_name").on("input", function() {
-                var searchTerm = $(this).val();
+        document.addEventListener("DOMContentLoaded", function() {
+            const employeeSelect = document.getElementById("employee_id");
+            const otherEmployeeContainer = document.getElementById("otherEmployeeContainer");
+            const otherEmployeeInput = document.getElementById("other_employee_id");
 
-                $.ajax({
-                    url: "<?php echo e(route('employee.getAllEmployees')); ?>",
-                    method: "GET",
-                    data: { term: searchTerm },
-                    success: function(response) {
-                        var suggestionsHtml = "";
-                        $.each(response, function(index, employee) {
-                            suggestionsHtml += `<div class="suggestion" data-id="${employee.id}">${employee.name}</div>`;
-                        });
-                        $("#employee_suggestions").html(suggestionsHtml);
-                    }
-                });
-            });
-
-            // Handle suggestion click
-            $(document).on("click", ".suggestion", function() {
-                var employeeId = $(this).data("id");
-                var employeeName = $(this).text();
-                $("#employee_id").val(employeeId);
-                $("#employee_name").val(employeeName);
-                $("#employee_suggestions").html(""); // Clear suggestions
+            employeeSelect.addEventListener("change", function() {
+                if (employeeSelect.value === "0") {
+                    otherEmployeeContainer.style.display = "block";
+                    otherEmployeeInput.setAttribute("required", "required");
+                } else {
+                    otherEmployeeContainer.style.display = "none";
+                    otherEmployeeInput.removeAttribute("required");
+                }
             });
         });
     </script>

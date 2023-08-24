@@ -222,5 +222,5 @@ Route::get('/test', function () {
             ->where('name', 'like', "%$search%")
             ->get(['id', 'name']);
 
-        return response()->json($employees);
+        return Carbon::today()->endOfMonth()->day;
 })->name('test');
