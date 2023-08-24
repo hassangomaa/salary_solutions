@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\FollowUp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,9 +50,16 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
-    Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
-    Route::get('/getUsersForAttendance', [\App\Http\Controllers\AttendanceController::class, 'getUsersForAttendance'])->name('getUsersForAttendance');
-    Route::get('/attendEmployee/{employeeId}', [\App\Http\Controllers\AttendanceController::class, 'attendEmployee'])->name('attendEmployee');
+    Route::get('/show/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
+    Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
+    Route::get('/edit/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'edit'])->name('edit');
+    Route::put('/update/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'update'])->name('update');
+    Route::delete('/destroy/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\AttendanceController::class, 'massDestroy'])->name('massDestroy');
+//    Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
+//    Route::get('/getUsersForAttendance', [\App\Http\Controllers\AttendanceController::class, 'getUsersForAttendance'])->name('getUsersForAttendance');
+//    Route::get('/attendEmployee/{employeeId}', [\App\Http\Controllers\AttendanceController::class, 'attendEmployee'])->name('attendEmployee');
 
 });
 Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['auth']], function () {
@@ -215,6 +223,8 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test', function () {
 
+    Controllers\ReportController::newMonth(1);
+
    $companyId = Session::get('companyId');
         $search = 'gw';
 
@@ -222,5 +232,8 @@ Route::get('/test', function () {
             ->where('name', 'like', "%$search%")
             ->get(['id', 'name']);
 
-        return Carbon::today()->endOfMonth()->day;
+        return  $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
+            $query->where('company_id',$companyId);
+        })->where('month',8)->get()
+            ;
 })->name('test');

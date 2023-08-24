@@ -141,7 +141,7 @@ class BorrowingController extends Controller
         $company->save();
     }
 
-    private function getCurrentMonth($companyID)
+    public static function getCurrentMonth($companyID)
     {
         $company = Company::find($companyID);
         $day = Carbon::today()->day;
