@@ -5,77 +5,41 @@
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('company.create') }}">
-                Add Company
+                {{ trans('company-management.add_company') }}
             </a>
         </div>
     </div>
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            Company List
+            {{ trans('company-management.company_list') }}
         </div>
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10">
-
-                    </th>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Company Name
-                    </th>
-                    <th>
-                        Credit
-                    </th>
-                    <th>
-                      Phone
-                    </th>
-                    <th>
-                        Address
-                    </th>
-                    <th>
-                        Actions
-                    </th>
-
+                    <th width="10"></th>
+                    <th>{{ trans('company-management.id') }}</th>
+                    <th>{{ trans('company-management.company_name') }}</th>
+                    <th>{{ trans('company-management.credit') }}</th>
+                    <th>{{ trans('company-management.phone') }}</th>
+                    <th>{{ trans('company-management.address') }}</th>
+                    <th>{{ trans('company-management.actions') }}</th>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-
-
-                    <td>
-                        &nbsp;
-                    </td>
-
+                    <td></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-
 @endsection
 @section('scripts')
     {{--    @parent--}}
@@ -83,7 +47,7 @@
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             {{--@can('user_delete')--}}
-            let deleteButtonTrans = 'Delete Selected';
+            let deleteButtonTrans = '{{ trans('company-management.delete_selected') }}';
             let deleteButton = {
                 text: deleteButtonTrans,
                 url: "{{ route('company.massDestroy') }}",
@@ -94,14 +58,13 @@
                     });
 
                     if (ids.length === 0) {
-                        alert(' No Rows Selected ')
-
-                        return
+                        alert('{{ trans('company-management.no_rows_selected') }}');
+                        return;
                     }
 
                     if (confirm('{{ trans('global.areYouSure') }}')) {
                         $.ajax({
-                            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
+                            headers: {'x-csrf-token': $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
                             url: config.url,
                             data: {ids: ids, _method: 'DELETE'}

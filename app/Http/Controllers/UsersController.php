@@ -73,7 +73,7 @@ class UsersController extends Controller
         }
 
 //        $roles = Role::get();
-        $flag = 1;
+        $flag = 0;
         return view('users.index', compact(/*'roles',*/'flag'));
     }
 
@@ -82,7 +82,7 @@ class UsersController extends Controller
 //        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
-        $flag = 1;
+        $flag = 0;
 
         return view('users.create', compact('roles'));
     }
@@ -101,7 +101,7 @@ class UsersController extends Controller
 
         $roles = Role::pluck('title', 'id');
         $user = User::find($userId);
-        $flag = 1;
+        $flag = 0;
 
         return view('users.edit', compact('flag', 'user'));
     }

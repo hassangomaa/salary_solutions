@@ -5,63 +5,57 @@
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-lg-2">
             <a class="btn btn-success" href="{{ route('companyPayments.create') }}">
-                Add Payment
+                {{ trans('payments.add_payment') }}
             </a>
         </div>
         <div class="col-lg-6">
             <a class="btn btn-success" href="#">
-                Current Credit =  {{$company->credit}}
+                {{ trans('payments.current_credit') }} = {{$company->credit}}
             </a>
         </div>
     </div>
-
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            Deposits List
+            {{ trans('payments.deposits_list') }}
         </div>
-
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
                     <th width="10">
 
                     </th>
                     <th>
-                        ID
+                        {{ trans('payments.id') }}
                     </th>
                     <th>
-                        Amount
+                        {{ trans('payments.amount') }}
                     </th>
                     <th>
-                        Statement
+                        {{ trans('payments.statement') }}
                     </th>
                     <th>
-                        Type
+                        {{ trans('payments.type') }}
                     </th>
                     <th>
-                        Created At
+                        {{ trans('payments.created_at') }}
                     </th>
-
                     <th>
-                        Actions
+                        {{ trans('payments.actions') }}
                     </th>
-
                 </tr>
                 <tr>
                     <td>
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
+                        <input class="search" type="text" placeholder="{{ trans('payments.search') }}">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="Search">
-
+                        <input class="search" type="text" placeholder="{{ trans('payments.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('payments.search') }}">
                     </td>
                     <td>
                         <select class="search">
@@ -70,24 +64,18 @@
                                 <option value="{{$type}}">{{$type}}</option>
                             @endforeach
                         </select>
-
                     </td>
                     <td>
-{{--&nbsp;--}}
-                        <input class="search" type="text" placeholder="Search">
+                        <input class="search" type="text" placeholder="{{ trans('payments.search') }}">
                     </td>
-
-
                     <td>
                         &nbsp;
                     </td>
-
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-
 @endsection
 @section('scripts')
     {{--    @parent--}}
@@ -95,7 +83,7 @@
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             {{--@can('user_delete')--}}
-            let deleteButtonTrans = 'Delete Selected';
+            let deleteButtonTrans = '{{ trans('payments.delete_selected') }}';
             let deleteButton = {
                 text: deleteButtonTrans,
                 url: "{{ route('companyPayments.massDestroy') }}",
@@ -104,14 +92,11 @@
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
                         return entry.id
                     });
-
                     if (ids.length === 0) {
-                        alert(' No Rows Selected ')
-
+                        alert('{{ trans('global.no_rows_selected') }}')
                         return
                     }
-
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                    if (confirm('{{ trans('global.are_you_sure') }}')) {
                         $.ajax({
                             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
@@ -126,7 +111,6 @@
             }
             dtButtons.push(deleteButton)
             {{--@endcan--}}
-
             let dtOverrideGlobals = {
                 buttons: dtButtons,
                 processing: true,
@@ -152,17 +136,14 @@
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();
             });
-
             let visibleColumnsIndexes = null;
             $('.datatable thead').on('input', '.search', function () {
                 let strict = $(this).attr('strict') || false
                 let value = strict && this.value ? "^" + this.value + "$" : this.value
-
                 let index = $(this).parent().index()
                 if (visibleColumnsIndexes !== null) {
                     index = visibleColumnsIndexes[index]
                 }
-
                 table
                     .column(index)
                     .search(value, strict)

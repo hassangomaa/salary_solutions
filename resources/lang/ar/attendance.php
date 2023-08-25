@@ -8,7 +8,7 @@ return [
     'name' => 'الاسم',
     'position' => 'المنصب',
     'daily_fare' => 'الأجرة اليومية',
-    'days' => 'أيام',
+    'days' => ' أيام العمل',
     'overtime_fare' => 'أجر الساعات الإضافية',
     'overtime_hours' => 'ساعات العمل الإضافي',
     'actions' => 'الإجراءات',

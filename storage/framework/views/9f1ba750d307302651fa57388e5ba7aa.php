@@ -57,17 +57,7 @@
 
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            <?php echo e(trans('cruds.user.fields.roles')); ?>
 
-                        </th>
-                        <td>
-                            <?php $__currentLoopData = $user->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $roles): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <span class="label label-info"><?php echo e($roles->title); ?></span>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </td>
-                    </tr>
                     <tr>
                         <th>
                             <?php echo e(trans('cruds.user.fields.phone')); ?>
@@ -100,25 +90,7 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <?php echo e(trans('global.relatedData')); ?>
 
-        </div>
-        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">
-                    <?php echo e(trans('cruds.product.title')); ?>
-
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane" role="tabpanel" id="seller_products">
-                <?php if ($__env->exists('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts])) echo $__env->make('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            </div>
-        </div>
-    </div>
 
 <?php $__env->stopSection(); ?>
 

@@ -10,7 +10,7 @@
                             <h5 class="card-title">{{ $company->name }}</h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Company Credit: {{ $company->credit }}</p>
+                            <p class="card-text">{{trans('company-management.company_credit')}}: {{ $company->credit }}</p>
                         </div>
                     </div>
                 </a>

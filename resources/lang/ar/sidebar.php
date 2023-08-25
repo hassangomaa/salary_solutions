@@ -11,4 +11,6 @@ return [
     'payments' => 'المدفوعات',
     'back_to_companies' => 'العودة إلى الشركات',
     'logout' => 'تسجيل الخروج',
+        'backToCompanies'=>'العودة للشركات',
+
 ];

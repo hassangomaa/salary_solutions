@@ -50,6 +50,29 @@
                             </p>
                         </a>
                     </li>
+                    <?php if( Config::get('app.locale') == 'ar'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(request()->routeIs("company.index") ? "active" : ""); ?>"
+                               href="<?php echo e(route("setLanguage",2)); ?>">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    تغيير للغة الانجليزية
+                                </p>
+                            </a>
+                        </li>
+                    <?php elseif(Config::get('app.locale') == 'en'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(request()->routeIs("company.index") ? "active" : ""); ?>"
+                               href="<?php echo e(route("setLanguage",1)); ?>">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    Change To Arabic Language
+                                </p>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo e(request()->routeIs("employee.index") ? "active" : ""); ?>"
@@ -88,37 +111,35 @@
                         </a>
                     </li>
 
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
 
-                        <li class="nav-item has-treeview <?php echo e(request()->is("admin/permissions*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/users*") ? "menu-open" : ""); ?>">
-                            <a class="nav-link nav-dropdown-toggle <?php echo e(request()->is("admin/permissions*") ? "active" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "active" : ""); ?> <?php echo e(request()->is("admin/users*") ? "active" : ""); ?>"
-                               href="#">
-                                <i class="fa-fw nav-icon fas fa-users">
 
-                                </i>
-                                <p>
-                                    <?php echo e(trans('sidebar.user_management')); ?>
 
-                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
 
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route("users.index")); ?>"
-                                       class="nav-link <?php echo e(request()->is("admin/users") || request()->is("admin/users/*") ? "active" : ""); ?>">
-                                        <i class="fa-fw nav-icon fas fa-user">
 
-                                        </i>
-                                        <p>
-                                            <?php echo e(trans('sidebar.users')); ?>
 
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
 
@@ -134,20 +155,21 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo e(request()->routeIs("company.index") ? "active" : ""); ?>"
-                                   href="<?php echo e(route("company.index")); ?>">
-                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                    </i>
-                                    <p>
-                                        <?php echo e(trans('sidebar.back_to_companies')); ?>
-
-                                    </p>
-                                </a>
-                            </li>
 
 
                         </ul>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo e(request()->routeIs("home") ? "active" : ""); ?>"
+                           href="<?php echo e(route("home")); ?>">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                <?php echo e(trans('sidebar.backToCompanies')); ?>
+
+
+                            </p>
+                        </a>
+                    </li>
                         <?php endif; ?>
                         <li class="nav-item">
                             <a href="#" class="nav-link"

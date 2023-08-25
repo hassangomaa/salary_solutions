@@ -4,7 +4,9 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers;
@@ -26,7 +28,22 @@ Route::get('/loginBlade', [AuthenticationController::class, 'loginBlade'])->name
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
-Route::get('/', [\App\Http\Controllers\CompanyController::class, 'companyDashboard']);
+Route::get('/', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
+
+Route::get('/setLanguage/{flag}',function ($flag){
+    if($flag == 1)
+    {
+//        app()->setLocale('ar');
+        App::setLocale('ar');
+        session()->put('locale', 'ar');
+    }
+    if($flag == 2)
+    {
+        App::setLocale('en');
+    }
+    return redirect('/');
+})->name('setLanguage');
+
 
 
 Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'], 'namespace' => 'Company'], function () {
@@ -223,17 +240,5 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test', function () {
 
-    Controllers\ReportController::newMonth(1);
-
-   $companyId = Session::get('companyId');
-        $search = 'gw';
-
-        $employees = Employee::where('company_id', $companyId)
-            ->where('name', 'like', "%$search%")
-            ->get(['id', 'name']);
-
-        return  $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
-            $query->where('company_id',$companyId);
-        })->where('month',8)->get()
-            ;
+  return  Config::get('app.locale');
 })->name('test');

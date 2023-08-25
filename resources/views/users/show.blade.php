@@ -48,16 +48,7 @@
                             {{ $user->email_verified_at }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.roles') }}
-                        </th>
-                        <td>
-                            @foreach($user->roles as $key => $roles)
-                                <span class="label label-info">{{ $roles->title }}</span>
-                            @endforeach
-                        </td>
-                    </tr>
+
                     <tr>
                         <th>
                             {{ trans('cruds.user.fields.phone') }}
@@ -85,22 +76,6 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            {{ trans('global.relatedData') }}
-        </div>
-        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">
-                    {{ trans('cruds.product.title') }}
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane" role="tabpanel" id="seller_products">
-                @includeIf('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts])
-            </div>
-        </div>
-    </div>
+
 
 @endsection

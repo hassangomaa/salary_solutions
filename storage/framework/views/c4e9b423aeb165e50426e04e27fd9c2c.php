@@ -1,95 +1,57 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu',[$flag])
-
-    {{--@can('user_create')--}}
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('borrowing.create') }}">
-                {{ __('borrow.add_borrowing') }}
+            <a class="btn btn-success" href="<?php echo e(route('company.create')); ?>">
+                <?php echo e(trans('company-management.add_company')); ?>
+
             </a>
         </div>
     </div>
-    {{--@endcan--}}
+    
     <div class="card">
         <div class="card-header">
-            {{ __('borrow.borrowing_list') }}
+            <?php echo e(trans('company-management.company_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10">
-
-                    </th>
-                    <th>
-                        {{ __('borrow.id') }}
-                    </th>
-                    <th>
-                        {{ __('borrow.name') }}
-                    </th>
-                    <th>
-                        {{ __('borrow.position') }}
-                    </th>
-                    <th>
-                        {{ __('borrow.amount') }}
-                    </th>
-                    <th>
-                        {{ __('borrow.month') }}
-                    </th>
-                    <th>
-                        {{ __('borrow.created_at') }}
-                    </th> <th>
-                        {{ __('borrow.actions') }}
-                    </th>
-
+                    <th width="10"></th>
+                    <th><?php echo e(trans('company-management.id')); ?></th>
+                    <th><?php echo e(trans('company-management.company_name')); ?></th>
+                    <th><?php echo e(trans('company-management.credit')); ?></th>
+                    <th><?php echo e(trans('company-management.phone')); ?></th>
+                    <th><?php echo e(trans('company-management.address')); ?></th>
+                    <th><?php echo e(trans('company-management.actions')); ?></th>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
-
-                    </td>
                     <td></td>
-
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('company-management.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('company-management.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('company-management.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('company-management.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('company-management.search')); ?>"></td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-
-@endsection
-@section('scripts')
-    {{--    @parent--}}
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            {{--@can('user_delete')--}}
-            let deleteButtonTrans = '{{ __('borrow.delete_selected') }}';
+            
+            let deleteButtonTrans = '<?php echo e(trans('company-management.delete_selected')); ?>';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('borrowing.massDestroy') }}",
+                url: "<?php echo e(route('company.massDestroy')); ?>",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -97,14 +59,13 @@
                     });
 
                     if (ids.length === 0) {
-                        alert('{{ __('global.no_rows_selected') }}')
-
-                        return
+                        alert('<?php echo e(trans('company-management.no_rows_selected')); ?>');
+                        return;
                     }
 
-                    if (confirm('{{ __('global.are_you_sure') }}')) {
+                    if (confirm('<?php echo e(trans('global.areYouSure')); ?>')) {
                         $.ajax({
-                            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
+                            headers: {'x-csrf-token': $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
                             url: config.url,
                             data: {ids: ids, _method: 'DELETE'}
@@ -116,7 +77,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            {{--@endcan--}}
+            
 
             let dtOverrideGlobals = {
                 buttons: dtButtons,
@@ -124,15 +85,14 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('borrowing.index') }}",
+                ajax: "<?php echo e(route('company.index')); ?>",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'position', name: 'position'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'month', name: 'month'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'credit', name: 'credit'},
+                    {data: 'phone', name: 'phone'},
+                    {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,
@@ -169,4 +129,6 @@
         });
 
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/company/index.blade.php ENDPATH**/ ?>

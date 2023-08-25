@@ -84,7 +84,8 @@ class CompanyController extends Controller
 
     public function create()
     {
-        return view('company.create');
+        $flag = 0;
+        return view('company.create',compact('flag'));
     }
 
     public function store(Request $request)
@@ -97,7 +98,7 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        $flag = 1;
+        $flag = 0;
 
         return view('company.edit', compact('company', 'flag'));
     }

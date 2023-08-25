@@ -1,19 +1,20 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu',[$flag])
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    {{--@can('user_create')--}}
+    
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('borrowing.create') }}">
-                {{ __('borrow.add_borrowing') }}
+            <a class="btn btn-success" href="<?php echo e(route('borrowing.create')); ?>">
+                <?php echo e(__('borrow.add_borrowing')); ?>
+
             </a>
         </div>
     </div>
-    {{--@endcan--}}
+    
     <div class="card">
         <div class="card-header">
-            {{ __('borrow.borrowing_list') }}
+            <?php echo e(__('borrow.borrowing_list')); ?>
+
         </div>
 
         <div class="card-body">
@@ -24,24 +25,31 @@
 
                     </th>
                     <th>
-                        {{ __('borrow.id') }}
+                        <?php echo e(__('borrow.id')); ?>
+
                     </th>
                     <th>
-                        {{ __('borrow.name') }}
+                        <?php echo e(__('borrow.name')); ?>
+
                     </th>
                     <th>
-                        {{ __('borrow.position') }}
+                        <?php echo e(__('borrow.position')); ?>
+
                     </th>
                     <th>
-                        {{ __('borrow.amount') }}
+                        <?php echo e(__('borrow.amount')); ?>
+
                     </th>
                     <th>
-                        {{ __('borrow.month') }}
+                        <?php echo e(__('borrow.month')); ?>
+
                     </th>
                     <th>
-                        {{ __('borrow.created_at') }}
+                        <?php echo e(__('borrow.created_at')); ?>
+
                     </th> <th>
-                        {{ __('borrow.actions') }}
+                        <?php echo e(__('borrow.actions')); ?>
+
                     </th>
 
                 </tr>
@@ -49,26 +57,26 @@
                     <td>
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
                     </td>
 
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
 
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
 
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
 
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(__('borrow.search')); ?>">
 
                     </td>
                     <td></td>
@@ -79,17 +87,17 @@
         </div>
     </div>
 
-@endsection
-@section('scripts')
-    {{--    @parent--}}
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            {{--@can('user_delete')--}}
-            let deleteButtonTrans = '{{ __('borrow.delete_selected') }}';
+            
+            let deleteButtonTrans = '<?php echo e(__('borrow.delete_selected')); ?>';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('borrowing.massDestroy') }}",
+                url: "<?php echo e(route('borrowing.massDestroy')); ?>",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -97,12 +105,12 @@
                     });
 
                     if (ids.length === 0) {
-                        alert('{{ __('global.no_rows_selected') }}')
+                        alert('<?php echo e(__('global.no_rows_selected')); ?>')
 
                         return
                     }
 
-                    if (confirm('{{ __('global.are_you_sure') }}')) {
+                    if (confirm('<?php echo e(__('global.are_you_sure')); ?>')) {
                         $.ajax({
                             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
@@ -116,7 +124,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            {{--@endcan--}}
+            
 
             let dtOverrideGlobals = {
                 buttons: dtButtons,
@@ -124,7 +132,7 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('borrowing.index') }}",
+                ajax: "<?php echo e(route('borrowing.index')); ?>",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
@@ -169,4 +177,6 @@
         });
 
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/borrowing/index.blade.php ENDPATH**/ ?>

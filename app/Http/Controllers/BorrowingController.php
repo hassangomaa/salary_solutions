@@ -21,9 +21,9 @@ class BorrowingController extends Controller
         $month = Carbon::now()->month;
         if ($request->ajax()) {
             $query = Borrow::with('employee')
-                ->where('month', '>=', $month)
-                ->whereHas('employee', function ($query) {
-                    $query->where('company_id', 1);
+                //->where('month', '>=', $month) 12 < 1 => false
+                ->whereHas('employee', function ($query) use ($companyId) {
+                    $query->where('company_id',$companyId );
                 });
             $table = Datatables::of($query);
 

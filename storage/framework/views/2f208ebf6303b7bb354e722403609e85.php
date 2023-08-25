@@ -9,7 +9,7 @@
                             <h5 class="card-title"><?php echo e($company->name); ?></h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Company Credit: <?php echo e($company->credit); ?></p>
+                            <p class="card-text"><?php echo e(trans('company-management.company_credit')); ?>: <?php echo e($company->credit); ?></p>
                         </div>
                     </div>
                 </a>

@@ -47,6 +47,29 @@
                             </p>
                         </a>
                     </li>
+                    @if( Config::get('app.locale') == 'ar')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
+                               href="{{ route("setLanguage",2) }}">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    تغيير للغة الانجليزية
+                                </p>
+                            </a>
+                        </li>
+                    @elseif(Config::get('app.locale') == 'en')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
+                               href="{{ route("setLanguage",1) }}">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    Change To Arabic Language
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"
@@ -82,35 +105,35 @@
                         </a>
                     </li>
 
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+{{--                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"--}}
+{{--                        data-accordion="false">--}}
 
-                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
-                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"
-                               href="#">
-                                <i class="fa-fw nav-icon fas fa-users">
+{{--                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">--}}
+{{--                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"--}}
+{{--                               href="#">--}}
+{{--                                <i class="fa-fw nav-icon fas fa-users">--}}
 
-                                </i>
-                                <p>
-                                    {{ trans('sidebar.user_management') }}
-                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
+{{--                                </i>--}}
+{{--                                <p>--}}
+{{--                                    {{ trans('sidebar.user_management') }}--}}
+{{--                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>--}}
+{{--                                </p>--}}
+{{--                            </a>--}}
+{{--                            <ul class="nav nav-treeview">--}}
 
-                                <li class="nav-item">
-                                    <a href="{{ route("users.index") }}"
-                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-                                        <i class="fa-fw nav-icon fas fa-user">
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="{{ route("users.index") }}"--}}
+{{--                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">--}}
+{{--                                        <i class="fa-fw nav-icon fas fa-user">--}}
 
-                                        </i>
-                                        <p>
-                                            {{ trans('sidebar.users') }}
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+{{--                                        </i>--}}
+{{--                                        <p>--}}
+{{--                                            {{ trans('sidebar.users') }}--}}
+{{--                                        </p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
 
@@ -125,19 +148,20 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
-                                   href="{{ route("company.index") }}">
-                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                    </i>
-                                    <p>
-                                        {{ trans('sidebar.back_to_companies') }}
-                                    </p>
-                                </a>
-                            </li>
 
 
                         </ul>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("home") ? "active" : "" }}"
+                           href="{{ route("home") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.backToCompanies') }}
+
+                            </p>
+                        </a>
+                    </li>
                         @endif
                         <li class="nav-item">
                             <a href="#" class="nav-link"

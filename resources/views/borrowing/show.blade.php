@@ -5,26 +5,26 @@
 
     <div class="card">
         <div class="card-header">
-            {{ trans('global.show') }} Borrow
+            {{ trans('borrow.show_borrow') }}
         </div>
 
         <div class="card-body">
             <table class="table">
                 <tbody>
                 <tr>
-                    <th>Employee Name</th>
+                    <th>{{ trans('borrow.employee_name') }}</th>
                     <td>{{ $borrow->employee->name }}</td>
                 </tr>
                 <tr>
-                    <th>{{ trans('global.month') }}</th>
+                    <th>{{ trans('borrow.month') }}</th>
                     <td>{{ $borrow->month }}</td>
                 </tr>
                 <tr>
-                    <th>{{ trans('global.amount') }}</th>
+                    <th>{{ trans('borrow.amount') }}</th>
                     <td>{{ $borrow->amount }}</td>
                 </tr>
                 <tr>
-                    <th>Statement</th>
+                    <th>{{ trans('borrow.statement') }}</th>
                     <td>{{ $borrow->statement }}</td>
                 </tr>
                 <!-- Add more fields here -->

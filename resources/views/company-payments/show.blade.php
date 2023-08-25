@@ -4,7 +4,7 @@
     @include('partials.menu')
     <div class="card">
         <div class="card-header">
-         Deposit Details
+            {{ trans('payments.deposit_details') }}
         </div>
 
         <div class="card-body">
@@ -18,35 +18,40 @@
                     <tbody>
                     <tr>
                         <th>
-ID                        </th>
+                            {{ trans('payments.id') }}
+                        </th>
                         <td>
                             {{ $deposit->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-Amount                        </th>
+                            {{ trans('payments.amount') }}
+                        </th>
                         <td>
                             {{ $deposit->amount }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-Statement                        </th>
+                            {{ trans('payments.statement') }}
+                        </th>
                         <td>
                             {{ $deposit->statement }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-Type                        </th>
+                            {{ trans('payments.type') }}
+                        </th>
                         <td>
                             {{ $deposit->type }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-Company Name                        </th>
+                            {{ trans('payments.company_name') }}
+                        </th>
                         <td>
                             {{ $deposit->company->name ?? '' }}
                         </td>
