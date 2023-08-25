@@ -6,7 +6,6 @@
         </a>
     </div>
 
-
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user (optional) -->
@@ -34,7 +33,8 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Companies Management
+                                <?php echo e(trans('sidebar.companies_management')); ?>
+
                             </p>
                         </a>
                     </li>
@@ -45,8 +45,8 @@
 
                             </i>
                             <p>
-                                
-                                Users
+                                <?php echo e(trans('sidebar.users')); ?>
+
                             </p>
                         </a>
                     </li>
@@ -57,7 +57,8 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Show Employees
+                                <?php echo e(trans('sidebar.show_employees')); ?>
+
                             </p>
                         </a>
                     </li>
@@ -69,7 +70,8 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Attendance
+                                <?php echo e(trans('sidebar.attendance')); ?>
+
                             </p>
                         </a>
                     </li>
@@ -80,14 +82,14 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Borrowing
+                                <?php echo e(trans('sidebar.borrowing')); ?>
+
                             </p>
                         </a>
                     </li>
 
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-
 
                         <li class="nav-item has-treeview <?php echo e(request()->is("admin/permissions*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/users*") ? "menu-open" : ""); ?>">
                             <a class="nav-link nav-dropdown-toggle <?php echo e(request()->is("admin/permissions*") ? "active" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "active" : ""); ?> <?php echo e(request()->is("admin/users*") ? "active" : ""); ?>"
@@ -96,38 +98,12 @@
 
                                 </i>
                                 <p>
+                                    <?php echo e(trans('sidebar.user_management')); ?>
 
-                                    User Management
                                     <i class="right fa fa-fw fa-angle-left nav-icon"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                 <li class="nav-item">
                                     <a href="<?php echo e(route("users.index")); ?>"
@@ -136,43 +112,43 @@
 
                                         </i>
                                         <p>
+                                            <?php echo e(trans('sidebar.users')); ?>
 
-                                            Users
                                         </p>
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                            data-accordion="false">
 
-                        
 
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo e(request()->routeIs("companyPayments.index") ? "active" : ""); ?>"
-                               href="<?php echo e(route("companyPayments.index")); ?>">
-                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                </i>
-                                <p>
-                                    Payments
-                                </p>
-                            </a>
-                        </li>
                             <li class="nav-item">
-                            <a class="nav-link <?php echo e(request()->routeIs("company.index") ? "active" : ""); ?>"
-                               href="<?php echo e(route("company.index")); ?>">
-                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                </i>
-                                <p>
-                                    Back To Companies
-                                </p>
-                            </a>
-                        </li>
+                                <a class="nav-link <?php echo e(request()->routeIs("companyPayments.index") ? "active" : ""); ?>"
+                                   href="<?php echo e(route("companyPayments.index")); ?>">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        <?php echo e(trans('sidebar.payments')); ?>
+
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo e(request()->routeIs("company.index") ? "active" : ""); ?>"
+                                   href="<?php echo e(route("company.index")); ?>">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        <?php echo e(trans('sidebar.back_to_companies')); ?>
+
+                                    </p>
+                                </a>
+                            </li>
 
 
-                    </ul>
-            <?php endif; ?>
+                        </ul>
+                        <?php endif; ?>
                         <li class="nav-item">
                             <a href="#" class="nav-link"
                                onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
@@ -183,174 +159,9 @@
                                 <p><?php echo e(trans('global.logout')); ?></p>
                             </a>
                         </li>
-</ul>
-</ul>
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
+                    </ul>
+            </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
 <?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/partials/menu.blade.php ENDPATH**/ ?>

@@ -1,92 +1,49 @@
 <?php $__env->startSection('content'); ?>
     <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="<?php echo e(route('employee.create')); ?>">
-                Add Employee
+                <?php echo e(trans('employee.add_new')); ?>
+
             </a>
         </div>
     </div>
-    
     <div class="card">
         <div class="card-header">
-            Employee List
+            <?php echo e(trans('employee.title')); ?>
+
         </div>
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10">
-
-                    </th>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Position
-                    </th>
-                    <th>
-                        Daily Fare
-                    </th>
-                    <th>
-                        Overtime Hour Fare
-                    </th>
-                    <th>
-                        Phone
-                    </th>
-                    <th>
-                        Address
-                    </th>
-                    <th>
-                        Actions
-                    </th>
-
+                    <th width="10"></th>
+                    <th>ID</th>
+                    <th><?php echo e(trans('employee.name')); ?></th>
+                    <th><?php echo e(trans('employee.position')); ?></th>
+                    <th><?php echo e(trans('employee.daily_fare')); ?></th>
+                    <th><?php echo e(trans('employee.overtime_hour_fare')); ?></th>
+                    <th><?php echo e(trans('employee.phone')); ?></th>
+                    <th><?php echo e(trans('employee.address')); ?></th>
+                    <th><?php echo e(trans('global.actions')); ?></th>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-&nbsp;
-                    </td>
-
+                    <td></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
 

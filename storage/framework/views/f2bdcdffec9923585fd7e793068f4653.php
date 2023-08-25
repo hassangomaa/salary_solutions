@@ -1,78 +1,93 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu', [$flag])
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            {{ trans('employee.show_employee') }}
+            <?php echo e(trans('employee.show_employee')); ?>
+
         </div>
 
         <div class="card-body">
             <div class="form-group">
                 <div class="form-group">
-                    <a class="btn btn-default" href="{{ route('employee.index') }}">
-                        {{ trans('global.back_to_list') }}
+                    <a class="btn btn-default" href="<?php echo e(route('employee.index')); ?>">
+                        <?php echo e(trans('global.back_to_list')); ?>
+
                     </a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <tbody>
                     <tr>
                         <th>
-                            {{ trans('employee.id') }}
+                            <?php echo e(trans('employee.id')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->id }}
+                            <?php echo e($employee->id); ?>
+
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('employee.name') }}
+                            <?php echo e(trans('employee.name')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->name }}
+                            <?php echo e($employee->name); ?>
+
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('employee.position') }}
+                            <?php echo e(trans('employee.position')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->position }}
+                            <?php echo e($employee->position); ?>
+
                         </td>
                     </tr>
 
                     <tr>
                         <th>
-                            {{ trans('employee.daily_fare') }}
+                            <?php echo e(trans('employee.daily_fare')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->daily_fare }}
+                            <?php echo e($employee->daily_fare); ?>
+
                         </td>
                     </tr>
 
                     <tr>
                         <th>
-                            {{ trans('employee.overtime_hour_fare') }}
+                            <?php echo e(trans('employee.overtime_hour_fare')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->overtime_hour_fare }}
+                            <?php echo e($employee->overtime_hour_fare); ?>
+
                         </td>
                     </tr>
 
                     <tr>
                         <th>
-                            {{ trans('employee.phone') }}
+                            <?php echo e(trans('employee.phone')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->phone }}
+                            <?php echo e($employee->phone); ?>
+
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('employee.address') }}
+                            <?php echo e(trans('employee.address')); ?>
+
                         </th>
                         <td>
-                            {{ $employee->address }}
+                            <?php echo e($employee->address); ?>
+
                         </td>
                     </tr>
                     </tbody>
@@ -80,8 +95,8 @@
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
 
 <script>
         $(document).ready(function() {
@@ -93,4 +108,6 @@
     </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/employees/show.blade.php ENDPATH**/ ?>
