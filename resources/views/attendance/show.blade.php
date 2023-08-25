@@ -4,32 +4,25 @@
 
     <div class="card">
         <div class="card-header">
-            Show Employee
+            Show Attendance
         </div>
 
         <div class="card-body">
             <div class="form-group">
                 <div class="form-group">
-                    <a class="btn btn-default" href="{{ route('employee.index') }}">
+                    <a class="btn btn-default" href="{{ route('attendance.index') }}">
                         {{ trans('global.back_to_list') }}
                     </a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <tbody>
-                    <tr>
-                        <th>
-                            ID
-                        </th>
-                        <td>
-                            {{ $employee->id }}
-                        </td>
-                    </tr>
+
                     <tr>
                         <th>
                             Name
                         </th>
                         <td>
-                            {{ $employee->name }}
+                            {{ $followUp->employee->name }}
                         </td>
                     </tr>
                     <tr>
@@ -37,7 +30,7 @@
                             Position
                         </th>
                         <td>
-                            {{ $employee->position }}
+                            {{ $followUp->employee->position }}
                         </td>
                     </tr>
 
@@ -46,7 +39,15 @@
                             Daily Fare
                         </th>
                         <td>
-                            {{ $employee->daily_fare }}
+                            {{ $followUp->employee->daily_fare }}
+                        </td>
+                    </tr>
+     <tr>
+                        <th>
+                            Number Of Working Days
+                        </th>
+                        <td>
+                            {{ $followUp->attended_days }}
                         </td>
                     </tr>
 
@@ -55,27 +56,20 @@
                             Overtime Hour Fare
                         </th>
                         <td>
-                            {{ $employee->overtime_hour_fare }}
+                            {{ $followUp->employee->overtime_hour_fare }}
                         </td>
                     </tr>
 
 
                     <tr>
                         <th>
-                            Phone
+                            Overtime working hours
                         </th>
                         <td>
-                            {{ $employee->phone }}
+                            {{ $followUp->extra_hours }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            Address
-                        </th>
-                        <td>
-                            {{ $employee->address }}
-                        </td>
-                    </tr>
+
                     </tbody>
                 </table>
                 {{--                <div class="form-group">--}}

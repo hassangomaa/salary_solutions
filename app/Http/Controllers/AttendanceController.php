@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class AttendanceController extends Controller
@@ -59,7 +60,7 @@ class AttendanceController extends Controller
 
             $table->addColumn('addData', function ($row) {
                 $html = '<div class="form-group">
-    <a href="' . route('attendance.create',$row->employee->id) . '" class="btn btn-danger">Add Attendance</a>
+    <a href="' . route('attendance.create',[$row->employee->id,$row->id]) . '" class="btn btn-danger">Add Attendance</a>
 </div>';
                 return $html;
             });
@@ -100,17 +101,63 @@ class AttendanceController extends Controller
     public function create(Employee $employee,$id)
     {
 //        return $employee;
-        $companyId = Session::get('companyId');
         $flag = 1;
         return view('attendance.create', compact('flag', 'employee','id'));
     }
 
     public function store(Request $request)
     {
-       return $request;
-        $followUp =  FollowUp::find($followUp);
+        $followUp =  FollowUp::find($request->follow_up_id);
+        $followUp->attended_days = $request->attended_days;
+        $followUp->extra_hours = $request->extra_hours;
+        $followUp->save();
+        return redirect(route('attendance.index'));
+    }
+
+    public function show($id)
+    {
+       $followUp = FollowUp::with('employee')->find($id);
+       $flag = 1;
+    return view('attendance.show', compact('followUp','flag'));
+}
+    public function edit($id)
+    {
+        $followUp = FollowUp::with('employee')->where('id',$id)->first();
+        $flag = 1;
+        return view('attendance.edit', compact('flag', 'followUp','id'));
+    }
+
+    public function update(Request $request)
+    {
+        $followUp = FollowUp::findOrFail($request->follow_up_id);
+
+        $followUp->attended_days = $request->input('attended_days');
+        $followUp->extra_hours = $request->input('extra_hours');
+        // Update other fields if needed
+
+        $followUp->save();
+
+        return redirect()->route('attendance.index')->with('success', 'Attendance updated successfully.');
 
     }
+
+    public function massDestroy(Request $request)
+    {
+//        return $request;
+//        return redirect('/test')->with($request);
+        FollowUp::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function destroy(FollowUp $followUp)
+    {
+
+        $followUp->delete();
+
+        return back();
+    }
+
 
     /*
 

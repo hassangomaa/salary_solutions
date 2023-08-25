@@ -3,7 +3,7 @@
     @include('partials.menu')
     <div class="card">
         <div class="card-header">
-            {{ trans('global.create') }} {{ trans('cruds.user.title_singular') }}
+            Create Payments
         </div>
 
         <div class="card-body">

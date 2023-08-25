@@ -1,18 +1,19 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu')
-{{--@can('user_create')--}}
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('users.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
+            <a class="btn btn-success" href="<?php echo e(route('users.create')); ?>">
+                <?php echo e(trans('global.add')); ?> <?php echo e(trans('cruds.user.title_singular')); ?>
+
             </a>
         </div>
     </div>
-{{--@endcan--}}
+
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.user.title_singular') }} {{ trans('global.list') }}
+        <?php echo e(trans('cruds.user.title_singular')); ?> <?php echo e(trans('global.list')); ?>
+
     </div>
 
     <div class="card-body">
@@ -23,25 +24,31 @@
 
                     </th>
                     <th>
-                        {{ trans('cruds.user.fields.id') }}
+                        <?php echo e(trans('cruds.user.fields.id')); ?>
+
                     </th>
                     <th>
-                        {{ trans('cruds.user.fields.name') }}
+                        <?php echo e(trans('cruds.user.fields.name')); ?>
+
                     </th>
                     <th>
-                        {{ trans('cruds.user.fields.email') }}
+                        <?php echo e(trans('cruds.user.fields.email')); ?>
+
                     </th>
                     <th>
-                        {{ trans('cruds.user.fields.email_verified_at') }}
+                        <?php echo e(trans('cruds.user.fields.email_verified_at')); ?>
+
                     </th>
-{{--                    <th>--}}
-{{--                        {{ trans('cruds.user.fields.roles') }}--}}
-{{--                    </th>--}}
+
+
+
                     <th>
-                        {{ trans('cruds.user.fields.phone') }}
+                        <?php echo e(trans('cruds.user.fields.phone')); ?>
+
                     </th>
                     <th>
-                        {{ trans('cruds.user.fields.adress') }}
+                        <?php echo e(trans('cruds.user.fields.adress')); ?>
+
                     </th>
                     <th>
                         &nbsp;
@@ -51,30 +58,30 @@
                     <td>
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
-{{--                    <td>--}}
-{{--                        <select class="search">--}}
-{{--                            <option value>{{ trans('global.all') }}</option>--}}
-{{--                            @foreach($roles as $key => $item)--}}
-{{--                                <option value="{{ $item->title }}">{{ $item->title }}</option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                    </td>--}}
+
+
+
+
+
+
+
+
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
                     <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        <input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>">
                     </td>
                     <td>
                     </td>
@@ -86,17 +93,17 @@
 
 
 
-@endsection
-@section('scripts')
-@parent
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+<?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-{{--@can('user_delete')--}}
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+
+  let deleteButtonTrans = '<?php echo e(trans('global.datatables.delete')); ?>';
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('users.massDestroy') }}",
+    url: "<?php echo e(route('users.massDestroy')); ?>",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
@@ -104,12 +111,12 @@
       });
 
       if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+        alert('<?php echo e(trans('global.datatables.zero_selected')); ?>')
 
         return
       }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
+      if (confirm('<?php echo e(trans('global.areYouSure')); ?>')) {
         $.ajax({
             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
           method: 'POST',
@@ -120,7 +127,7 @@
     }
   }
   dtButtons.push(deleteButton)
-{{--@endcan--}}
+
 
   let dtOverrideGlobals = {
     buttons: dtButtons,
@@ -128,7 +135,7 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('users.index') }}",
+    ajax: "<?php echo e(route('users.index')); ?>",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
@@ -138,7 +145,7 @@
 // { data: 'roles', name: 'roles.title' },
 { data: 'phone', name: 'phone' },
 { data: 'address', name: 'address' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
+{ data: 'actions', name: '<?php echo e(trans('global.actions')); ?>' }
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
@@ -174,4 +181,6 @@ table.on('column-visibility.dt', function(e, settings, column, state) {
 });
 
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/users/index.blade.php ENDPATH**/ ?>

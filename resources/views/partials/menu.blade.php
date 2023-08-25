@@ -37,6 +37,18 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route("users.index") }}"
+                           class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fas fa-user">
+
+                            </i>
+                            <p>
+                                {{--                                                                                            {{ trans('cruds.user.title') }}--}}
+                                Users
+                            </p>
+                        </a>
+                    </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"
@@ -76,61 +88,61 @@
                         data-accordion="false">
 
 {{--                        --}}{{--                    @can('user_management_access')--}}
-{{--                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">--}}
-{{--                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"--}}
-{{--                               href="#">--}}
-{{--                                <i class="fa-fw nav-icon fas fa-users">--}}
+                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
+                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"
+                               href="#">
+                                <i class="fa-fw nav-icon fas fa-users">
 
-{{--                                </i>--}}
-{{--                                <p>--}}
-{{--                                    --}}{{--                                    {{ trans('cruds.userManagement.title') }}--}}
-{{--                                    User Management--}}
-{{--                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>--}}
-{{--                                </p>--}}
-{{--                            </a>--}}
-{{--                            <ul class="nav nav-treeview">--}}
-{{--                                --}}{{----}}{{--                                @can('permission_access')--}}
-{{--                                --}}{{----}}{{--                                    <li class="nav-item">--}}
-{{--                                --}}{{----}}{{--                                        <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">--}}
-{{--                                --}}{{----}}{{--                                            <i class="fa-fw nav-icon fas fa-unlock-alt">--}}
+                                </i>
+                                <p>
+{{--                                                                        {{ trans('cruds.userManagement.title') }}--}}
+                                    User Management
+                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+{{--                                                                @can('permission_access')--}}
+{{--                                                                    <li class="nav-item">--}}
+{{--                                                                        <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">--}}
+{{--                                                                            <i class="fa-fw nav-icon fas fa-unlock-alt">--}}
 
-{{--                                --}}{{----}}{{--                                            </i>--}}
-{{--                                --}}{{----}}{{--                                            <p>--}}
-{{--                                --}}{{----}}{{--                                                {{ trans('cruds.permission.title') }}--}}
-{{--                                --}}{{----}}{{--                                                    Permissions--}}
-{{--                                --}}{{----}}{{--                                            </p>--}}
-{{--                                --}}{{----}}{{--                                        </a>--}}
-{{--                                --}}{{----}}{{--                                    </li>--}}
-{{--                                --}}{{----}}{{--                                @endcan--}}
-{{--                                --}}{{----}}{{--                                @can('role_access')--}}
-{{--                                --}}{{----}}{{--                                    <li class="nav-item">--}}
-{{--                                --}}{{----}}{{--                                        <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">--}}
-{{--                                --}}{{----}}{{--                                            <i class="fa-fw nav-icon fas fa-briefcase">--}}
+{{--                                                                            </i>--}}
+{{--                                                                            <p>--}}
+{{--                                                                                {{ trans('cruds.permission.title') }}--}}
+{{--                                                                                    Permissions--}}
+{{--                                                                            </p>--}}
+{{--                                                                        </a>--}}
+{{--                                                                    </li>--}}
+{{--                                                                @endcan--}}
+{{--                                                                @can('role_access')--}}
+{{--                                                                    <li class="nav-item">--}}
+{{--                                                                        <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">--}}
+{{--                                                                            <i class="fa-fw nav-icon fas fa-briefcase">--}}
 
-{{--                                --}}{{----}}{{--                                            </i>--}}
-{{--                                --}}{{----}}{{--                                            <p>--}}
-{{--                                --}}{{----}}{{--                                                {{ trans('cruds.role.title') }}--}}
-{{--                                --}}{{----}}{{--                                                Roles--}}
-{{--                                --}}{{----}}{{--                                            </p>--}}
-{{--                                --}}{{----}}{{--                                        </a>--}}
-{{--                                --}}{{----}}{{--                                    </li>--}}
-{{--                                --}}{{----}}{{--                                @endcan--}}
-{{--                                --}}{{----}}{{--                                @can('user_access')--}}
-{{--                                <li class="nav-item">--}}
-{{--                                    <a href="{{ route("users.index") }}"--}}
-{{--                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">--}}
-{{--                                        <i class="fa-fw nav-icon fas fa-user">--}}
+{{--                                                                            </i>--}}
+{{--                                                                            <p>--}}
+{{--                                                                                {{ trans('cruds.role.title') }}--}}
+{{--                                                                                Roles--}}
+{{--                                                                            </p>--}}
+{{--                                                                        </a>--}}
+{{--                                                                    </li>--}}
+{{--                                                                @endcan--}}
+{{--                                                                @can('user_access')--}}
+                                <li class="nav-item">
+                                    <a href="{{ route("users.index") }}"
+                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-user">
 
-{{--                                        </i>--}}
-{{--                                        <p>--}}
-{{--                                            --}}{{----}}{{--                                                {{ trans('cruds.user.title') }}--}}
-{{--                                            Users--}}
-{{--                                        </p>--}}
-{{--                                    </a>--}}
-{{--                                </li>--}}
-{{--                                --}}{{----}}{{--                                @endcan--}}
-{{--                            </ul>--}}
-{{--                        </li>      --}}
+                                        </i>
+                                        <p>
+{{--                                                                                            {{ trans('cruds.user.title') }}--}}
+                                            Users
+                                        </p>
+                                    </a>
+                                </li>
+{{--                                                                @endcan--}}
+                            </ul>
+                        </li>
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
 

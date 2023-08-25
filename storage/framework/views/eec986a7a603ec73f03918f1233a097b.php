@@ -3,18 +3,17 @@
 
     <div class="card">
         <div class="card-header">
-            <?php echo e(trans('global.create')); ?> <?php echo e(trans('cruds.user.title_singular')); ?>
-
+          Add Attendance
         </div>
 
         <div class="card-body">
             <form method="POST" action="<?php echo e(route("attendance.store")); ?>" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
-                <input type="hidden" name="hiddenField" value="<?php echo e($id); ?>">
+                <input type="hidden" name="follow_up_id" value="<?php echo e($id); ?>">
 
                 <div class="form-group">
                     <label class="required" for="name">Employee Name</label>
-                    <input class="form-control <?php echo e($errors->has('name') ? 'is-invalid' : ''); ?>" type="text" name="name" id="name" value="<?php echo e($employee->name); ?>" required>
+                    <input class="form-control <?php echo e($errors->has('name') ? 'is-invalid' : ''); ?>" type="text" name="name" id="name" value="<?php echo e($employee->name); ?>" readonly>
                     <?php if($errors->has('name')): ?>
                         <span class="text-danger"><?php echo e($errors->first('name')); ?></span>
                     <?php endif; ?>
@@ -22,7 +21,7 @@
 
                 <div class="form-group">
                     <label class="required" for="daily_fare">Daily Fare</label>
-                    <input class="form-control <?php echo e($errors->has('daily_fare') ? 'is-invalid' : ''); ?>" type="number" name="daily_fare" id="daily_fare" value="<?php echo e($employee->daily_fare); ?>" required>
+                    <input class="form-control <?php echo e($errors->has('daily_fare') ? 'is-invalid' : ''); ?>" type="number" name="daily_fare" id="daily_fare" value="<?php echo e($employee->daily_fare); ?>" readonly>
                     <?php if($errors->has('daily_fare')): ?>
                         <span class="text-danger"><?php echo e($errors->first('daily_fare')); ?></span>
                     <?php endif; ?>
@@ -36,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="overtime_hour_fare">Overtime Hour Fare</label>
-                    <input class="form-control <?php echo e($errors->has('overtime_hour_fare') ? 'is-invalid' : ''); ?>" type="number" name="overtime_hour_fare" id="overtime_hour_fare" value="<?php echo e($employee->overtime_hour_fare); ?>" required>
+                    <input class="form-control <?php echo e($errors->has('overtime_hour_fare') ? 'is-invalid' : ''); ?>" type="number" name="overtime_hour_fare" id="overtime_hour_fare" value="<?php echo e($employee->overtime_hour_fare); ?>" readonly>
                     <?php if($errors->has('overtime_hour_fare')): ?>
                         <span class="text-danger"><?php echo e($errors->first('overtime_hour_fare')); ?></span>
                     <?php endif; ?>

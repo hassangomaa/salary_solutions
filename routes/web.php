@@ -50,12 +50,12 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
-    Route::get('/show/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
+    Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
     Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
-    Route::get('/edit/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'edit'])->name('edit');
-    Route::put('/update/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'update'])->name('update');
-    Route::delete('/destroy/{attendance}', [\App\Http\Controllers\AttendanceController::class, 'destroy'])->name('destroy');
+    Route::get('/edit/{id}', [\App\Http\Controllers\AttendanceController::class, 'edit'])->name('edit');
+    Route::put('/update', [\App\Http\Controllers\AttendanceController::class, 'update'])->name('update');
+    Route::delete('/destroy/{followUp}', [\App\Http\Controllers\AttendanceController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\AttendanceController::class, 'massDestroy'])->name('massDestroy');
 //    Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
 //    Route::get('/getUsersForAttendance', [\App\Http\Controllers\AttendanceController::class, 'getUsersForAttendance'])->name('getUsersForAttendance');

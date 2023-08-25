@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 //use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +21,7 @@ class UsersController extends Controller
 //        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = User::with(['roles'])->select(sprintf('%s.*', (new User())->table));
+            $query = User::select('*');
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -51,14 +52,14 @@ class UsersController extends Controller
                 return $row->email ? $row->email : '';
             });
 
-            $table->editColumn('roles', function ($row) {
-                $labels = [];
-                foreach ($row->roles as $role) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $role->title);
-                }
-
-                return implode(' ', $labels);
-            });
+//            $table->editColumn('roles', function ($row) {
+//                $labels = [];
+//                foreach ($row->roles as $role) {
+//                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $role->title);
+//                }
+//
+//                return implode(' ', $labels);
+//            });
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
@@ -71,9 +72,9 @@ class UsersController extends Controller
             return $table->make(true);
         }
 
-        $roles = Role::get();
+//        $roles = Role::get();
         $flag = 1;
-        return view('users.index', compact('roles','flag'));
+        return view('users.index', compact(/*'roles',*/'flag'));
     }
 
     public function create()
@@ -100,15 +101,20 @@ class UsersController extends Controller
 
         $roles = Role::pluck('title', 'id');
         $user = User::find($userId);
-        $user->load('roles');
         $flag = 1;
 
-        return view('users.edit', compact('roles', 'user'));
+        return view('users.edit', compact('flag', 'user'));
     }
 
     public function update(Request $request, $userId)
     {
         $user = User::find($userId);
+        if (isset($request->password))
+        {
+            $user->password =Hash::make($request->password);
+
+        }
+        unset($request['password']);
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
 

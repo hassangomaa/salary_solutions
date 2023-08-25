@@ -38,6 +38,18 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?php echo e(route("users.index")); ?>"
+                           class="nav-link <?php echo e(request()->is("admin/users") || request()->is("admin/users/*") ? "active" : ""); ?>">
+                            <i class="fa-fw nav-icon fas fa-user">
+
+                            </i>
+                            <p>
+                                
+                                Users
+                            </p>
+                        </a>
+                    </li>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo e(request()->routeIs("employee.index") ? "active" : ""); ?>"
@@ -77,6 +89,19 @@
                         data-accordion="false">
 
 
+                        <li class="nav-item has-treeview <?php echo e(request()->is("admin/permissions*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "menu-open" : ""); ?> <?php echo e(request()->is("admin/users*") ? "menu-open" : ""); ?>">
+                            <a class="nav-link nav-dropdown-toggle <?php echo e(request()->is("admin/permissions*") ? "active" : ""); ?> <?php echo e(request()->is("admin/roles*") ? "active" : ""); ?> <?php echo e(request()->is("admin/users*") ? "active" : ""); ?>"
+                               href="#">
+                                <i class="fa-fw nav-icon fas fa-users">
+
+                                </i>
+                                <p>
+
+                                    User Management
+                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
 
 
 
@@ -104,34 +129,21 @@
 
 
 
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route("users.index")); ?>"
+                                       class="nav-link <?php echo e(request()->is("admin/users") || request()->is("admin/users/*") ? "active" : ""); ?>">
+                                        <i class="fa-fw nav-icon fas fa-user">
 
+                                        </i>
+                                        <p>
 
+                                            Users
+                                        </p>
+                                    </a>
+                                </li>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            </ul>
+                        </li>
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
 
