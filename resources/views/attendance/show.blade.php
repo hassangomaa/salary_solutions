@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Show Attendance
+            {{ trans('attendance.show_attendance') }}
         </div>
 
         <div class="card-body">
@@ -19,7 +19,7 @@
 
                     <tr>
                         <th>
-                            Name
+                            {{ trans('attendance.name') }}
                         </th>
                         <td>
                             {{ $followUp->employee->name }}
@@ -27,7 +27,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Position
+                            {{ trans('attendance.position') }}
                         </th>
                         <td>
                             {{ $followUp->employee->position }}
@@ -36,15 +36,15 @@
 
                     <tr>
                         <th>
-                            Daily Fare
+                            {{ trans('attendance.daily_fare') }}
                         </th>
                         <td>
                             {{ $followUp->employee->daily_fare }}
                         </td>
                     </tr>
-     <tr>
+                    <tr>
                         <th>
-                            Number Of Working Days
+                            {{ trans('attendance.number_of_working_days') }}
                         </th>
                         <td>
                             {{ $followUp->attended_days }}
@@ -53,7 +53,7 @@
 
                     <tr>
                         <th>
-                            Overtime Hour Fare
+                            {{ trans('attendance.overtime_hour_fare') }}
                         </th>
                         <td>
                             {{ $followUp->employee->overtime_hour_fare }}
@@ -63,7 +63,7 @@
 
                     <tr>
                         <th>
-                            Overtime working hours
+                            {{ trans('attendance.overtime_working_hours') }}
                         </th>
                         <td>
                             {{ $followUp->extra_hours }}
@@ -72,40 +72,9 @@
 
                     </tbody>
                 </table>
-                {{--                <div class="form-group">--}}
-                {{--                    <a class="btn btn-default" href="{{ route('employee.index') }}">--}}
-                {{--                       Go Back--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
             </div>
         </div>
     </div>
-
-{{--    <div class="card">--}}
-{{--        <div class="card-header">--}}
-{{--            {{ trans('global.relatedData') }}--}}
-{{--        </div>--}}
-{{--        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link active" href="#commissions" role="tab" data-toggle="tab">--}}
-{{--                    Commissions--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#deductions" role="tab" data-toggle="tab">--}}
-{{--                    Deductions--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--        <div class="tab-content">--}}
-{{--            <div class="tab-pane active" role="tabpanel" id="commissions">--}}
-{{--                @includeIf('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id])--}}
-{{--            </div>--}}
-{{--            <div class="tab-pane" role="tabpanel" id="deductions">--}}
-{{--                @includeIf('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id])--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 
     <script>
         $(document).ready(function() {
@@ -115,6 +84,5 @@
             });
         });
     </script>
-
 
 @endsection

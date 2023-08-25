@@ -1,9 +1,10 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            Show Attendance
+            <?php echo e(trans('attendance.show_attendance')); ?>
+
         </div>
 
         <div class="card-body">
@@ -19,7 +20,8 @@
 
                     <tr>
                         <th>
-                            Name
+                            <?php echo e(trans('attendance.name')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->employee->name); ?>
@@ -28,7 +30,8 @@
                     </tr>
                     <tr>
                         <th>
-                            Position
+                            <?php echo e(trans('attendance.position')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->employee->position); ?>
@@ -38,16 +41,18 @@
 
                     <tr>
                         <th>
-                            Daily Fare
+                            <?php echo e(trans('attendance.daily_fare')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->employee->daily_fare); ?>
 
                         </td>
                     </tr>
-     <tr>
+                    <tr>
                         <th>
-                            Number Of Working Days
+                            <?php echo e(trans('attendance.number_of_working_days')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->attended_days); ?>
@@ -57,7 +62,8 @@
 
                     <tr>
                         <th>
-                            Overtime Hour Fare
+                            <?php echo e(trans('attendance.overtime_hour_fare')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->employee->overtime_hour_fare); ?>
@@ -68,7 +74,8 @@
 
                     <tr>
                         <th>
-                            Overtime working hours
+                            <?php echo e(trans('attendance.overtime_working_hours')); ?>
+
                         </th>
                         <td>
                             <?php echo e($followUp->extra_hours); ?>
@@ -78,40 +85,9 @@
 
                     </tbody>
                 </table>
-                
-                
-                
-                
-                
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <script>
         $(document).ready(function() {
@@ -121,7 +97,6 @@
             });
         });
     </script>
-
 
 <?php $__env->stopSection(); ?>
 

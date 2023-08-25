@@ -1,93 +1,38 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
+    @include('partials.menu', [$flag])
 
-{{--    --}}{{--@can('user_create')--}}
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('attendance.create') }}">--}}
-{{--                Add Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-    {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            Attendance List
+            {{ trans('attendance.title') }}
         </div>
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10">
-
-                    </th>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Position
-                    </th>
-                    <th>
-                        Daily Fare
-                    </th>
-                    <th>
-                        Days
-                    </th>
-                    <th>
-                        Overtime Fare
-                    </th>
-                    <th>
-                        Overtime Hours
-                    </th>
-                    <th>
-                        Add Attendance
-                    </th>
-                    <th>
-                        Actions
-                    </th>
-
+                    <th width="10"></th>
+                    <th>{{ trans('attendance.id') }}</th>
+                    <th>{{ trans('attendance.name') }}</th>
+                    <th>{{ trans('attendance.position') }}</th>
+                    <th>{{ trans('attendance.daily_fare') }}</th>
+                    <th>{{ trans('attendance.days') }}</th>
+                    <th>{{ trans('attendance.overtime_hour_fare') }}</th>
+                    <th>{{ trans('attendance.overtime_hours') }}</th>
+                    <th>{{ trans('attendance.add_attendance') }}</th>
+                    <th>{{ trans('global.actions') }}</th>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-&nbsp;
-                    </td>
-
+                    <td></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td></td>
                 </tr>
                 </thead>
             </table>
@@ -95,6 +40,9 @@
     </div>
 
 @endsection
+
+
+
 @section('scripts')
 {{--    @parent--}}
     <script>
