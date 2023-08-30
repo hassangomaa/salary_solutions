@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('deductions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->integer('amount');
-            $table->string('reason');
-//            $table->unsignedBigInteger('reason_id');
+//            $table->integer('amount');
+            $table->integer('month');
+            $table->integer('year')->default(23);
+            $table->integer('housing')->default(0);
+            $table->integer('penalty')->default(0);
+            $table->integer('absence')->default(0);
+//            $table->enum('reason', ['housing', 'absence', 'penalty']);
+            $table->softDeletes();
             $table->timestamps();
-            $table->softDeletes(); // Add this line for soft deletes
         });
     }
 

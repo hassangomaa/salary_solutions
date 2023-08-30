@@ -37,5 +37,10 @@ class Employee extends Model
         return $this->hasMany(Borrow::class);
     }
 
+    public function incentives()
+    {
+        return $this->hasMany(Incentives::class);
+    }
+
 
 }

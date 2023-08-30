@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('borrows', function (Blueprint $table) {
+        Schema::create('incentives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
+//            $table->integer('amount');
             $table->integer('month');
             $table->integer('year')->default(23);
-
-            $table->integer('amount');
-            $table->string('statement');
-
+            $table->integer('incentive')->default(0);
+            $table->integer('bonus')->default(0);
+            $table->integer('regularity')->default(0);
+            $table->integer('gift')->default(0);
+//            $table->enum('reason', ['incentive', 'bonus', 'regularity', 'gift']);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrows');
+        Schema::dropIfExists('incentives');
     }
 };

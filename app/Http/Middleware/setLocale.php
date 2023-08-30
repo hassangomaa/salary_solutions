@@ -9,20 +9,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class setLocale
 {
-    private $locales = ['ar', 'en'];
 
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,$locale): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (array_search($locale, $this->locales) === false) {
-            return redirect('/');
+        $language = null;
+
+        if (auth()->guard('web')->check()) {
+            $language = auth()->guard('web')->user()->language;
+        } else {
+            // Retrieve the user's language preference from the session or any other storage
+            $language = session('language');
         }
 
-        App::setLocale($locale);
+        if ($language) {
+            App::setLocale($language); // Update this line
+        }
+
+//        dd('SetLocale middleware executed');
 
         return $next($request);
     }

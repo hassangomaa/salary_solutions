@@ -30,19 +30,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 Route::get('/', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
 
-Route::get('/setLanguage/{flag}',function ($flag){
-    if($flag == 1)
-    {
-//        app()->setLocale('ar');
-        App::setLocale('ar');
-        session()->put('locale', 'ar');
-    }
-    if($flag == 2)
-    {
-        App::setLocale('en');
-    }
-    return redirect('/');
-})->name('setLanguage');
+Route::post('/setLanguage/{flag}',[Controllers\LanguageController::class,'update'])->name('setLanguage');
 
 
 
@@ -67,17 +55,32 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
-    Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
+    Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
+ /*   Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
     Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [\App\Http\Controllers\AttendanceController::class, 'edit'])->name('edit');
     Route::put('/update', [\App\Http\Controllers\AttendanceController::class, 'update'])->name('update');
     Route::delete('/destroy/{followUp}', [\App\Http\Controllers\AttendanceController::class, 'destroy'])->name('destroy');
-    Route::delete('/massDestroy', [\App\Http\Controllers\AttendanceController::class, 'massDestroy'])->name('massDestroy');
-//    Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
-//    Route::get('/getUsersForAttendance', [\App\Http\Controllers\AttendanceController::class, 'getUsersForAttendance'])->name('getUsersForAttendance');
-//    Route::get('/attendEmployee/{employeeId}', [\App\Http\Controllers\AttendanceController::class, 'attendEmployee'])->name('attendEmployee');
+    Route::delete('/massDestroy', [\App\Http\Controllers\AttendanceController::class, 'massDestroy'])->name('massDestroy');*/
+});
 
+Route::group(['prefix' => 'extraHours', 'as' => 'extraHours.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
+
+    Route::get('/index', [\App\Http\Controllers\ExtraHoursController::class, 'index'])->name('index');
+    Route::post('/updateNumberOfHours', [\App\Http\Controllers\ExtraHoursController::class, 'updateNumberOfHours'])->name('updateNumberOfHours');
+});
+
+Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['auth']/*, 'namespace' => 'Attendance'*/], function () {
+
+    Route::get('/index', [\App\Http\Controllers\IncentiveController::class, 'index'])->name('index');
+    Route::get('/show/{id}', [\App\Http\Controllers\IncentiveController::class, 'show'])->name('show');
+    Route::get('/create/{employee}/{id}', [\App\Http\Controllers\IncentiveController::class, 'create'])->name('create');
+    Route::post('/store', [\App\Http\Controllers\IncentiveController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\IncentiveController::class, 'edit'])->name('edit');
+    Route::put('/update', [\App\Http\Controllers\IncentiveController::class, 'update'])->name('update');
+    Route::delete('/destroy/{followUp}', [\App\Http\Controllers\IncentiveController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\IncentiveController::class, 'massDestroy'])->name('massDestroy');
 });
 Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['auth']], function () {
 
@@ -239,6 +242,6 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 
 Route::get('/test', function () {
-
-  return  Config::get('app.locale');
+    Controllers\ReportController::newMonth(1);
+      return  Config::get('app.locale');
 })->name('test');

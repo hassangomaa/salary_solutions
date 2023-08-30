@@ -10,5 +10,7 @@ return [
 'payments' => 'Payments',
 'back_to_companies' => 'Back to Companies',
 'logout' => 'Logout',
-    'backToCompanies'=>'Back To Companies'
+    'backToCompanies'=>'Back To Companies',
+            'extraHours'=>'Extra Hours',
+
 ];

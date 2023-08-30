@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->integer('month');
+            $table->integer('year')->default(23);
+
             $table->integer('total_borrows');
             $table->integer('incentives');
             $table->integer('deductions');

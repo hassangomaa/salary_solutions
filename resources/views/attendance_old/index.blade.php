@@ -1,18 +1,10 @@
-<?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+@extends('layouts.admin')
+@section('content')
+    @include('partials.menu', [$flag])
 
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="<?php echo e(route('employee.create')); ?>">
-                <?php echo e(trans('employee.add_new')); ?>
-
-            </a>
-        </div>
-    </div>
     <div class="card">
         <div class="card-header">
-            <?php echo e(trans('employee.title')); ?>
-
+            {{ trans('attendance.title') }}
         </div>
 
         <div class="card-body">
@@ -20,41 +12,47 @@
                 <thead>
                 <tr>
                     <th width="10"></th>
-                    <th>ID</th>
-                    <th><?php echo e(trans('employee.name')); ?></th>
-                    <th><?php echo e(trans('employee.position')); ?></th>
-                    <th><?php echo e(trans('employee.daily_fare')); ?></th>
-                    <th><?php echo e(trans('employee.overtime_hour_fare')); ?></th>
-                    <th><?php echo e(trans('employee.phone')); ?></th>
-                    <th><?php echo e(trans('employee.address')); ?></th>
-                    <th><?php echo e(trans('global.actions')); ?></th>
+                    <th>{{ trans('attendance.id') }}</th>
+                    <th>{{ trans('attendance.name') }}</th>
+                    <th>{{ trans('attendance.position') }}</th>
+                    <th>{{ trans('attendance.daily_fare') }}</th>
+                    <th>{{ trans('attendance.days') }}</th>
+                    <th>{{ trans('attendance.overtime_hour_fare') }}</th>
+                    <th>{{ trans('attendance.overtime_hours') }}</th>
+                    <th>{{ trans('attendance.add_attendance') }}</th>
+                    <th>{{ trans('global.actions') }}</th>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td><input class="search" type="text" placeholder="<?php echo e(trans('global.search')); ?>"></td>
-                    <td>&nbsp;</td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td></td>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('scripts'); ?>
 
+@endsection
+
+
+
+@section('scripts')
+{{--    @parent--}}
     <script>
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            
+            {{--@can('user_delete')--}}
             let deleteButtonTrans = 'Delete Selected';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "<?php echo e(route('employee.massDestroy')); ?>",
+                url: "{{ route('attendance.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -67,7 +65,7 @@
                         return
                     }
 
-                    if (confirm('<?php echo e(trans('global.areYouSure')); ?>')) {
+                    if (confirm('{{ trans('global.areYouSure') }}')) {
                         $.ajax({
                             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
@@ -81,7 +79,7 @@
                 }
             }
             dtButtons.push(deleteButton)
-            
+            {{--@endcan--}}
 
             let dtOverrideGlobals = {
                 buttons: dtButtons,
@@ -89,16 +87,17 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "<?php echo e(route('employee.index')); ?>",
+                ajax: "{{ route('attendance.index') }}",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
+                    {data: 'attended_days', name: 'attended_days'},
                     {data: 'overtime_hour_fare', name: 'overtime_hour_fare'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
+                    {data: 'extra_hours', name: 'extra_hours'},
+                    {data: 'addData', name: 'addData'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,
@@ -135,6 +134,4 @@
         });
 
     </script>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/employees/index.blade.php ENDPATH**/ ?>
+@endsection

@@ -1,137 +1,87 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu', [$flag])
+    @include('partials.menu',[$flag])
+
+{{--    <div style="margin-bottom: 10px;" class="row">--}}
+{{--        <!-- Add Company Button -->--}}
+{{--        <div class="col-lg-12">--}}
+{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
+{{--                Add Employee Attendance--}}
+{{--            </a>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="card">
         <div class="card-header">
-            {{ trans('attendance.title') }}
+            Attendance List
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
+                <!-- Table Header Columns -->
                 <tr>
-                    <th width="10"></th>
-                    <th>{{ trans('attendance.id') }}</th>
-                    <th>{{ trans('attendance.name') }}</th>
-                    <th>{{ trans('attendance.position') }}</th>
-                    <th>{{ trans('attendance.daily_fare') }}</th>
-                    <th>{{ trans('attendance.days') }}</th>
-                    <th>{{ trans('attendance.overtime_hour_fare') }}</th>
-                    <th>{{ trans('attendance.overtime_hours') }}</th>
-                    <th>{{ trans('attendance.add_attendance') }}</th>
-                    <th>{{ trans('global.actions') }}</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td></td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Daily Fare</th>
+                    <th>Number of Days</th>
+                    <th>Set Worked Days</th>
+{{--                    <th>Actions</th>--}}
                 </tr>
                 </thead>
+                <tbody>
+                <!-- Loop through companies -->
+                @foreach($followUps as $followUp)
+                    <tr>
+                        <td>{{ $followUp->id }}</td>
+                        <td>{{ $followUp->employee->name }}</td>
+                        <td>{{ $followUp->employee->position }}</td>
+                        <td>{{ $followUp->employee->daily_fare }}</td>
+                        <td  id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }}</td>
+                        <td>
+                            <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="Enter days">
+                            <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">Save</button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
             </table>
         </div>
     </div>
-
 @endsection
-
-
 
 @section('scripts')
-{{--    @parent--}}
-    <script>
-        $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            {{--@can('user_delete')--}}
-            let deleteButtonTrans = 'Delete Selected';
-            let deleteButton = {
-                text: deleteButtonTrans,
-                url: "{{ route('attendance.massDestroy') }}",
-                className: 'btn-danger',
-                action: function (e, dt, node, config) {
-                    var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
-                        return entry.id
+        @parent
+        <script>
+            $(function () {
+                // Handle Save Button Click
+                $('.datatable-User').on('click', '.save-days-btn', function () {
+                    const followUpId = $(this).attr('data-followUp-id');
+                    const numberOfDays = $('.days-input[data-followUp-id="' + followUpId + '"]').val();
+                    console.log(followUpId,' ',numberOfDays);
+                    // Perform Ajax Request
+                    $.ajax({
+                        url: "{{ route('attendance.updateNumberOfDays') }}",
+                        method: 'POST',
+                        data: {
+                            follow_up_id: followUpId,
+                            number_of_days: numberOfDays,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            // Handle success response, if needed
+                            $('#attended-days-' + followUpId).text(numberOfDays);
+                            $('.save-days-btn[data-followUp-id="' + followUpId + '"]').css('background-color', 'red');
+
+                            console.log(response);
+                        },
+                        error: function (xhr) {
+                            // Handle error response, if needed
+                            console.error(xhr);
+                        }
                     });
-
-                    if (ids.length === 0) {
-                        alert(' No Rows Selected ')
-
-                        return
-                    }
-
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
-                        $.ajax({
-                            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
-                            method: 'POST',
-                            url: config.url,
-                            data: {ids: ids, _method: 'DELETE'}
-                        })
-                            .done(function () {
-                                location.reload()
-                            })
-                    }
-                }
-            }
-            dtButtons.push(deleteButton)
-            {{--@endcan--}}
-
-            let dtOverrideGlobals = {
-                buttons: dtButtons,
-                processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('attendance.index') }}",
-                columns: [
-                    {data: 'placeholder', name: 'placeholder'},
-                    {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'position', name: 'position'},
-                    {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'attended_days', name: 'attended_days'},
-                    {data: 'overtime_hour_fare', name: 'overtime_hour_fare'},
-                    {data: 'extra_hours', name: 'extra_hours'},
-                    {data: 'addData', name: 'addData'},
-                    {data: 'actions', name: 'actions'}
-                ],
-                orderCellsTop: true,
-                order: [[1, 'desc']],
-                pageLength: 100,
-            };
-            let table = $('.datatable-User').DataTable(dtOverrideGlobals);
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function (e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-
-            let visibleColumnsIndexes = null;
-            $('.datatable thead').on('input', '.search', function () {
-                let strict = $(this).attr('strict') || false
-                let value = strict && this.value ? "^" + this.value + "$" : this.value
-
-                let index = $(this).parent().index()
-                if (visibleColumnsIndexes !== null) {
-                    index = visibleColumnsIndexes[index]
-                }
-
-                table
-                    .column(index)
-                    .search(value, strict)
-                    .draw()
-            });
-            table.on('column-visibility.dt', function (e, settings, column, state) {
-                visibleColumnsIndexes = []
-                table.columns(":visible").every(function (colIdx) {
-                    visibleColumnsIndexes.push(colIdx);
                 });
-            })
-        });
-
-    </script>
-@endsection
+            });
+        </script>
+    @endsection

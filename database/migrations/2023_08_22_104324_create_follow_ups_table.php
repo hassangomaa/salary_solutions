@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->integer('month')->default(8);
+            $table->integer('year')->default(23);
             $table->integer('attended_days')->default(0);
             $table->integer('extra_hours')->default(0);
             $table->integer('borrow_week_one')->default(0);

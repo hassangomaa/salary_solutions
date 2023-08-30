@@ -12,5 +12,6 @@ return [
     'back_to_companies' => 'العودة إلى الشركات',
     'logout' => 'تسجيل الخروج',
         'backToCompanies'=>'العودة للشركات',
+        'extraHours'=>'الساعات الاضافية',
 
 ];

@@ -95,6 +95,17 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("extraHours.index") ? "active" : "" }}"
+                           href="{{ route("extraHours.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.extraHours') }}
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("borrowing.index") ? "active" : "" }}"
                            href="{{ route("borrowing.index") }}">
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">

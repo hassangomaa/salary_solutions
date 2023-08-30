@@ -60,4 +60,31 @@
             </form>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-header">
+            {{ trans('global.relatedData') }}
+        </div>
+        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="#seller_products" role="tab" data-toggle="tab">
+                    Incentives
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#seller_products2" role="tab" data-toggle="tab">
+                    ay7aga
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" role="tabpanel" id="seller_products">
+                @includeIf('attendance.relationships.incentives', ['incentives' => $incentives])
+            </div>
+            <div class="tab-pane" role="tabpanel" id="seller_products2">
+{{--                @includeIf('admin.users.relationships.sellerProducts', ['products' => $user->sellerProducts])--}}
+            </div>
+        </div>
+    </div>
+
 @endsection
