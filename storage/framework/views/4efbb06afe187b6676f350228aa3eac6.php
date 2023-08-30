@@ -1,15 +1,14 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu',[$flag])
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+
+
+
+
+
+
+
+
 
     <div class="card">
         <div class="card-header">
@@ -33,32 +32,33 @@
                 </thead>
                 <tbody>
                 <!-- Loop through companies -->
-                @foreach($incentives as $incentive)
+                <?php $__currentLoopData = $incentives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $incentive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{ $incentive->id }}</td>
-                        <td>{{ $incentive->employee->name }}</td>
-                        <td>{{ $incentive->employee->position }}</td>
-                        <td>  <input type="number" class="days-input" name="incentive" data-incentive-id="{{ $incentive->id }}" value="{{ $incentive->incentive }}"></td>
-                        <td> <input type="number" class="days-input" name="bonus" data-bonus-id="{{ $incentive->id }}" value="{{ $incentive->bonus }}"></td>
-                        <td><input type="number" class="days-input" name="regularity" data-regularity-id="{{ $incentive->id }}" value="{{ $incentive->regularity }}"></td>
-                        <td><input type="number" class="days-input" name="gift" data-gift-id="{{ $incentive->id }}" value="{{ $incentive->gift }}"></td>
-{{--                    --}}
+                        <td><?php echo e($incentive->id); ?></td>
+                        <td><?php echo e($incentive->employee->name); ?></td>
+                        <td><?php echo e($incentive->employee->position); ?></td>
+                        <td>  <input type="number" class="days-input" name="incentive" data-incentive-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->incentive); ?>"></td>
+                        <td> <input type="number" class="days-input" name="bonus" data-bonus-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->bonus); ?>"></td>
+                        <td><input type="number" class="days-input" name="regularity" data-regularity-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->regularity); ?>"></td>
+                        <td><input type="number" class="days-input" name="gift" data-gift-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->gift); ?>"></td>
+
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-incentive-id="{{ $incentive->id }}">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-incentive-id="<?php echo e($incentive->id); ?>">Save</button>
                         </td>
 
 
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
         </div>
-        {{ $incentives->links('vendor.pagination.bootstrap-5') }}
-    </div>
-@endsection
+        <?php echo e($incentives->links('vendor.pagination.bootstrap-5')); ?>
 
-@section('scripts')
-        @parent
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+        <?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>
         <script>
             $(function () {
                 $('.datatable-User').on('click', '.save-days-btn', function () {
@@ -70,7 +70,7 @@
 
                     // Perform Ajax Request
                     $.ajax({
-                        url: "{{ route('incentive.addIncentives') }}", // Change this to your actual route
+                        url: "<?php echo e(route('incentive.addIncentives')); ?>", // Change this to your actual route
                         method: 'POST',
                         data: {
                             incentive_id: incentiveId,
@@ -94,4 +94,6 @@
                 });
             });
         </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/incentive/index.blade.php ENDPATH**/ ?>

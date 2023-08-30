@@ -10,8 +10,15 @@ class Incentives extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['employee_id', 'amount', 'reason'];
-
+    protected $fillable = [
+        'employee_id',
+        'month',
+        'year',
+        'incentive',
+        'bonus',
+        'regularity',
+        'gift',
+    ];
 
     public static function reason(){
         return  ['حافز', 'مكافاءه', 'انتظام', 'عيديه'];

@@ -110,6 +110,27 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo e(request()->routeIs("incentive.index") ? "active" : ""); ?>"
+                           href="<?php echo e(route("incentive.index")); ?>">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                <?php echo e(trans('sidebar.incentive')); ?>
+
+                            </p>
+                        </a>
+                    </li>         <li class="nav-item">
+                        <a class="nav-link <?php echo e(request()->routeIs("deduction.index") ? "active" : ""); ?>"
+                           href="<?php echo e(route("deduction.index")); ?>">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                <?php echo e(trans('sidebar.deduction')); ?>
+
+                            </p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php echo e(request()->routeIs("borrowing.index") ? "active" : ""); ?>"

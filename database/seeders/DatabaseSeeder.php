@@ -8,6 +8,7 @@ use App\Models\Commission;
 use App\Models\Company;
 use App\Models\Deduction;
 use App\Models\Employee;
+use App\Models\Incentives;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         Commission::factory(50)->create();
 //        Deduction::factory(50)->create();
         Borrow::factory(20)->create();
+        Incentives::factory(50)->create();
 
 
 

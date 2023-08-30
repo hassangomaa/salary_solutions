@@ -13,5 +13,8 @@ return [
     'logout' => 'تسجيل الخروج',
         'backToCompanies'=>'العودة للشركات',
         'extraHours'=>'الساعات الاضافية',
+        'incentive'=>'الحوافز',
+    'deduction'=>'الجزاءات',
+
 
 ];

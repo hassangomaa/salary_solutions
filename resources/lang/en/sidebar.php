@@ -12,5 +12,7 @@ return [
 'logout' => 'Logout',
     'backToCompanies'=>'Back To Companies',
             'extraHours'=>'Extra Hours',
+            'incentive'=>'Incentive',
+            'deduction'=>'Deductions',
 
 ];

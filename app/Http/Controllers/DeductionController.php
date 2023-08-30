@@ -2,14 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Deduction;
+use App\Models\Incentives;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class DeductionController extends Controller
 {
-    public function index(Request $request,$id)
+
+    public function index()
+    {
+        $companyId = Session::get('companyId');
+        $company = Company::find($companyId);
+        $currntMonth = ReportController::getCurrentMonth($company);
+
+        $deductions = Deduction::with('employee')->whereHas('employee',function ($query) use($companyId){
+            $query->where('company_id',$companyId);
+        })
+            ->where('month',$currntMonth)
+            ->paginate(10);
+        $flag = 1 ;
+        return view('deduction.index',compact('flag','deductions'));
+    }
+
+    public function addDeduction(Request $request)
+    {
+//        return $request->all();
+        $deduction = Deduction::find($request->deduction_id);
+        $deduction->housing = $request->housing;
+        $deduction->absence = $request->absence;
+        $deduction->penalty = $request->penalty;
+        $deduction->save();
+
+    }
+
+
+   /* public function index(Request $request,$id)
     {
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
@@ -82,5 +112,5 @@ class DeductionController extends Controller
         $deduction->delete();
 
         return back();
-    }
+    }*/
 }

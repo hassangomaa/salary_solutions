@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('incentives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-//            $table->integer('amount');
             $table->integer('month');
             $table->integer('year')->default(23);
             $table->integer('incentive')->default(0);
             $table->integer('bonus')->default(0);
             $table->integer('regularity')->default(0);
             $table->integer('gift')->default(0);
-//            $table->enum('reason', ['incentive', 'bonus', 'regularity', 'gift']);
             $table->softDeletes();
             $table->timestamps();
+//            $table->integer('amount');
+//            $table->enum('reason', ['incentive', 'bonus', 'regularity', 'gift']);
         });
     }
 

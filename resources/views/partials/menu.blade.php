@@ -104,6 +104,25 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("incentive.index") ? "active" : "" }}"
+                           href="{{ route("incentive.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.incentive') }}
+                            </p>
+                        </a>
+                    </li>         <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("deduction.index") ? "active" : "" }}"
+                           href="{{ route("deduction.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.deduction') }}
+                            </p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("borrowing.index") ? "active" : "" }}"

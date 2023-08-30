@@ -3,6 +3,7 @@
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
+use App\Models\Incentives;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,7 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 
 });
 
-Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
+Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
@@ -65,13 +66,26 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => [
     Route::delete('/massDestroy', [\App\Http\Controllers\AttendanceController::class, 'massDestroy'])->name('massDestroy');*/
 });
 
-Route::group(['prefix' => 'extraHours', 'as' => 'extraHours.', 'middleware' => ['auth'], 'namespace' => 'Attendance'], function () {
+Route::group(['prefix' => 'extraHours', 'as' => 'extraHours.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\ExtraHoursController::class, 'index'])->name('index');
     Route::post('/updateNumberOfHours', [\App\Http\Controllers\ExtraHoursController::class, 'updateNumberOfHours'])->name('updateNumberOfHours');
 });
 
-Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['auth']/*, 'namespace' => 'Attendance'*/], function () {
+Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['auth']], function () {
+
+    Route::get('/index', [\App\Http\Controllers\IncentiveController::class, 'index'])->name('index');
+    Route::post('/addIncentives', [\App\Http\Controllers\IncentiveController::class, 'addIncentives'])->name('addIncentives');
+});
+
+Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth']], function () {
+
+    Route::get('/index', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
+    Route::post('/addDeduction', [\App\Http\Controllers\DeductionController::class, 'addDeduction'])->name('addDeduction');
+});
+
+/*
+Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['auth']/*, 'namespace' => 'Attendance'], function () {
 
     Route::get('/index', [\App\Http\Controllers\IncentiveController::class, 'index'])->name('index');
     Route::get('/show/{id}', [\App\Http\Controllers\IncentiveController::class, 'show'])->name('show');
@@ -81,7 +95,7 @@ Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['a
     Route::put('/update', [\App\Http\Controllers\IncentiveController::class, 'update'])->name('update');
     Route::delete('/destroy/{followUp}', [\App\Http\Controllers\IncentiveController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\IncentiveController::class, 'massDestroy'])->name('massDestroy');
-});
+});*/
 Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\BorrowingController::class, 'index'])->name('index');
@@ -229,6 +243,7 @@ Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => [
     Route::delete('/massDestroy', [\App\Http\Controllers\CommissionController::class, 'massDestroy'])->name('massDestroy');
 });
 
+/*
 Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth'],], function () {
     Route::get('/index/{id}', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
     Route::get('/show/{deduction}', [\App\Http\Controllers\DeductionController::class, 'show'])->name('show');
@@ -239,9 +254,16 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
     Route::delete('/destroy/{deduction}', [\App\Http\Controllers\DeductionController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\DeductionController::class, 'massDestroy'])->name('massDestroy');
 });
-
+*/
 
 Route::get('/test', function () {
     Controllers\ReportController::newMonth(1);
-      return  Config::get('app.locale');
+
+    $companyId = Session::get('companyId');
+
+    return Incentives::with('employee')->whereHas('employee',function ($query) use($companyId){
+        $query->where('company_id',$companyId);
+    })
+//->where('month',8)
+        ->get();
 })->name('test');

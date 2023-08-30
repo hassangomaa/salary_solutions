@@ -1,15 +1,14 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu',[$flag])
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+
+
+
+
+
+
+
+
 
     <div class="card">
         <div class="card-header">
@@ -32,30 +31,31 @@
                 </thead>
                 <tbody>
                 <!-- Loop through companies -->
-                @foreach($deductions as $deduction)
+                <?php $__currentLoopData = $deductions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deduction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{ $deduction->id }}</td>
-                        <td>{{ $deduction->employee->name }}</td>
-                        <td>{{ $deduction->employee->position }}</td>
-                        <td>  <input type="number" class="days-input" name="housing" data-housing-id="{{ $deduction->id }}" value="{{ $deduction->housing }}"></td>
-                        <td> <input type="number" class="days-input" name="penalty" data-penalty-id="{{ $deduction->id }}" value="{{ $deduction->penalty }}"></td>
-                        <td><input type="number" class="days-input" name="absence" data-absence-id="{{ $deduction->id }}" value="{{ $deduction->absence }}"></td>
+                        <td><?php echo e($deduction->id); ?></td>
+                        <td><?php echo e($deduction->employee->name); ?></td>
+                        <td><?php echo e($deduction->employee->position); ?></td>
+                        <td>  <input type="number" class="days-input" name="housing" data-housing-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->housing); ?>"></td>
+                        <td> <input type="number" class="days-input" name="penalty" data-penalty-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->penalty); ?>"></td>
+                        <td><input type="number" class="days-input" name="absence" data-absence-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->absence); ?>"></td>
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-deduction-id="{{ $deduction->id }}">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-deduction-id="<?php echo e($deduction->id); ?>">Save</button>
                         </td>
 
 
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
         </div>
-        {{ $deductions->links('vendor.pagination.bootstrap-5') }}
-    </div>
-@endsection
+        <?php echo e($deductions->links('vendor.pagination.bootstrap-5')); ?>
 
-@section('scripts')
-        @parent
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+        <?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>
         <script>
             $(function () {
                 $('.datatable-User').on('click', '.save-days-btn', function () {
@@ -66,7 +66,7 @@
 
                     // Perform Ajax Request
                     $.ajax({
-                        url: "{{ route('deduction.addDeduction') }}", // Change this to your actual route
+                        url: "<?php echo e(route('deduction.addDeduction')); ?>", // Change this to your actual route
                         method: 'POST',
                         data: {
                             deduction_id: deductionId,
@@ -89,4 +89,6 @@
                 });
             });
         </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/deduction/index.blade.php ENDPATH**/ ?>
