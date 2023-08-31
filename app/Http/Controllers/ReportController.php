@@ -9,9 +9,61 @@ use App\Models\FollowUp;
 use App\Models\Incentives;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ReportController extends Controller
 {
+
+    public function generateReport()
+    {
+        //Get Follow Up for the currnt Month
+        $month = 8; //TODO: enhance this line to get the exact currnt month;
+        $year = 2023; //TODO: enhance this line to get the exact currnt year;
+        $companyId = Session::get('companyId');
+
+        //Get Follow Up table for this month
+        $followUps = FollowUp::with('employee')
+            ->whereHas('employee', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+            ->where('month', $month)
+            ->where('year', $year)
+            ->get();
+
+        //Calculate Worked Days
+        $this->calculateWorkedDaysAndExtras($followUps);
+        $this->addIncentives($followUps,$companyId,$month,$year);
+
+
+    }
+
+    private function calculateWorkedDaysAndExtras($followUps)
+    {
+        foreach($followUps as $followUp)
+        {
+            $followUp->daily_wages_earned =  $followUp->attended_days * $followUp->employee->daily_fare;
+            $followUp->total_extras =  $followUp->extra_hours * $followUp->employee->overtime_hour_fare;
+            $followUp->save();
+
+        }
+    }
+
+    public function addIncentives($followUps,$companyId,$month,$year)
+    {
+        $incentives =
+            Incentives::with('employee')
+            ->whereHas('employee', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->where('month', $month)
+            ->where('year', $year)
+            ->get();
+//        foreach ($followUps as $followUp)
+//        {
+////            $employee = $incentives['']
+//        }
+    }
+
 
 
     public static function newMonth($companyId)

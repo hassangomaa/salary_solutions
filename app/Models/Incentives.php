@@ -27,4 +27,9 @@ class Incentives extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
+
+    public function followUp()
+    {
+        return $this->belongsTo(FollowUp::class, 'employee_id');
+    }
 }

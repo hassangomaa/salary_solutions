@@ -9,10 +9,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FollowUp extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['employee_id','month'];
+    protected $fillable = [
+        'attended_days',
+        'daily_wages_earned',
+        'extra_hours',
+        'total_extras',
+        'borrows',
+        'incentives',
+        'deductions',
+        'net_salary',
+    ];
 
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function incentive()
+    {
+        return $this->hasMany(Incentives::class,'employee_id','employee_id');
     }
 }

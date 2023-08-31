@@ -258,12 +258,28 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
 Route::get('/test', function () {
     Controllers\ReportController::newMonth(1);
-
-    $companyId = Session::get('companyId');
-
-    return Incentives::with('employee')->whereHas('employee',function ($query) use($companyId){
+$report = new Controllers\ReportController();
+$report->generateReport();
+    $companyId = 1;
+    return    $followUp = FollowUp::with('employee')->whereHas('employee',function ($query)use ($companyId){
         $query->where('company_id',$companyId);
-    })
-//->where('month',8)
-        ->get();
+    })->where('month',8)->where('year',2023)->get();
 })->name('test');
+
+
+Route::get('/test2', function () {
+
+    $companyId = 1;
+    $followUps = FollowUp::with('employee','incentive')
+        ->whereHas('employee', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        })
+        ->WhereHas('incentive', function ($query) {
+            $query->where('month',8)->where('year',2023);
+        })
+        ->where('month', 8)
+        ->where('year', 2023)
+        ->get();
+
+    return $followUps;
+});
