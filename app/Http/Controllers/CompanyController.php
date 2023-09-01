@@ -122,8 +122,38 @@ class CompanyController extends Controller
     public function clickOnCompany($companyId)
     {
         Session::put('companyId', $companyId);
+        $this->checkIfNewMonth($companyId);
         return redirect()->route('employee.index');
 
     }
+
+    private function checkIfNewMonth($companyId)
+    {
+        $company = Company::find($companyId);
+        $companyCurrentMonth = $company->current_month;
+        $companyCurrentYear = $company->current_year;
+        $actualMonth = today()->month;
+        $companyStartDay = (int)$company->start_month;
+        $actualDay = today()->day;
+
+        $report = new ReportController();
+        //Check if new Month Started
+        if( ($companyStartDay <= $actualDay) && ($companyCurrentMonth%13 < $actualMonth%13))
+        {
+           $report->calculateMonthlyReport($companyId,$companyCurrentMonth,$companyCurrentYear);
+
+            if($companyCurrentMonth == 12)
+            {
+                $company->current_month = 1;
+                $company->current_year ++;
+            }else{
+                $company->current_month ++;
+            }
+            $company->save();
+
+            ReportController::newMonth($company);
+        }
+    }
+
 
 }

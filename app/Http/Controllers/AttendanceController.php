@@ -23,8 +23,8 @@ class AttendanceController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        $month = ReportController::getCurrentMonth($company);
-        $year = ReportController::getCurrntYear($company);
+        $month = $company->current_month;
+        $year=  $company->current_year;
 
         $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);

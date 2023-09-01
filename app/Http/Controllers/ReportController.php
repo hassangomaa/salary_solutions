@@ -16,16 +16,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class ReportController extends Controller
 {
 
-    public static function generateExcelFile()
-    {
-        $month = 9;
-        $year = 2023;
-        $companyId = Session::get('companyId');
-        return Excel::download(new ReportExport($companyId,$month,$year), 'reportt.xlsx');
 
-    }
 
-    public function calculateMonthlyReport()
+    public function calculateMonthlyReport($companyId,$month,$year)
     {
         //Get Follow Up for the currnt Month
         $month = 9; //TODO: enhance this line to get the exact currnt month;
@@ -152,12 +145,12 @@ class ReportController extends Controller
 
 
 
-    public static function newMonth($companyId)
+    public static function newMonth($company)
     {
-        $employees = Employee::where('company_id', $companyId)->select('id')->get();
-        $company = Company::find($companyId);
-        $currntMonth = ReportController::getCurrentMonth($company);
-        $currntYear = ReportController::getCurrntYear($company);
+        $employees = Employee::where('company_id', $company->id)->select('id')->get();
+
+        $currntMonth = $company->current_month;
+        $currntYear = $company->current_year;
 
         $newFollowUps = [];
         $newIncentives = [];
@@ -191,33 +184,6 @@ class ReportController extends Controller
 
     }
 
-    public static function getCurrntYear($company)
-    {
-        if (today()->month < 12) {
-            return today()->year;
-        } elseif (today()->month == 12 && $company->end_month <= today()->day) {
-            return today()->year;
 
-        }
-        return ++today()->year;
 
-    }
-
-    public static function getCurrentMonth($company)
-    {
-        $day = Carbon::today()->day;
-        $companyLastDay =(int)$company->end_month;
-        $lastDayOfTheMonth =  Carbon::today()->endOfMonth()->day;
-        $isSameMonth = $company->isSameMonth;
-        if($isSameMonth == 1)
-        {
-            return Carbon::today()->month;
-        }
-        if($companyLastDay <= $day && $day <= $lastDayOfTheMonth)
-        {
-            return ++Carbon::today()->month;
-        }else{
-            return Carbon::today()->month;
-        }
-    }
 }

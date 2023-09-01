@@ -16,7 +16,7 @@ class DeductionController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        $currntMonth = ReportController::getCurrentMonth($company);
+        $currntMonth = $company->current_month;
 
         $deductions = Deduction::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);

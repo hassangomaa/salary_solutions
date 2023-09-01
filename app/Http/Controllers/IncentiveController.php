@@ -15,7 +15,7 @@ class IncentiveController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        $currntMonth = ReportController::getCurrentMonth($company);
+        $currntMonth = $company->current_month;
 
         $incentives = Incentives::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);
