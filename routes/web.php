@@ -243,18 +243,13 @@ Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => [
     Route::delete('/massDestroy', [\App\Http\Controllers\CommissionController::class, 'massDestroy'])->name('massDestroy');
 });
 
-/*
-Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth'],], function () {
-    Route::get('/index/{id}', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
-    Route::get('/show/{deduction}', [\App\Http\Controllers\DeductionController::class, 'show'])->name('show');
-    Route::get('/create/{employeeId}', [\App\Http\Controllers\DeductionController::class, 'create'])->name('create');
-    Route::post('/store', [\App\Http\Controllers\DeductionController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [\App\Http\Controllers\DeductionController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [\App\Http\Controllers\DeductionController::class, 'update'])->name('update');
-    Route::delete('/destroy/{deduction}', [\App\Http\Controllers\DeductionController::class, 'destroy'])->name('destroy');
-    Route::delete('/massDestroy', [\App\Http\Controllers\DeductionController::class, 'massDestroy'])->name('massDestroy');
+
+Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],], function () {
+    Route::get('/index', [\App\Http\Controllers\ExcelController::class, 'index'])->name('index');
+    Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
+
 });
-*/
+
 
 Route::get('/test', function () {
     Controllers\ReportController::newMonth(1);
@@ -262,6 +257,6 @@ Route::get('/test', function () {
 });
 Route::get('/test2', function () {
 
-    return Controllers\ReportController::generateExcelFile();
-
+//    return Controllers\ReportController::generateExcelFile();
+return Controllers\ExcelController::generateExcelFile(1,9,2023);
 });

@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('excel_details', function (Blueprint $table) {
             Schema::create('excel_details', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('company_id');
@@ -22,7 +21,6 @@ return new class extends Migration
                 $table->timestamps();
 
             });
-        });
     }
 
     /**

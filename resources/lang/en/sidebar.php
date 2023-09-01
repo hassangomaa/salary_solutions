@@ -14,5 +14,6 @@ return [
             'extraHours'=>'Extra Hours',
             'incentive'=>'Incentive',
             'deduction'=>'Deductions',
+            'reports'=>'Reports',
 
 ];

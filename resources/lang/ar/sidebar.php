@@ -15,6 +15,7 @@ return [
         'extraHours'=>'الساعات الاضافية',
         'incentive'=>'الحوافز',
     'deduction'=>'الجزاءات',
+    'reports'=>'تقارير',
 
 
 ];

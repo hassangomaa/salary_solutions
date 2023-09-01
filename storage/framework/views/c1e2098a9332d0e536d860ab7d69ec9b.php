@@ -189,6 +189,18 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo e(request()->routeIs("excel.index") ? "active" : ""); ?>"
+                                   href="<?php echo e(route("excel.index")); ?>">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        <?php echo e(trans('sidebar.reports')); ?>
+
+                                    </p>
+                                </a>
+                            </li>
+
 
                         </ul>
                     <li class="nav-item">

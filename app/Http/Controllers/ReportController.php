@@ -18,12 +18,12 @@ class ReportController extends Controller
 
 
 
-    public function calculateMonthlyReport($companyId,$month,$year)
+    public function calculateMonthlyReport($companyId1,$month1,$year1)
     {
         //Get Follow Up for the currnt Month
-        $month = 9; //TODO: enhance this line to get the exact currnt month;
-        $year = 2023; //TODO: enhance this line to get the exact currnt year;
-        $companyId = Session::get('companyId');
+        $month = $month1;
+        $year = $year1;
+        $companyId = $companyId1;
 
         //Get Follow Up table for this month
         $followUps = FollowUp::with('employee')
@@ -44,8 +44,8 @@ class ReportController extends Controller
 
         $this->calculateTotalNetSalary($followUps);
 
-
-
+        //Generate Excel file
+        ExcelController::generateExcelFile($companyId,$month,$year);
 
     }
 

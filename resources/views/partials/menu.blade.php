@@ -179,6 +179,17 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs("excel.index") ? "active" : "" }}"
+                                   href="{{ route("excel.index") }}">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        {{ trans('sidebar.reports') }}
+                                    </p>
+                                </a>
+                            </li>
+
 
                         </ul>
                     <li class="nav-item">
