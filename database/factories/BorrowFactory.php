@@ -19,7 +19,8 @@ class BorrowFactory extends Factory
     {
           return [
               'employee_id' => Employee::inRandomOrder()->first()->id, // Get a random employee's ID
-              'month' => $this->faker->numberBetween(1, 12),
+              'month' => 9,
+              'year' => 2023,
               'amount' => $this->faker->numberBetween(100, 1000),
               'statement' => $this->faker->sentence,
         ];

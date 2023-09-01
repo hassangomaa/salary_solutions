@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('borrows', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->integer('month');
-            $table->integer('year')->default(23);
+            $table->integer('month')->default(9);
+            $table->integer('year')->default(2023);
 
             $table->integer('amount');
             $table->string('statement');

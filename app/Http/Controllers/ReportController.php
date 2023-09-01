@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Session;
 class ReportController extends Controller
 {
 
-    public function generateReport()
+    public function calculateMonthlyReport()
     {
         //Get Follow Up for the currnt Month
-        $month = 8; //TODO: enhance this line to get the exact currnt month;
+        $month = 9; //TODO: enhance this line to get the exact currnt month;
         $year = 2023; //TODO: enhance this line to get the exact currnt year;
         $companyId = Session::get('companyId');
 
@@ -30,9 +30,17 @@ class ReportController extends Controller
             ->where('year', $year)
             ->get();
 
-        //Calculate Worked Days
         $this->calculateWorkedDaysAndExtras($followUps);
-        $this->addIncentives($followUps,$companyId,$month,$year);
+
+        $this->calculateIncentives($companyId,$month,$year);
+
+        $this->calculateDeductions($companyId,$month,$year);
+
+        $this->calculateBorrows($companyId,$month,$year);
+
+        $this->calculateNetSalary($followUps);
+
+
 
 
     }
@@ -48,20 +56,81 @@ class ReportController extends Controller
         }
     }
 
-    public function addIncentives($followUps,$companyId,$month,$year)
+    public function calculateIncentives($companyId, $month, $year)
     {
-        $incentives =
-            Incentives::with('employee')
+        $followUps = FollowUp::with(['employee.incentives' => function ($query)use($year,$month) {
+            $query->where('year', $year)->where('month',$month);
+        }])
             ->whereHas('employee', function ($query) use ($companyId) {
                 $query->where('company_id', $companyId);
             })
             ->where('month', $month)
             ->where('year', $year)
             ->get();
-//        foreach ($followUps as $followUp)
-//        {
-////            $employee = $incentives['']
-//        }
+
+        foreach ($followUps as $followUp)
+        {
+            $incentives = $followUp->employee->incentives[0];
+            $total = $incentives->incentive +
+                    $incentives->bonus +
+                $incentives->regularity +
+                $incentives->gift ;
+            $followUp->incentives = $total;
+            $followUp->save();
+        }
+    }
+
+    public function calculateDeductions($companyId,$month,$year){
+        $followUps = FollowUp::with(['employee.deductions' => function ($query)use($year,$month) {
+            $query->where('year', $year)->where('month',$month);
+        }])
+            ->whereHas('employee', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->where('month', $month)
+            ->where('year', $year)
+            ->get();
+
+        foreach ($followUps as $followUp)
+        {
+            $deductions = $followUp->employee->deductions[0];
+            $total = $deductions->housing +
+                $deductions->penalty +
+                $deductions->absence ;
+            $followUp->deductions  = $total;
+            $followUp->save();
+        }
+    }
+
+    public function calculateBorrows($companyId,$month,$year)
+    {
+        $followUps = FollowUp::with(['employee.borrows' => function ($query)use($year,$month) {
+            $query->where('year', $year)->where('month',$month);
+        }])
+            ->whereHas('employee', function ($query) use ($companyId) {
+                $query->where('company_id', $companyId);
+            })
+            ->where('month', $month)
+            ->where('year', $year)
+            ->get();
+
+       foreach ($followUps as $followUp)
+       {
+           $borrow = $followUp->employee->borrows[0]->amount ?? 0;
+           $followUp->borrows = $borrow;
+           $followUp->save();
+       }
+
+    }
+
+    public function calculateNetSalary($followUps){
+        foreach ($followUps as $followUp)
+        {
+            $totalEarned = $followUp->daily_wages_earned + $followUp->total_extras + $followUp->incentives;
+            $totalDeducted = $followUp->borrows + $followUp->deductions ;
+            $followUp->net_salary = $totalEarned - $totalDeducted;
+            $followUp->save();
+        }
     }
 
 

@@ -19,8 +19,8 @@ class IncentivesFactory extends Factory
     {
         return [
             'employee_id' => Employee::inRandomOrder()->first()->id,
-            'month' => $this->faker->numberBetween(1, 12),
-            'year' => $this->faker->numberBetween(2020, 2023),
+            'month' => 9,
+            'year' => 2023,
             'incentive' => $this->faker->numberBetween(0, 1000),
             'bonus' => $this->faker->numberBetween(0, 500),
             'regularity' => $this->faker->numberBetween(0, 200),

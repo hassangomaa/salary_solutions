@@ -29,4 +29,6 @@ class FollowUp extends Model
     {
         return $this->hasMany(Incentives::class,'employee_id','employee_id');
     }
+
+
 }
