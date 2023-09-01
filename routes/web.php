@@ -261,10 +261,7 @@ Route::get('/test', function () {
 
 });
 Route::get('/test2', function () {
-//
-$report = new Controllers\ReportController();
-$report->calculateMonthlyReport();
-return Employee::with(['borrows','incentives','followUps','deductions','commissions'])
-    ->where('id',2)->get();
+
+    return Controllers\ReportController::generateExcelFile();
 
 });

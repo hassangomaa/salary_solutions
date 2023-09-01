@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('borrows')->default(0);
             $table->integer('incentives')->default(0)->comment('7wafez');
             $table->integer('deductions')->default(0)->comment('5osomat');
+            $table->integer('total_salary')->default(0);
             $table->integer('net_salary')->default(0);
             $table->softDeletes();
             $table->timestamps();

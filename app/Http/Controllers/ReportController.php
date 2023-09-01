@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReportExport;
 use App\Models\Company;
 use App\Models\Deduction;
 use App\Models\Employee;
@@ -10,9 +11,19 @@ use App\Models\Incentives;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+
+    public static function generateExcelFile()
+    {
+        $month = 9;
+        $year = 2023;
+        $companyId = Session::get('companyId');
+        return Excel::download(new ReportExport($companyId,$month,$year), 'reportt.xlsx');
+
+    }
 
     public function calculateMonthlyReport()
     {
@@ -38,7 +49,7 @@ class ReportController extends Controller
 
         $this->calculateBorrows($companyId,$month,$year);
 
-        $this->calculateNetSalary($followUps);
+        $this->calculateTotalNetSalary($followUps);
 
 
 
@@ -128,11 +139,12 @@ class ReportController extends Controller
 
     }
 
-    public function calculateNetSalary($followUps){
+    public function calculateTotalNetSalary($followUps){
         foreach ($followUps as $followUp)
         {
             $totalEarned = $followUp->daily_wages_earned + $followUp->total_extras + $followUp->incentives;
             $totalDeducted = $followUp->borrows + $followUp->deductions ;
+            $followUp->total_salary = $totalEarned ;
             $followUp->net_salary = $totalEarned - $totalDeducted;
             $followUp->save();
         }
