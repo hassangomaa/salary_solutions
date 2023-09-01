@@ -35,10 +35,10 @@ class DatabaseSeeder extends Seeder
         Company::factory(3)->create();
 
         Employee::factory()->count(10)->create();
-        Commission::factory(50)->create();
+//        Commission::factory(50)->create();
 //        Deduction::factory(50)->create();
-        Borrow::factory(5)->create();
-        Incentives::factory(10)->create();
+//        Borrow::factory(5)->create();
+//        Incentives::factory(10)->create();
 
 
 

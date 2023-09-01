@@ -257,29 +257,14 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 */
 
 Route::get('/test', function () {
-//    Controllers\ReportController::newMonth(1);
+    Controllers\ReportController::newMonth(1);
+
+});
+Route::get('/test2', function () {
+//
 $report = new Controllers\ReportController();
 $report->calculateMonthlyReport();
-    $companyId = 1;
-    return    $followUp = FollowUp::with('employee')->whereHas('employee',function ($query)use ($companyId){
-        $query->where('company_id',$companyId);
-    })->where('month',9)->where('year',2023)->get();
-})->name('test');
-
-
-Route::get('/test2', function () {
-$year = 2023; $month = 9 ; $companyId = 1;
-    $report = new Controllers\ReportController();
-    $followUps = FollowUp::with('employee')
-        ->whereHas('employee', function ($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })
-        ->where('month', $month)
-        ->where('year', $year)
-        ->get();
-
-       $report->calculateNetSalary($followUps);
-
-
+return Employee::with(['borrows','incentives','followUps','deductions','commissions'])
+    ->where('id',2)->get();
 
 });

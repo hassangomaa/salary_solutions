@@ -18,10 +18,13 @@ class BorrowingController extends Controller
     public function index(Request $request)
     {
         $companyId = Session::get('companyId');
-        $month = Carbon::now()->month;
+        $company = Company::find($companyId);
+        $month = ReportController::getCurrentMonth($company);
+        $year = ReportController::getCurrntYear($company);
         if ($request->ajax()) {
             $query = Borrow::with('employee')
-                //->where('month', '>=', $month) 12 < 1 => false
+//                ->where('month',  $month)
+//                ->where('year',  $year)
                 ->whereHas('employee', function ($query) use ($companyId) {
                     $query->where('company_id',$companyId );
                 });

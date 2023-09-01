@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
 use App\Models\Incentives;
@@ -21,10 +22,15 @@ class AttendanceController extends Controller
     public function index()
     {
         $companyId = Session::get('companyId');
+        $company = Company::find($companyId);
+        $month = ReportController::getCurrentMonth($company);
+        $year = ReportController::getCurrntYear($company);
 
         $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);
-        })->where('month',8)
+        })
+            ->where('month',$month)
+            ->where('year',$year)
             ->get();
         $flag = 1 ;
         return view('attendance.index',compact('flag','followUps'));

@@ -116,8 +116,13 @@ class ReportController extends Controller
 
        foreach ($followUps as $followUp)
        {
-           $borrow = $followUp->employee->borrows[0]->amount ?? 0;
-           $followUp->borrows = $borrow;
+           $newBorrow = 0;
+           foreach ($followUp->employee->borrows as $borrow)
+           {
+            $newBorrow += $borrow->amount;
+           }
+
+           $followUp->borrows = $newBorrow;
            $followUp->save();
        }
 
@@ -174,7 +179,7 @@ class ReportController extends Controller
 
     }
 
-    private static function getCurrntYear($company)
+    public static function getCurrntYear($company)
     {
         if (today()->month < 12) {
             return today()->year;
