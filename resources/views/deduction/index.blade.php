@@ -1,50 +1,37 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
-
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Deduction List
+            {{ trans('deductions.deduction_list') }}
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User table-responsive">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Housing</th>
-                    <th>Penalty</th>
-                    <th>Absence</th>
-                    <th>Set Deduction</th>
+                    <th>{{ trans('deductions.id') }}</th>
+                    <th>{{ trans('deductions.name') }}</th>
+                    <th>{{ trans('deductions.position') }}</th>
+                    <th>{{ trans('deductions.housing') }}</th>
+                    <th>{{ trans('deductions.penalty') }}</th>
+                    <th>{{ trans('deductions.absence') }}</th>
+                    <th>{{ trans('deductions.set_deduction') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 @foreach($deductions as $deduction)
                     <tr>
                         <td>{{ $deduction->id }}</td>
                         <td>{{ $deduction->employee->name }}</td>
                         <td>{{ $deduction->employee->position }}</td>
-                        <td>  <input type="number" class="days-input" name="housing" data-housing-id="{{ $deduction->id }}" value="{{ $deduction->housing }}"></td>
-                        <td> <input type="number" class="days-input" name="penalty" data-penalty-id="{{ $deduction->id }}" value="{{ $deduction->penalty }}"></td>
+                        <td><input type="number" class="days-input" name="housing" data-housing-id="{{ $deduction->id }}" value="{{ $deduction->housing }}"></td>
+                        <td><input type="number" class="days-input" name="penalty" data-penalty-id="{{ $deduction->id }}" value="{{ $deduction->penalty }}"></td>
                         <td><input type="number" class="days-input" name="absence" data-absence-id="{{ $deduction->id }}" value="{{ $deduction->absence }}"></td>
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-deduction-id="{{ $deduction->id }}">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-deduction-id="{{ $deduction->id }}">{{ trans('deductions.set_deduction') }}</button>
                         </td>
-
-
                     </tr>
                 @endforeach
                 </tbody>
@@ -53,6 +40,7 @@
         {{ $deductions->links('vendor.pagination.bootstrap-5') }}
     </div>
 @endsection
+
 
 @section('scripts')
         @parent

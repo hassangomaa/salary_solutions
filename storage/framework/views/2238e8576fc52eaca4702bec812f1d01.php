@@ -1,34 +1,24 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-
-
-
-
-
-
-
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            Reports List
+            <?php echo e(trans('reports.reports_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>File Name</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                    <th>Download</th>
+                    <th><?php echo e(trans('reports.id')); ?></th>
+                    <th><?php echo e(trans('reports.file_name')); ?></th>
+                    <th><?php echo e(trans('reports.month')); ?></th>
+                    <th><?php echo e(trans('reports.year')); ?></th>
+                    <th><?php echo e(trans('reports.download')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 <?php $__currentLoopData = $files; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($file->id); ?></td>
@@ -37,7 +27,7 @@
                         <td><?php echo e($file->year); ?></td>
                         <td>
                             <a href="<?php echo e(route('excel.downloadFile',$file->id)); ?>" class="btn btn-primary">
-                                Download Excel
+                                <?php echo e(trans('reports.download')); ?> Excel
                             </a>
                         </td>
                     </tr>
@@ -49,6 +39,5 @@
 
     </div>
 <?php $__env->stopSection(); ?>
-
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laragon_Projects\salary_solutions\resources\views/reports/index.blade.php ENDPATH**/ ?>

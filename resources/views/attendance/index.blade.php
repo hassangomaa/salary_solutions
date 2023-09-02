@@ -1,47 +1,35 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
-
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Attendance List
+            {{ trans('attendance.attendance_list') }}
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Daily Fare</th>
-                    <th>Number of Days</th>
-                    <th>Set Worked Days</th>
-{{--                    <th>Actions</th>--}}
+                    <th>{{ trans('attendance.id') }}</th>
+                    <th>{{ trans('attendance.name') }}</th>
+                    <th>{{ trans('attendance.position') }}</th>
+                    <th>{{ trans('attendance.daily_fare') }}</th>
+                    <th>{{ trans('attendance.number_of_days') }}</th>
+                    <th>{{ trans('attendance.set_worked_days') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 @foreach($followUps as $followUp)
                     <tr>
                         <td>{{ $followUp->id }}</td>
                         <td>{{ $followUp->employee->name }}</td>
                         <td>{{ $followUp->employee->position }}</td>
                         <td>{{ $followUp->employee->daily_fare }}</td>
-                        <td  id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }}</td>
+                        <td id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }}</td>
                         <td>
-                            <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="Enter days">
-                            <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">Save</button>
+                            <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
+                            <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('attendance.save') }}</button>
                         </td>
                     </tr>
                 @endforeach
@@ -50,6 +38,7 @@
         </div>
     </div>
 @endsection
+
 
 @section('scripts')
         @parent

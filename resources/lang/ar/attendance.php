@@ -31,4 +31,8 @@ return [
     'update' => 'تحديث',
     'title' => 'قائمة الحضور',
 
+    'number_of_days' => 'عدد الأيام',
+    'set_worked_days' => 'تحديد أيام العمل',
+    'enter_days' => 'أدخل الأيام',
+
 ];

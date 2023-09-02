@@ -1,46 +1,35 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-
-
-
-
-
-
-
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            Attendance List
+            <?php echo e(trans('attendance.attendance_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Daily Fare</th>
-                    <th>Number of Days</th>
-                    <th>Set Worked Days</th>
-
+                    <th><?php echo e(trans('attendance.id')); ?></th>
+                    <th><?php echo e(trans('attendance.name')); ?></th>
+                    <th><?php echo e(trans('attendance.position')); ?></th>
+                    <th><?php echo e(trans('attendance.daily_fare')); ?></th>
+                    <th><?php echo e(trans('attendance.number_of_days')); ?></th>
+                    <th><?php echo e(trans('attendance.set_worked_days')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 <?php $__currentLoopData = $followUps; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $followUp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($followUp->id); ?></td>
                         <td><?php echo e($followUp->employee->name); ?></td>
                         <td><?php echo e($followUp->employee->position); ?></td>
                         <td><?php echo e($followUp->employee->daily_fare); ?></td>
-                        <td  id="attended-days-<?php echo e($followUp->id); ?>"><?php echo e($followUp->attended_days); ?></td>
+                        <td id="attended-days-<?php echo e($followUp->id); ?>"><?php echo e($followUp->attended_days); ?></td>
                         <td>
-                            <input type="number" class="days-input" name="numberOfDays" data-followUp-id="<?php echo e($followUp->id); ?>" placeholder="Enter days">
-                            <button class="btn btn-primary save-days-btn" data-followUp-id="<?php echo e($followUp->id); ?>">Save</button>
+                            <input type="number" class="days-input" name="numberOfDays" data-followUp-id="<?php echo e($followUp->id); ?>" placeholder="<?php echo e(trans('attendance.enter_days')); ?>">
+                            <button class="btn btn-primary save-days-btn" data-followUp-id="<?php echo e($followUp->id); ?>"><?php echo e(trans('attendance.save')); ?></button>
                         </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -49,6 +38,7 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
 
 <?php $__env->startSection('scripts'); ?>
         <?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>

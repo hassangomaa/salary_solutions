@@ -1,52 +1,39 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-
-
-
-
-
-
-
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-           Incentives List
+            <?php echo e(trans('incentive.incentives_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User table-responsive">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>incentive</th>
-                    <th>bonus</th>
-                    <th>regularity</th>
-                    <th>gift</th>
-                    <th>Set Incentives</th>
+                    <th><?php echo e(trans('incentive.id')); ?></th>
+                    <th><?php echo e(trans('incentive.name')); ?></th>
+                    <th><?php echo e(trans('incentive.position')); ?></th>
+                    <th><?php echo e(trans('incentive.incentive')); ?></th>
+                    <th><?php echo e(trans('incentive.bonus')); ?></th>
+                    <th><?php echo e(trans('incentive.regularity')); ?></th>
+                    <th><?php echo e(trans('incentive.gift')); ?></th>
+                    <th><?php echo e(trans('incentive.set_incentives')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 <?php $__currentLoopData = $incentives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $incentive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($incentive->id); ?></td>
                         <td><?php echo e($incentive->employee->name); ?></td>
                         <td><?php echo e($incentive->employee->position); ?></td>
-                        <td>  <input type="number" class="days-input" name="incentive" data-incentive-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->incentive); ?>"></td>
-                        <td> <input type="number" class="days-input" name="bonus" data-bonus-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->bonus); ?>"></td>
+                        <td><input type="number" class="days-input" name="incentive" data-incentive-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->incentive); ?>"></td>
+                        <td><input type="number" class="days-input" name="bonus" data-bonus-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->bonus); ?>"></td>
                         <td><input type="number" class="days-input" name="regularity" data-regularity-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->regularity); ?>"></td>
                         <td><input type="number" class="days-input" name="gift" data-gift-id="<?php echo e($incentive->id); ?>" value="<?php echo e($incentive->gift); ?>"></td>
-
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-incentive-id="<?php echo e($incentive->id); ?>">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-incentive-id="<?php echo e($incentive->id); ?>"><?php echo e(trans('incentive.set_incentives')); ?></button>
                         </td>
-
-
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>

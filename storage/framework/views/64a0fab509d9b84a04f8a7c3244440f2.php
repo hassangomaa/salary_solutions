@@ -1,49 +1,37 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-
-
-
-
-
-
-
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            Deduction List
+            <?php echo e(trans('deductions.deduction_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User table-responsive">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Housing</th>
-                    <th>Penalty</th>
-                    <th>Absence</th>
-                    <th>Set Deduction</th>
+                    <th><?php echo e(trans('deductions.id')); ?></th>
+                    <th><?php echo e(trans('deductions.name')); ?></th>
+                    <th><?php echo e(trans('deductions.position')); ?></th>
+                    <th><?php echo e(trans('deductions.housing')); ?></th>
+                    <th><?php echo e(trans('deductions.penalty')); ?></th>
+                    <th><?php echo e(trans('deductions.absence')); ?></th>
+                    <th><?php echo e(trans('deductions.set_deduction')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 <?php $__currentLoopData = $deductions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deduction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($deduction->id); ?></td>
                         <td><?php echo e($deduction->employee->name); ?></td>
                         <td><?php echo e($deduction->employee->position); ?></td>
-                        <td>  <input type="number" class="days-input" name="housing" data-housing-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->housing); ?>"></td>
-                        <td> <input type="number" class="days-input" name="penalty" data-penalty-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->penalty); ?>"></td>
+                        <td><input type="number" class="days-input" name="housing" data-housing-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->housing); ?>"></td>
+                        <td><input type="number" class="days-input" name="penalty" data-penalty-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->penalty); ?>"></td>
                         <td><input type="number" class="days-input" name="absence" data-absence-id="<?php echo e($deduction->id); ?>" value="<?php echo e($deduction->absence); ?>"></td>
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-deduction-id="<?php echo e($deduction->id); ?>">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-deduction-id="<?php echo e($deduction->id); ?>"><?php echo e(trans('deductions.set_deduction')); ?></button>
                         </td>
-
-
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
@@ -53,6 +41,7 @@
 
     </div>
 <?php $__env->stopSection(); ?>
+
 
 <?php $__env->startSection('scripts'); ?>
         <?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>

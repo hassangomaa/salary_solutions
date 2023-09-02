@@ -1,53 +1,39 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
-
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-           Incentives List
+            {{ trans('incentive.incentives_list') }}
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User table-responsive">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>incentive</th>
-                    <th>bonus</th>
-                    <th>regularity</th>
-                    <th>gift</th>
-                    <th>Set Incentives</th>
+                    <th>{{ trans('incentive.id') }}</th>
+                    <th>{{ trans('incentive.name') }}</th>
+                    <th>{{ trans('incentive.position') }}</th>
+                    <th>{{ trans('incentive.incentive') }}</th>
+                    <th>{{ trans('incentive.bonus') }}</th>
+                    <th>{{ trans('incentive.regularity') }}</th>
+                    <th>{{ trans('incentive.gift') }}</th>
+                    <th>{{ trans('incentive.set_incentives') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 @foreach($incentives as $incentive)
                     <tr>
                         <td>{{ $incentive->id }}</td>
                         <td>{{ $incentive->employee->name }}</td>
                         <td>{{ $incentive->employee->position }}</td>
-                        <td>  <input type="number" class="days-input" name="incentive" data-incentive-id="{{ $incentive->id }}" value="{{ $incentive->incentive }}"></td>
-                        <td> <input type="number" class="days-input" name="bonus" data-bonus-id="{{ $incentive->id }}" value="{{ $incentive->bonus }}"></td>
+                        <td><input type="number" class="days-input" name="incentive" data-incentive-id="{{ $incentive->id }}" value="{{ $incentive->incentive }}"></td>
+                        <td><input type="number" class="days-input" name="bonus" data-bonus-id="{{ $incentive->id }}" value="{{ $incentive->bonus }}"></td>
                         <td><input type="number" class="days-input" name="regularity" data-regularity-id="{{ $incentive->id }}" value="{{ $incentive->regularity }}"></td>
                         <td><input type="number" class="days-input" name="gift" data-gift-id="{{ $incentive->id }}" value="{{ $incentive->gift }}"></td>
-{{--                    --}}
                         <td>
-                            <button class="btn btn-primary save-days-btn" data-incentive-id="{{ $incentive->id }}">Save</button>
+                            <button class="btn btn-primary save-days-btn" data-incentive-id="{{ $incentive->id }}">{{ trans('incentive.set_incentives') }}</button>
                         </td>
-
-
                     </tr>
                 @endforeach
                 </tbody>

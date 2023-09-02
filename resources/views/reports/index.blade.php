@@ -1,35 +1,24 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
-
-{{--    <div style="margin-bottom: 10px;" class="row">--}}
-{{--        <!-- Add Company Button -->--}}
-{{--        <div class="col-lg-12">--}}
-{{--            <a class="btn btn-success" href="{{ route('company.create') }}">--}}
-{{--                Add Employee Attendance--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Reports List
+            {{ trans('reports.reports_list') }}
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>File Name</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                    <th>Download</th>
+                    <th>{{ trans('reports.id') }}</th>
+                    <th>{{ trans('reports.file_name') }}</th>
+                    <th>{{ trans('reports.month') }}</th>
+                    <th>{{ trans('reports.year') }}</th>
+                    <th>{{ trans('reports.download') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 @foreach($files as $file)
                     <tr>
                         <td>{{ $file->id }}</td>
@@ -38,7 +27,7 @@
                         <td>{{ $file->year }}</td>
                         <td>
                             <a href="{{ route('excel.downloadFile',$file->id) }}" class="btn btn-primary">
-                                Download Excel
+                                {{ trans('reports.download') }} Excel
                             </a>
                         </td>
                     </tr>
@@ -49,4 +38,3 @@
         {{ $files->links('vendor.pagination.bootstrap-5') }}
     </div>
 @endsection
-

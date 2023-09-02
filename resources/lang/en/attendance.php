@@ -30,5 +30,8 @@ return [
     'edit_attendance' => 'Edit Attendance',
     'update' => 'Update',
     'title' => 'Attendance List',
+    'number_of_days' => 'Number of Days',
+    'set_worked_days' => 'Set Worked Days',
+    'enter_days' => 'Enter days',
 
 ];

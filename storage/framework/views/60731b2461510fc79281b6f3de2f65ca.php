@@ -1,49 +1,36 @@
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.menu',[$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-
-
-
-
-
-
-
+    <?php echo $__env->make('partials.menu', [$flag], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="card">
         <div class="card-header">
-            Extra Hours List
+            <?php echo e(trans('extra-hours.extra_hours_list')); ?>
+
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
-                <!-- Table Header Columns -->
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Extra Hour Fare</th>
-                    <th>Number of Extra Hours</th>
-                    <th>Set Extra Hours</th>
-
+                    <th><?php echo e(trans('extra-hours.id')); ?></th>
+                    <th><?php echo e(trans('extra-hours.name')); ?></th>
+                    <th><?php echo e(trans('extra-hours.position')); ?></th>
+                    <th><?php echo e(trans('extra-hours.extra_hour_fare')); ?></th>
+                    <th><?php echo e(trans('extra-hours.number_of_extra_hours')); ?></th>
+                    <th><?php echo e(trans('extra-hours.set_extra_hours')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through companies -->
                 <?php $__currentLoopData = $followUps; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $followUp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($followUp->id); ?></td>
                         <td><?php echo e($followUp->employee->name); ?></td>
                         <td><?php echo e($followUp->employee->position); ?></td>
                         <td><?php echo e($followUp->employee->overtime_hour_fare); ?></td>
-                        <td  id="attended-hours-<?php echo e($followUp->id); ?>"><?php echo e($followUp->extra_hours); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                        <td id="attended-hours-<?php echo e($followUp->id); ?>"><?php echo e($followUp->extra_hours); ?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
                         <td>
-                            <input type="number" class="days-input" name="numberOfHours" data-followUp-id="<?php echo e($followUp->id); ?>" placeholder="Enter days">
-                            <button class="btn btn-primary save-days-btn" data-followUp-id="<?php echo e($followUp->id); ?>">Save</button>
+                            <input type="number" class="days-input" name="numberOfHours" data-followUp-id="<?php echo e($followUp->id); ?>" placeholder="<?php echo e(trans('extra-hours.enter_hours')); ?>">
+                            <button class="btn btn-primary save-days-btn" data-followUp-id="<?php echo e($followUp->id); ?>"><?php echo e(trans('extra-hours.save')); ?></button>
                         </td>
-
-
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
