@@ -11,10 +11,14 @@ class Deduction extends Model
     use HasFactory;
     use SoftDeletes; // Use the trait
 
-    protected $fillable = ['employee_id', 'amount', 'reason'];
+    protected $fillable = ['employee_id','month' ,'year','absence','penalty','housing'];
 
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public static function reason(){
+        return ['خصم سكن', 'خصم غياب', 'خصم جزاءات'];
     }
 }

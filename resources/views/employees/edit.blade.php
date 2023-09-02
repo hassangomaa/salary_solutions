@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Edit Employee
+            {{ trans('employee.edit_employee') }}
         </div>
 
         <div class="card-body">
@@ -12,7 +12,7 @@
                 @method('PUT')
                 @csrf
                 <div class="form-group">
-                    <label class="required" for="name">Name</label>
+                    <label class="required" for="name">{{ trans('employee.name') }}</label>
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
                            id="name" value="{{ old('name', $employee->name) }}" required>
                     @if($errors->has('name'))
@@ -20,7 +20,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label class="required" for="daily_fare">Daily Fare</label>
+                    <label class="required" for="daily_fare">{{ trans('employee.daily_fare') }}</label>
                     <input class="form-control {{ $errors->has('daily_fare') ? 'is-invalid' : '' }}" type="text"
                            name="daily_fare" id="daily_fare"
                            value="{{ old('daily_fare', $employee->daily_fare) }}" required>
@@ -30,16 +30,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="credit">Credit</label>
-                    <input class="form-control {{ $errors->has('credit') ? 'is-invalid' : '' }}" type="text"
-                           name="credit" id="credit" value="{{ old('credit', $employee->credit) }}"
+                    <label class="required" for="overtime_hour_fare">{{ trans('employee.overtime_hour_fare') }}</label>
+                    <input class="form-control {{ $errors->has('overtime_hour_fare') ? 'is-invalid' : '' }}" type="text"
+                           name="overtime_hour_fare" id="overtime_hour_fare" value="{{ old('overtime_hour_fare', $employee->overtime_hour_fare) }}"
                            required>
-                    @if($errors->has('credit'))
-                        <span class="text-danger">{{ $errors->first('credit') }}</span>
+                    @if($errors->has('overtime_hour_fare'))
+                        <span class="text-danger">{{ $errors->first('overtime_hour_fare') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
-                    <label class="required" for="position">Position</label>
+                    <label class="required" for="position">{{ trans('employee.position') }}</label>
                     <input class="form-control {{ $errors->has('position') ? 'is-invalid' : '' }}" type="text"
                            name="position" id="position" value="{{ old('position', $employee->position) }}"
                            required>
@@ -48,9 +48,8 @@
                     @endif
                 </div>
 
-
                 <div class="form-group">
-                    <label for="phone">Phone</label>
+                    <label for="phone">{{ trans('employee.phone') }}</label>
                     <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone"
                            id="phone" value="{{ old('phone', $employee->phone) }}">
                     @if($errors->has('phone'))
@@ -58,7 +57,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="address">{{ trans('employee.address') }}</label>
                     <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" name="address"
                               id="address">{{ old('address', $employee->address) }}</textarea>
                     @if($errors->has('address'))
@@ -67,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">
-                        Save
+                        {{ trans('global.save') }}
                     </button>
                 </div>
             </form>

@@ -24,7 +24,7 @@ class EmployeeFactory extends Factory
                 'name' => $this->faker->name,
                 'position' => $this->faker->jobTitle,
                 'daily_fare' => $this->faker->randomNumber(2),
-                'debit' => $this->faker->randomNumber(3),
+                'overtime_hour_fare' => $this->faker->randomNumber(3),
                 'phone' => $this->faker->randomNumber(9),
                 'address' => $this->faker->address,
                 'company_id' => Company::inRandomOrder()->first()->id,

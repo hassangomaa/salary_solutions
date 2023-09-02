@@ -34,9 +34,9 @@
                     <th>
                         {{ trans('cruds.user.fields.email_verified_at') }}
                     </th>
-                    <th>
-                        {{ trans('cruds.user.fields.roles') }}
-                    </th>
+{{--                    <th>--}}
+{{--                        {{ trans('cruds.user.fields.roles') }}--}}
+{{--                    </th>--}}
                     <th>
                         {{ trans('cruds.user.fields.phone') }}
                     </th>
@@ -62,14 +62,14 @@
                     <td>
                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                     </td>
-                    <td>
-                        <select class="search">
-                            <option value>{{ trans('global.all') }}</option>
-                            @foreach($roles as $key => $item)
-                                <option value="{{ $item->title }}">{{ $item->title }}</option>
-                            @endforeach
-                        </select>
-                    </td>
+{{--                    <td>--}}
+{{--                        <select class="search">--}}
+{{--                            <option value>{{ trans('global.all') }}</option>--}}
+{{--                            @foreach($roles as $key => $item)--}}
+{{--                                <option value="{{ $item->title }}">{{ $item->title }}</option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                    </td>--}}
                     <td>
                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                     </td>
@@ -135,7 +135,7 @@
 { data: 'name', name: 'name' },
 { data: 'email', name: 'email' },
 { data: 'email_verified_at', name: 'email_verified_at' },
-{ data: 'roles', name: 'roles.title' },
+// { data: 'roles', name: 'roles.title' },
 { data: 'phone', name: 'phone' },
 { data: 'address', name: 'address' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }

@@ -9,7 +9,7 @@
   <!-- إضافة الـ CSS المخصص إذا كنت بحاجة إليه -->
 </head>
 <body dir="rtl">
-        <a href="{{ route('welcome') }}"  class="btn btn-success">
+        <a href="{{route('loginBlade')}}"  class="btn btn-success">
             دخول
         </a>
 

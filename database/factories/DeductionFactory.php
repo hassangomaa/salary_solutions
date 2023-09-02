@@ -17,11 +17,14 @@ class DeductionFactory extends Factory
      */
     public function definition(): array
     {
-              return [
-                        'employee_id' => Employee::all()->random()->id,
-                        'amount' => $this->faker->numberBetween(100, 1000),
-                        'reason' => $this->faker->sentence,
-                        // Other fields and their corresponding fake data here
-                    ];
+        return [
+            'employee_id' => Employee::all()->random()->id,
+            'month' => 9,
+            'year' => 2023,
+            'absence' => $this->faker->numberBetween(100, 1000),
+            'penalty' => $this->faker->numberBetween(100, 1000),
+            'housing' => $this->faker->numberBetween(100, 1000),
+            // Other fields and their corresponding fake data here
+        ];
     }
 }

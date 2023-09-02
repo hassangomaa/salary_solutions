@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu',[$flag])
+    @include('partials.menu', [$flag])
 
     <div class="card">
         <div class="card-header">
-            Show Employee
+            {{ trans('employee.show_employee') }}
         </div>
 
         <div class="card-body">
@@ -18,7 +18,7 @@
                     <tbody>
                     <tr>
                         <th>
-                            ID
+                            {{ trans('employee.id') }}
                         </th>
                         <td>
                             {{ $employee->id }}
@@ -26,7 +26,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Name
+                            {{ trans('employee.name') }}
                         </th>
                         <td>
                             {{ $employee->name }}
@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Position
+                            {{ trans('employee.position') }}
                         </th>
                         <td>
                             {{ $employee->position }}
@@ -43,26 +43,25 @@
 
                     <tr>
                         <th>
-                            Daily Fare
+                            {{ trans('employee.daily_fare') }}
                         </th>
                         <td>
                             {{ $employee->daily_fare }}
                         </td>
                     </tr>
 
-{{--                    <tr>--}}
-{{--                        <th>--}}
-{{--                            Credit--}}
-{{--                        </th>--}}
-{{--                        <td>--}}
-{{--                            {{ $employee->credit }}--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-
+                    <tr>
+                        <th>
+                            {{ trans('employee.overtime_hour_fare') }}
+                        </th>
+                        <td>
+                            {{ $employee->overtime_hour_fare }}
+                        </td>
+                    </tr>
 
                     <tr>
                         <th>
-                            Phone
+                            {{ trans('employee.phone') }}
                         </th>
                         <td>
                             {{ $employee->phone }}
@@ -70,7 +69,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Address
+                            {{ trans('employee.address') }}
                         </th>
                         <td>
                             {{ $employee->address }}
@@ -78,42 +77,13 @@
                     </tr>
                     </tbody>
                 </table>
-                {{--                <div class="form-group">--}}
-                {{--                    <a class="btn btn-default" href="{{ route('employee.index') }}">--}}
-                {{--                       Go Back--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
 
-    <div class="card">
-        <div class="card-header">
-            {{ trans('global.relatedData') }}
-        </div>
-        <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#commissions" role="tab" data-toggle="tab">
-                    Commissions
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#deductions" role="tab" data-toggle="tab">
-                    Deductions
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" role="tabpanel" id="commissions">
-                @includeIf('commission.index', ['commissions' => $employee->commissions,'employeeId'=>$employee->id])
-            </div>
-            <div class="tab-pane" role="tabpanel" id="deductions">
-                @includeIf('deduction.index', ['deductions' => $employee->deductions,'employeeId'=>$employee->id])
-            </div>
-        </div>
-    </div>
-
-    <script>
+<script>
         $(document).ready(function() {
             $("#relationship-tabs a").click(function(e) {
                 e.preventDefault();

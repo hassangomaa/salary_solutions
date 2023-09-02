@@ -1,98 +1,80 @@
-<div class="m-3">
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('deduction.create', $employeeId) }}">
-                Add Deduction
-            </a>
-        </div>
-    </div>
+@extends('layouts.admin')
+@section('content')
+    @include('partials.menu', [$flag])
+
     <div class="card">
         <div class="card-header">
-            Deduction List
+            {{ trans('deductions.deduction_list') }}
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover datatable datatable-sellerProducts">
-                    <thead>
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User table-responsive">
+                <thead>
+                <tr>
+                    <th>{{ trans('deductions.id') }}</th>
+                    <th>{{ trans('deductions.name') }}</th>
+                    <th>{{ trans('deductions.position') }}</th>
+                    <th>{{ trans('deductions.housing') }}</th>
+                    <th>{{ trans('deductions.penalty') }}</th>
+                    <th>{{ trans('deductions.absence') }}</th>
+                    <th>{{ trans('deductions.set_deduction') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($deductions as $deduction)
                     <tr>
-                        <th width="10">
-
-                        </th>
-                        <th>
-                            {{ trans('cruds.product.fields.id') }}
-                        </th>
-                        <th>
-                            Amount
-                        </th>
-                        <th>
-                            Reason
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Actions
-                        </th>
-
+                        <td>{{ $deduction->id }}</td>
+                        <td>{{ $deduction->employee->name }}</td>
+                        <td>{{ $deduction->employee->position }}</td>
+                        <td><input type="number" class="days-input" name="housing" data-housing-id="{{ $deduction->id }}" value="{{ $deduction->housing }}"></td>
+                        <td><input type="number" class="days-input" name="penalty" data-penalty-id="{{ $deduction->id }}" value="{{ $deduction->penalty }}"></td>
+                        <td><input type="number" class="days-input" name="absence" data-absence-id="{{ $deduction->id }}" value="{{ $deduction->absence }}"></td>
+                        <td>
+                            <button class="btn btn-primary save-days-btn" data-deduction-id="{{ $deduction->id }}">{{ trans('deductions.set_deduction') }}</button>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($deductions as $key => $deduction)
-                        <tr data-entry-id="{{ $deduction->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $deduction->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $deduction->amount ?? '' }}
-                            </td>
-                            <td>
-                                {{ $deduction->reason ?? '' }}
-                            </td>
-                            <td>
-                                {{ $deduction->created_at ?? '' }}
-                            </td>
-
-                            <td>
-                                <a class="btn btn-xs btn-primary" href="{{ route('deduction.show', $deduction->id) }}">
-                                    {{ trans('global.view') }}
-                                </a>
-                                <a class="btn btn-xs btn-info" href="{{ route('deduction.edit', $deduction->id) }}">
-                                    {{ trans('global.edit') }}
-                                </a>
-                                <form action="{{ route('deduction.destroy', $deduction->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                    @method('DELETE')
-                                    @csrf
-                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                </form>
-                            </td>
-
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
+                @endforeach
+                </tbody>
+            </table>
         </div>
+        {{ $deductions->links('vendor.pagination.bootstrap-5') }}
     </div>
-</div>
-@section('scripts')
-    @parent
-    <script>
-        $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
-            $.extend(true, $.fn.dataTable.defaults, {
-                orderCellsTop: true,
-                order: [[1, 'desc']],
-                pageLength: 100,
-                bDestroy: true,
-            });
-            let table = $('.datatable-sellerProducts:not(.ajaxTable)').DataTable({ buttons: dtButtons });
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function (e) {
-                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-            });
-        });
-    </script>
 @endsection
+
+
+@section('scripts')
+        @parent
+        <script>
+            $(function () {
+                $('.datatable-User').on('click', '.save-days-btn', function () {
+                    const deductionId = $(this).attr('data-deduction-id');
+                    const housing = $('[name="housing"][data-housing-id="' + deductionId + '"]').val();
+                    const penalty = $('[name="penalty"][data-penalty-id="' + deductionId + '"]').val();
+                    const absence = $('[name="absence"][data-absence-id="' + deductionId + '"]').val();
+
+                    // Perform Ajax Request
+                    $.ajax({
+                        url: "{{ route('deduction.addDeduction') }}", // Change this to your actual route
+                        method: 'POST',
+                        data: {
+                            deduction_id: deductionId,
+                            housing: housing,
+                            penalty: penalty,
+                            absence: absence,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            // Handle success response, if needed
+                            console.log(response);
+                            $('.save-days-btn[data-deduction-id="' + deductionId + '"]').css('background-color', 'red');
+
+                        },
+                        error: function (xhr) {
+                            // Handle error response, if needed
+                            console.error(xhr);
+                        }
+                    });
+                });
+            });
+        </script>
+    @endsection

@@ -1,11 +1,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 917px;">
     <!-- Brand Logo -->
     <div class="d-flex justify-content-center">
-        <a href="#" class="brand-link">
+        <a href="/admin" class="brand-link">
             <span class="brand-text font-weight-light">{{ trans('panel.site_title') }}</span>
         </a>
     </div>
-
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -33,10 +32,44 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Companies Management
+                                {{ trans('sidebar.companies_management') }}
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route("users.index") }}"
+                           class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fas fa-user">
+
+                            </i>
+                            <p>
+                                {{ trans('sidebar.users') }}
+                            </p>
+                        </a>
+                    </li>
+                    @if( Config::get('app.locale') == 'ar')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
+                               href="{{ route("setLanguage",2) }}">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    تغيير للغة الانجليزية
+                                </p>
+                            </a>
+                        </li>
+                    @elseif(Config::get('app.locale') == 'en')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
+                               href="{{ route("setLanguage",1) }}">
+                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                </i>
+                                <p>
+                                    Change To Arabic Language
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"
@@ -44,7 +77,7 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Show Employees
+                                {{ trans('sidebar.show_employees') }}
                             </p>
                         </a>
                     </li>
@@ -56,94 +89,121 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                Attendance
+                                {{ trans('sidebar.attendance') }}
                             </p>
                         </a>
                     </li>
 
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("extraHours.index") ? "active" : "" }}"
+                           href="{{ route("extraHours.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.extraHours') }}
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("incentive.index") ? "active" : "" }}"
+                           href="{{ route("incentive.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.incentive') }}
+                            </p>
+                        </a>
+                    </li>         <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("deduction.index") ? "active" : "" }}"
+                           href="{{ route("deduction.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.deduction') }}
+                            </p>
+                        </a>
+                    </li>
 
-                        {{--                    @can('user_management_access')--}}
-                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
-                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"
-                               href="#">
-                                <i class="fa-fw nav-icon fas fa-users">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("borrowing.index") ? "active" : "" }}"
+                           href="{{ route("borrowing.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.borrowing') }}
+                            </p>
+                        </a>
+                    </li>
 
-                                </i>
-                                <p>
-                                    {{--                                    {{ trans('cruds.userManagement.title') }}--}}
-                                    User Management
-                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                {{--                                @can('permission_access')--}}
-                                {{--                                    <li class="nav-item">--}}
-                                {{--                                        <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">--}}
-                                {{--                                            <i class="fa-fw nav-icon fas fa-unlock-alt">--}}
+{{--                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"--}}
+{{--                        data-accordion="false">--}}
 
-                                {{--                                            </i>--}}
-                                {{--                                            <p>--}}
-                                {{--                                                {{ trans('cruds.permission.title') }}--}}
-                                {{--                                                    Permissions--}}
-                                {{--                                            </p>--}}
-                                {{--                                        </a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                @endcan--}}
-                                {{--                                @can('role_access')--}}
-                                {{--                                    <li class="nav-item">--}}
-                                {{--                                        <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">--}}
-                                {{--                                            <i class="fa-fw nav-icon fas fa-briefcase">--}}
+{{--                        <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">--}}
+{{--                            <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"--}}
+{{--                               href="#">--}}
+{{--                                <i class="fa-fw nav-icon fas fa-users">--}}
 
-                                {{--                                            </i>--}}
-                                {{--                                            <p>--}}
-                                {{--                                                {{ trans('cruds.role.title') }}--}}
-                                {{--                                                Roles--}}
-                                {{--                                            </p>--}}
-                                {{--                                        </a>--}}
-                                {{--                                    </li>--}}
-                                {{--                                @endcan--}}
-                                {{--                                @can('user_access')--}}
-                                <li class="nav-item">
-                                    <a href="{{ route("users.index") }}"
-                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
-                                        <i class="fa-fw nav-icon fas fa-user">
+{{--                                </i>--}}
+{{--                                <p>--}}
+{{--                                    {{ trans('sidebar.user_management') }}--}}
+{{--                                    <i class="right fa fa-fw fa-angle-left nav-icon"></i>--}}
+{{--                                </p>--}}
+{{--                            </a>--}}
+{{--                            <ul class="nav nav-treeview">--}}
 
-                                        </i>
-                                        <p>
-                                            {{--                                                {{ trans('cruds.user.title') }}--}}
-                                            Users
-                                        </p>
-                                    </a>
-                                </li>
-                                {{--                                @endcan--}}
-                            </ul>
-                        </li>        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="{{ route("users.index") }}"--}}
+{{--                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">--}}
+{{--                                        <i class="fa-fw nav-icon fas fa-user">--}}
 
-                        {{--                    @can('user_management_access')--}}
+{{--                                        </i>--}}
+{{--                                        <p>--}}
+{{--                                            {{ trans('sidebar.users') }}--}}
+{{--                                        </p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
 
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs("companyPayments.index") ? "active" : "" }}"
-                               href="{{ route("companyPayments.index") }}">
-                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                </i>
-                                <p>
-                                    Payments
-                                </p>
-                            </a>
-                        </li>
+
                             <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
-                               href="{{ route("company.index") }}">
-                                <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                                </i>
-                                <p>
-                                    Back To Companies
-                                </p>
-                            </a>
-                        </li>
+                                <a class="nav-link {{ request()->routeIs("companyPayments.index") ? "active" : "" }}"
+                                   href="{{ route("companyPayments.index") }}">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        {{ trans('sidebar.payments') }}
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs("excel.index") ? "active" : "" }}"
+                                   href="{{ route("excel.index") }}">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        {{ trans('sidebar.reports') }}
+                                    </p>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("home") ? "active" : "" }}"
+                           href="{{ route("home") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.backToCompanies') }}
+
+                            </p>
+                        </a>
+                    </li>
+                        @endif
                         <li class="nav-item">
                             <a href="#" class="nav-link"
                                onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
@@ -154,175 +214,8 @@
                                 <p>{{ trans('global.logout') }}</p>
                             </a>
                         </li>
-
                     </ul>
-            @endif
-
-            {{--                @can('user_management_access')--}}
-            {{--                    <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">--}}
-            {{--                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"--}}
-            {{--                           href="#">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-users">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.userManagement.title') }}--}}
-            {{--                                <i class="right fa fa-fw fa-angle-left nav-icon"></i>--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                        <ul class="nav nav-treeview">--}}
-            {{--                            @can('permission_access')--}}
-            {{--                                <li class="nav-item">--}}
-            {{--                                    <a href="{{ route("admin.permissions.index") }}"--}}
-            {{--                                       class="nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">--}}
-            {{--                                        <i class="fa-fw nav-icon fas fa-unlock-alt">--}}
-
-            {{--                                        </i>--}}
-            {{--                                        <p>--}}
-            {{--                                            {{ trans('cruds.permission.title') }}--}}
-            {{--                                        </p>--}}
-            {{--                                    </a>--}}
-            {{--                                </li>--}}
-            {{--                            @endcan--}}
-            {{--                            @can('role_access')--}}
-            {{--                                <li class="nav-item">--}}
-            {{--                                    <a href="{{ route("admin.roles.index") }}"--}}
-            {{--                                       class="nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">--}}
-            {{--                                        <i class="fa-fw nav-icon fas fa-briefcase">--}}
-
-            {{--                                        </i>--}}
-            {{--                                        <p>--}}
-            {{--                                            {{ trans('cruds.role.title') }}--}}
-            {{--                                        </p>--}}
-            {{--                                    </a>--}}
-            {{--                                </li>--}}
-            {{--                            @endcan--}}
-            {{--                            @can('user_access')--}}
-            {{--                                <li class="nav-item">--}}
-            {{--                                    <a href="{{ route("users.index") }}"--}}
-            {{--                                       class="nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">--}}
-            {{--                                        <i class="fa-fw nav-icon fas fa-user">--}}
-
-            {{--                                        </i>--}}
-            {{--                                        <p>--}}
-            {{--                                            {{ trans('cruds.user.title') }}--}}
-            {{--                                        </p>--}}
-            {{--                                    </a>--}}
-            {{--                                </li>--}}
-            {{--                            @endcan--}}
-            {{--                        </ul>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('product_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.products.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/products") || request()->is("admin/products/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fab fa-product-hunt">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.product.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-
-            {{--                @can('brand_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.brands.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/brands") || request()->is("admin/brands/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.brand.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('modeel_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.modeels.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/modeels") || request()->is("admin/modeels/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.modeel.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('year_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.years.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/years") || request()->is("admin/years/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.year.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('engine_capacity_cc_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.engine-capacity-ccs.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/engine-capacity-ccs") || request()->is("admin/engine-capacity-ccs/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.engineCapacityCc.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('service_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.services.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/services") || request()->is("admin/services/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.service.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @can('variation_access')--}}
-            {{--                    <li class="nav-item">--}}
-            {{--                        <a href="{{ route("admin.variations.index") }}"--}}
-            {{--                           class="nav-link {{ request()->is("admin/variations") || request()->is("admin/variations/*") ? "active" : "" }}">--}}
-            {{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-            {{--                            </i>--}}
-            {{--                            <p>--}}
-            {{--                                {{ trans('cruds.variation.title') }}--}}
-            {{--                            </p>--}}
-            {{--                        </a>--}}
-            {{--                    </li>--}}
-            {{--                @endcan--}}
-            {{--                @php($unread = \App\Models\QaTopic::unreadCount())--}}
-
-            {{--                @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))--}}
-            {{--                    @can('profile_password_edit')--}}
-            {{--                        <li class="nav-item">--}}
-            {{--                            <a class="nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'active' : '' }}"--}}
-            {{--                               href="{{ route('profile.password.edit') }}">--}}
-            {{--                                <i class="fa-fw fas fa-key nav-icon">--}}
-            {{--                                </i>--}}
-            {{--                                <p>--}}
-            {{--                                    {{ trans('global.change_password') }}--}}
-            {{--                                </p>--}}
-            {{--                            </a>--}}
-            {{--                        </li>--}}
-            {{--                    @endcan--}}
-            {{--                @endif--}}
-
+            </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>

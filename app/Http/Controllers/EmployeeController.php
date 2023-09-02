@@ -12,6 +12,7 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
             $query = Employee::select('*')->where('company_id', $companyId);
@@ -38,8 +39,8 @@ class EmployeeController extends Controller
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
-            $table->editColumn('debit', function ($row) {
-                return $row->debit ? $row->debit : '';
+            $table->editColumn('overtime_hour_fare', function ($row) {
+                return $row->overtime_hour_fare ? $row->overtime_hour_fare : '';
             });
 
 //            $table->editColumn('amount', function ($row) {
@@ -64,6 +65,8 @@ class EmployeeController extends Controller
         $flag = 1;
         return view('employees.index', compact('flag'));//, compact('roles'));
     }
+
+
 
     public function create()
     {
@@ -115,6 +118,28 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return back();
+    }
+
+    public function getAllEmployees(Request $request){
+        $companyId = Session::get('companyId');
+        $search = $request->get('term');
+
+
+
+
+        $employees = Employee::where('company_id', $companyId)
+            ->where('name', 'like', "%$search%")
+            ->get(['id', 'name']);
+
+        $response = [];
+        foreach ($employees as $employee) {
+            $response[] = [
+                'name' => $employee->name,
+                'id' => $employee->id,
+            ];
+        }
+        return response()->json($response);
+//        return Employee::where('company_id',$companyId)->get();
     }
 
 }

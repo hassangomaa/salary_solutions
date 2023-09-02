@@ -2,92 +2,47 @@
 @section('content')
     @include('partials.menu',[$flag])
 
-    {{--@can('user_create')--}}
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('employee.create') }}">
-                Add Employee
+                {{ trans('employee.add_new') }}
             </a>
         </div>
     </div>
-    {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            Employee List
+            {{ trans('employee.title') }}
         </div>
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10">
-
-                    </th>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Position
-                    </th>
-                    <th>
-                        Daily Fare
-                    </th>
-                    <th>
-                        Debit
-                    </th>
-                    <th>
-                        Phone
-                    </th>
-                    <th>
-                        Address
-                    </th>
-                    <th>
-                        Actions
-                    </th>
-
+                    <th width="10"></th>
+                    <th>ID</th>
+                    <th>{{ trans('employee.name') }}</th>
+                    <th>{{ trans('employee.position') }}</th>
+                    <th>{{ trans('employee.daily_fare') }}</th>
+                    <th>{{ trans('employee.overtime_hour_fare') }}</th>
+                    <th>{{ trans('employee.phone') }}</th>
+                    <th>{{ trans('employee.address') }}</th>
+                    <th>{{ trans('global.actions') }}</th>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="Search">
-
-                    </td>
-                    <td>
-&nbsp;
-                    </td>
-
+                    <td></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-
 @endsection
 @section('scripts')
 {{--    @parent--}}
@@ -140,7 +95,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
-                    {data: 'debit', name: 'debit'},
+                    {data: 'overtime_hour_fare', name: 'overtime_hour_fare'},
                     {data: 'phone', name: 'phone'},
                     {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}

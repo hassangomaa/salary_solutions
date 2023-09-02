@@ -66,7 +66,7 @@ return [
             'deleted_at_helper'        => ' ',
             'phone'                    => 'Phone',
             'phone_helper'             => ' ',
-            'adress'                   => 'Adress',
+            'adress'                   => 'Address',
             'adress_helper'            => ' ',
         ],
     ],

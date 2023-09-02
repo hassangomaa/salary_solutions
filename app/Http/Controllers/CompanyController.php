@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\CompanyPayment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,10 +22,14 @@ class CompanyController extends Controller
 
     public function companyDashboard()
     {
-        CompanyController::$companyId = null;
-        $companies = Company::all();
-        $flag = 0;
-        return view('company.companyDashboard', compact('companies', 'flag'));
+        if (auth()->check()) {
+
+            CompanyController::$companyId = null;
+            $companies = Company::all();
+            $flag = 0;
+            return view('company.companyDashboard', compact('companies', 'flag'));
+        }
+        return view('welcome_ar');
     }
 
     public function indexBlade()
@@ -79,7 +84,8 @@ class CompanyController extends Controller
 
     public function create()
     {
-        return view('company.create');
+        $flag = 0;
+        return view('company.create',compact('flag'));
     }
 
     public function store(Request $request)
@@ -92,7 +98,7 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        $flag = 1;
+        $flag = 0;
 
         return view('company.edit', compact('company', 'flag'));
     }
@@ -102,7 +108,6 @@ class CompanyController extends Controller
         $company->update($request->all());
         return redirect(route('company.indexBlade'));
     }
-
 
 
     public function massDestroy(Request $request)
@@ -117,8 +122,38 @@ class CompanyController extends Controller
     public function clickOnCompany($companyId)
     {
         Session::put('companyId', $companyId);
+        $this->checkIfNewMonth($companyId);
         return redirect()->route('employee.index');
 
     }
+
+    private function checkIfNewMonth($companyId)
+    {
+        $company = Company::find($companyId);
+        $companyCurrentMonth = $company->current_month;
+        $companyCurrentYear = $company->current_year;
+        $actualMonth = today()->month;
+        $companyStartDay = (int)$company->start_month;
+        $actualDay = today()->day;
+
+        $report = new ReportController();
+        //Check if new Month Started
+        if( ($companyStartDay <= $actualDay) && ($companyCurrentMonth%13 < $actualMonth%13))
+        {
+           $report->calculateMonthlyReport($companyId,$companyCurrentMonth,$companyCurrentYear);
+
+            if($companyCurrentMonth == 12)
+            {
+                $company->current_month = 1;
+                $company->current_year ++;
+            }else{
+                $company->current_month ++;
+            }
+            $company->save();
+
+            ReportController::newMonth($company);
+        }
+    }
+
 
 }
