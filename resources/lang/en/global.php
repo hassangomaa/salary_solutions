@@ -322,4 +322,7 @@ return [
     'leave'                          => 'Leave',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
+    'loginForm' => 'Login',
+    'search_placeholder'=> 'Search Placeholder'
+
 ];

@@ -31,7 +31,7 @@ class AttendanceController extends Controller
         })
             ->where('month',$month)
             ->where('year',$year)
-            ->get();
+            ->paginate(10);
         $flag = 1 ;
         return view('attendance.index',compact('flag','followUps'));
     }

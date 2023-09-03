@@ -21,7 +21,7 @@ class ExtraHoursController extends Controller
         })
             ->where('month',$month)
             ->where('year',$year)
-            ->get();
+            ->paginate(10);
         $flag = 1 ;
         return view('extra-hours.index',compact('flag','followUps'));
     }
