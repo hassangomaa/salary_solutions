@@ -24,17 +24,17 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
         ]);
         $user->save();
-        $this->call([
-            PermissionsTableSeeder::class,
-            RolesTableSeeder::class,
-            PermissionRoleTableSeeder::class,
-            RoleUserTableSeeder::class,
-//            UsersTableSeeder::class,
-
-        ]);
-        Company::factory(3)->create();
-
-        Employee::factory()->count(10)->create();
+//        $this->call([
+//            PermissionsTableSeeder::class,
+//            RolesTableSeeder::class,
+//            PermissionRoleTableSeeder::class,
+//            RoleUserTableSeeder::class,
+////            UsersTableSeeder::class,
+//
+//        ]);
+//        Company::factory(3)->create();
+//
+//        Employee::factory()->count(10)->create();
 //        Commission::factory(50)->create();
 //        Deduction::factory(50)->create();
 //        Borrow::factory(5)->create();

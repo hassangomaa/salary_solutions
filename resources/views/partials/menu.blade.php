@@ -61,7 +61,7 @@
                     @elseif(Config::get('app.locale') == 'en')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
-                               href="{{ route("setLanguage",1) }}">
+                               href="{{ route("updateLanguage") }}">
                                 <i class="fas fa-fw fa-tachometer-alt nav-icon">
                                 </i>
                                 <p>

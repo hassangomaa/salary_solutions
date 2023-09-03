@@ -42,7 +42,7 @@ class ReportController extends Controller
 
         $this->calculateBorrows($companyId,$month,$year);
 
-        $this->calculateTotalNetSalary($followUps);
+        $this->calculateTotalNetSalary($followUps,$companyId);
 
         //Generate Excel file
         ExcelController::generateExcelFile($companyId,$month,$year);
@@ -71,7 +71,6 @@ class ReportController extends Controller
             ->where('month', $month)
             ->where('year', $year)
             ->get();
-
         foreach ($followUps as $followUp)
         {
             $incentives = $followUp->employee->incentives[0];
@@ -81,6 +80,7 @@ class ReportController extends Controller
                 $incentives->gift ;
             $followUp->incentives = $total;
             $followUp->save();
+
         }
     }
 
@@ -132,7 +132,9 @@ class ReportController extends Controller
 
     }
 
-    public function calculateTotalNetSalary($followUps){
+    public function calculateTotalNetSalary($followUps,$companyId){
+        $company = Company::find($companyId);
+        $totalPaidSalary = 0;
         foreach ($followUps as $followUp)
         {
             $totalEarned = $followUp->daily_wages_earned + $followUp->total_extras + $followUp->incentives;
@@ -140,7 +142,12 @@ class ReportController extends Controller
             $followUp->total_salary = $totalEarned ;
             $followUp->net_salary = $totalEarned - $totalDeducted;
             $followUp->save();
+
+            $totalPaidSalary += $followUp->net_salary;
+
         }
+        $company->credit -= $totalPaidSalary;
+             $company->save();
     }
 
 

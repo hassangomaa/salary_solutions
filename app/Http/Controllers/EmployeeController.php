@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Borrow;
+use App\Models\Company;
+use App\Models\Deduction;
 use App\Models\Employee;
+use App\Models\FollowUp;
+use App\Models\Incentives;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+
 //use Yajra\DataTables\DataTables;
 class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
             $query = Employee::select('*')->where('company_id', $companyId);
@@ -27,30 +32,24 @@ class EmployeeController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : '';
             });
-            $table->editColumn('Daily fare', function ($row) {
-                return $row->daily_fare ? $row->daily_fare : '';
-            });
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : '';
             });
-            $table->editColumn('address', function ($row) {
-                return $row->address ? $row->address : '';
+
+            $table->editColumn('position', function ($row) {
+                return $row->position ? $row->position : '';
             });
-            $table->editColumn('phone', function ($row) {
-                return $row->phone ? $row->phone : '';
+            $table->editColumn('daily_fare', function ($row) {
+                return $row->daily_fare ? $row->daily_fare : '';
             });
+
             $table->editColumn('overtime_hour_fare', function ($row) {
                 return $row->overtime_hour_fare ? $row->overtime_hour_fare : '';
             });
 
-//            $table->editColumn('amount', function ($row) {
-//                return $row->commission->amount ? $row->commission->amount : '';
-//            });
-//            $table->editColumn('commission', function ($row) {
-//                return $row->commission->reason ? $row->commission->reason : '';
-//            });
-
-
+            $table->editColumn('address', function ($row) {
+                return $row->address ? $row->address : '';
+            });
             $table->editColumn('phone', function ($row) {
                 return $row->phone ? $row->phone : '';
             });
@@ -67,7 +66,6 @@ class EmployeeController extends Controller
     }
 
 
-
     public function create()
     {
         $flag = 1;
@@ -77,8 +75,15 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-//        return $request->all();
-        $employee = Employee::create($request->all());
+        unset($request['_token']);
+
+        $employee = $request->all();
+        $companyId = Session::get('companyId');
+        $employee['company_id'] = $companyId;
+
+        $company = Company::find($companyId);
+        $emp = Employee::create($employee);
+        $this->addEmployeeToFollowUpList($emp->id, $company->current_month, $company->current_year);
 
         return redirect(route('employee.index'));
 
@@ -87,7 +92,7 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         $flag = 1;
-        $employee->load('commissions','deductions');
+        $employee->load('commissions', 'deductions');
         return view('employees.show', compact('employee', 'flag'));
     }
 
@@ -120,11 +125,10 @@ class EmployeeController extends Controller
         return back();
     }
 
-    public function getAllEmployees(Request $request){
+    public function getAllEmployees(Request $request)
+    {
         $companyId = Session::get('companyId');
         $search = $request->get('term');
-
-
 
 
         $employees = Employee::where('company_id', $companyId)
@@ -140,6 +144,29 @@ class EmployeeController extends Controller
         }
         return response()->json($response);
 //        return Employee::where('company_id',$companyId)->get();
+    }
+
+    public function addEmployeeToFollowUpList($employeeId, $month, $year)
+    {
+        $followUp = new FollowUp();
+        $incentive = new Incentives();
+        $deduction = new Deduction();
+
+        $followUp->month = $month;
+        $followUp->year = $year;
+        $followUp->employee_id = $employeeId;
+
+        $incentive->month = $month;
+        $incentive->year = $year;
+        $incentive->employee_id = $employeeId;
+
+        $deduction->month = $month;
+        $deduction->year = $year;
+        $deduction->employee_id = $employeeId;
+
+        $followUp->save();
+        $deduction->save();
+        $incentive->save();
     }
 
 }

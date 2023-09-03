@@ -85,15 +85,44 @@ class CompanyController extends Controller
     public function create()
     {
         $flag = 0;
-        return view('company.create',compact('flag'));
+        return view('company.create', compact('flag'));
     }
 
     public function store(Request $request)
     {
-        Company::create($request->all());
+        $company = Company::create($request->all());
+        $this->companyDateAndYear($company);
 
         return redirect(route('company.indexBlade'));
 
+    }
+
+    private function companyDateAndYear(Company $company)
+    {
+        $companyCurrentMonth = today()->month;
+        $actualMonth = today()->month;
+        $companyCurrentYear = $company->current_year;
+        $companyStartDay = (int)$company->start_month;
+        $actualDay = today()->day;
+
+        if (($companyStartDay <= $actualDay)) {
+            $company->current_month = $companyCurrentMonth;
+            $company->current_year = today()->year ;
+
+        } else {
+            if (($companyCurrentMonth - 1) % 13 == 0) {
+                $company->current_month = 1;
+                $company->current_year = today()->year - 1 ;
+
+            }else{
+                $company->current_month = ($companyCurrentMonth - 1) % 13;
+                $company->current_year = today()->year ;
+
+            }
+
+
+        }
+        $company->save();
     }
 
     public function edit(Company $company)
@@ -119,6 +148,12 @@ class CompanyController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
+    public function destroy(Company $company)
+    {
+        $company->delete();
+        return back();
+    }
+
     public function clickOnCompany($companyId)
     {
         Session::put('companyId', $companyId);
@@ -130,24 +165,23 @@ class CompanyController extends Controller
     private function checkIfNewMonth($companyId)
     {
         $company = Company::find($companyId);
+        $companyStartDay = (int)$company->start_month;
+        $actualDay = today()->day + 1 ; // To get the actual day
         $companyCurrentMonth = $company->current_month;
         $companyCurrentYear = $company->current_year;
         $actualMonth = today()->month;
-        $companyStartDay = (int)$company->start_month;
-        $actualDay = today()->day;
 
         $report = new ReportController();
         //Check if new Month Started
-        if( ($companyStartDay <= $actualDay) && ($companyCurrentMonth%13 < $actualMonth%13))
-        {
-           $report->calculateMonthlyReport($companyId,$companyCurrentMonth,$companyCurrentYear);
+                //  3 <= 3 && 8 % 13 == 8 < 9
+        if (($companyStartDay <= $actualDay) && ($companyCurrentMonth % 13 < $actualMonth % 13)) {
+            $report->calculateMonthlyReport($companyId, $companyCurrentMonth, $companyCurrentYear);
 
-            if($companyCurrentMonth == 12)
-            {
+            if ($companyCurrentMonth == 12) {
                 $company->current_month = 1;
-                $company->current_year ++;
-            }else{
-                $company->current_month ++;
+                $company->current_year++;
+            } else {
+                $company->current_month++;
             }
             $company->save();
 

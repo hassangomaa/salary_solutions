@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
-    public function update(Request $request)
+    public function update()
     {
-        $language = $request->input('language');
+        if(App::isLocale('en'))
+        {
+            App::setLocale('ar');
 
-        // Update the session with the new language preference
-        session(['language' => $language]);
-
-        // Update the authenticated user's language preference if available
-        if (auth()->check()) {
-            $user = auth()->user();
-            $user->language = $language;
-            $user->save();
+        }
+        else{
+            App::setLocale('en');
         }
 
         return redirect()->back()->with('success', 'Language preference updated successfully.');

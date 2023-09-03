@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\ExcelDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel as ExcelFacade;
 
@@ -32,10 +33,12 @@ class ExcelController extends Controller
        'year'=>$year,
         'file_name' => $fileName
     ]);
-            $file =  Excel::download(new ReportExport($companyId,$month,$year), $fileName);
+    $excelDetails->save();
+            $file =  Excel::raw(new ReportExport($companyId,$month,$year), ExcelFacade::XLSX);
             $filePath = 'Excel/'.$fileName; // Desired path within the public folder
+            Storage::disk('public')->put($filePath, $file);
 
-            Excel::store($file->getFile(),$filePath,'public',ExcelFacade::XLSX);
+//            Excel::store($file->getFile(),$filePath,'public',ExcelFacade::XLSX);
 
             return true;
         }
