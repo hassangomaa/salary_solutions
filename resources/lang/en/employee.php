@@ -12,5 +12,12 @@ return [
     'show_employee' => 'Show Employee',
     'edit_employee' => 'Edit Employee',
 
+    'create_user' => 'Create :title Singular', // You can replace this with the actual translation
+    'employee_name' => 'Employee Name',
+    'employee_position' => 'Employee Position',
+    'employee_phone' => 'Employee Phone',
+    'employee_address' => 'Employee Address',
+    'save' => 'Save',
+
 
 ];

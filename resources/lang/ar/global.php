@@ -24,7 +24,8 @@ return
 
         'home' => 'الرئيسية',
         'list' => 'قائمة',
-        'login' => 'تسجيل الدخول',
+        'login' => 'دخول',
+        'loginForm' => 'تسجيل الدخول',
         'login_email' => 'البريد الإلكتروني',
         'login_password' => 'كلمة المرور',
         'login_password_confirmation' => 'تأكيد كلمة المرور',
@@ -41,5 +42,7 @@ return
         'searching' => 'جاري البحث',
         'no_results' => 'لا توجد نتائج',
         'results_could_not_be_loaded' => 'لا يمكن تحميل النتائج',
+        'search_placeholder'=> 'انقر للبحث'
+
 
     ];

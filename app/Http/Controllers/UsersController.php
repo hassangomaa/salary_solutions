@@ -84,7 +84,7 @@ class UsersController extends Controller
         $roles = Role::pluck('title', 'id');
         $flag = 0;
 
-        return view('users.create', compact('roles'));
+        return view('users.create', compact('flag','roles'));
     }
 
     public function store(Request $request)

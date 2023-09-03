@@ -8,6 +8,10 @@
         </div>
 
         <div class="card-body">
+            <div class="form-group">
+                <label for="search">{{ trans('global.search') }}</label>
+                <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">
+            </div>
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
@@ -36,6 +40,7 @@
                 </tbody>
             </table>
         </div>
+        {{$followUps->links('vendor.pagination.bootstrap-5')}}
     </div>
 @endsection
 

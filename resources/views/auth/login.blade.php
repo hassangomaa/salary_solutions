@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">
-                {{ trans('global.login') }}
+                {{ trans('global.loginForm') }}
 
             </p>
              @if(session()->has('message'))
@@ -46,12 +46,12 @@
 
 
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" name="remember" id="remember">
-                            <label for="remember">{{ trans('global.remember_me') }}</label>
-                        </div>
-                    </div>
+{{--                    <div class="col-8">--}}
+{{--                        <div class="icheck-primary">--}}
+{{--                            <input type="checkbox" name="remember" id="remember">--}}
+{{--                            <label for="remember">{{ trans('global.remember_me') }}</label>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <!-- /.col -->
                     <div class="col-4">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">
