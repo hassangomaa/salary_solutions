@@ -47,6 +47,7 @@ class ReportExport implements WithHeadings,WithMapping,FromCollection,WithStyles
             $followUp->extra_hours == 0 ? '0' : $followUp->extra_hours,
             $followUp->total_extras == 0 ? '0' : $followUp->total_extras,
             $followUp->incentives == 0 ? '0' : $followUp->incentives,
+            $followUp->incentives == 0 ? '0' : $followUp->total_salary,
             $followUp->borrows == 0 ? '0' : $followUp->borrows,
             $followUp->deductions == 0 ? '0' : $followUp->deductions,
             $followUp->net_salary == 0 ? '0' : $followUp->net_salary,

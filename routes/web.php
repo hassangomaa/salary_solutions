@@ -252,11 +252,17 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 
 Route::get('/test', function () {
-    Controllers\ReportController::newMonth(1);
+    return FollowUp::with('employee')
+        ->whereHas('employee', function ($query) {
+            $query->where('company_id', 1);
+        })
+        ->where('month', 9)
+        ->where('year', 2023)
+        ->get();
 
 });
 Route::get('/test2', function () {
-
-//    return Controllers\ReportController::generateExcelFile();
-return Controllers\ExcelController::generateExcelFile(1,9,2023);
+$report = new Controllers\ReportController();
+$report->calculateMonthlyReport(1,9,2023);
+    Controllers\ExcelController::generateExcelFile(1,9,2023);
 });

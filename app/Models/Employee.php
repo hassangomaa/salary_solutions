@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','phone','overtime_hour_fare'];
+    protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','company_id','phone','overtime_hour_fare'];
 
     public function attendances()
     {

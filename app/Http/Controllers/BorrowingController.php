@@ -68,7 +68,9 @@ class BorrowingController extends Controller
         $companyId = Session::get('companyId');
 
         $employees = Employee::where('company_id',$companyId)->get();
-        $currntMonth = $this->getCurrentMonth($companyId);
+        $company = Company::find($companyId);
+        $currntMonth = $company->current_month;
+
         $months = [$currntMonth%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13];
         $flag = 1;
         return view('borrowing.create',compact('employees','flag','months'));
