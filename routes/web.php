@@ -31,7 +31,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 Route::get('/', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
 
-Route::get('/updateLanguage',[Controllers\LanguageController::class,'update'])->name('updateLanguage');
+Route::get('/setLanguage',[Controllers\LanguageController::class,'update'])->name('setLanguage');
 
 
 
