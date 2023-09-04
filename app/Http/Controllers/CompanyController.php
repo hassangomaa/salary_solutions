@@ -58,6 +58,12 @@ class CompanyController extends Controller
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : '';
             });
+            $table->editColumn('start_month', function ($row) {
+                return $row->start_month ? $row->start_month : '';
+            });
+            $table->editColumn('end_month', function ($row) {
+                return $row->end_month ? $row->end_month : '';
+            });
             $table->editColumn('address', function ($row) {
                 return $row->address ? $row->address : '';
             });

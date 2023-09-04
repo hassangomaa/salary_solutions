@@ -8,10 +8,16 @@
         </div>
 
         <div class="card-body">
+            <div class="col-lg-6">
+                <a class="btn btn-success" href="<?php echo e(route('company.clickToGenerateReport')); ?>">
+                انشئ التقرير لهذا الشهر
+                </a>
+            </div>
             <div class="form-group">
                 <label for="search"><?php echo e(trans('global.search')); ?></label>
                 <input class="form-control" type="text" id="search" name="search" placeholder="<?php echo e(trans('global.search_placeholder')); ?>">
             </div>
+
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>

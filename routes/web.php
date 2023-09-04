@@ -49,6 +49,7 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
     Route::delete('/massDestroy', [\App\Http\Controllers\CompanyController::class, 'massDestroy'])->name('massDestroy');
     Route::get('/clickOnCompany/{id}', [\App\Http\Controllers\CompanyController::class, 'clickOnCompany'])->name('clickOnCompany');
     Route::get('/receiveMoneyBlade', [\App\Http\Controllers\CompanyController::class, 'receiveMoneyBlade'])->name('receiveMoneyBlade');
+    Route::get('/clickToGenerateReport', [\App\Http\Controllers\ReportController::class, 'clickToGenerateReport'])->name('clickToGenerateReport');
 
 
 });
@@ -82,6 +83,12 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
     Route::get('/index', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
     Route::post('/addDeduction', [\App\Http\Controllers\DeductionController::class, 'addDeduction'])->name('addDeduction');
+});
+
+Route::group(['prefix' => 'transactionLog', 'as' => 'transactionLog.', 'middleware' => ['auth']], function () {
+
+    Route::get('/index', [\App\Http\Controllers\TransactionLogController::class, 'index'])->name('index');
+    Route::get('/show/{id}', [\App\Http\Controllers\TransactionLogController::class, 'show'])->name('show');
 });
 
 /*

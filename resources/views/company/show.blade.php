@@ -29,6 +29,16 @@
                 <label for="credit">{{ trans('company-management.company_credit') }}</label>
                 <input class="form-control" type="number" name="credit" id="credit" value="{{ $company->credit }}" readonly>
             </div>
+
+            <div class="form-group">
+                <label for="credit">{{ trans('company-management.start_month') }}</label>
+                <input class="form-control" type="number" name="credit" id="credit" value="{{ $company->start_month }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="credit">{{ trans('company-management.end_month') }}</label>
+                <input class="form-control" type="number" name="credit" id="credit" value="{{ $company->end_month }}" readonly>
+            </div>
         </div>
     </div>
 

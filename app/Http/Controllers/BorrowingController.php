@@ -148,24 +148,7 @@ class BorrowingController extends Controller
         $company->save();
     }
 
-    public static function getCurrentMonth($companyID)
-    {
-        $company = Company::find($companyID);
-        $day = Carbon::today()->day;
-        $companyLastDay =(int)$company->end_month;
-        $lastDayOfTheMonth =  Carbon::today()->endOfMonth()->day;
-        $isSameMonth = $company->isSameMonth;
-        if($isSameMonth == 1)
-        {
-            return Carbon::today()->month;
-        }
-        if($companyLastDay <= $day && $day <= $lastDayOfTheMonth)
-        {
-            return ++Carbon::today()->month;
-        }else{
-            return Carbon::today()->month;
-        }
-    }
+
 
     //TODO : dont remove until finishing the system
     public function indexAjax()

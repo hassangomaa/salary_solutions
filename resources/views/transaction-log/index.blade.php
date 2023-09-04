@@ -1,49 +1,71 @@
 @extends('layouts.admin')
 @section('content')
-    @include('partials.menu')
-    {{--@can('user_create')--}}
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('company.create') }}">
-                {{ trans('company-management.add_company') }}
-            </a>
-        </div>
-    </div>
-    {{--@endcan--}}
+    @include('partials.menu',[$flag])
+
+
     <div class="card">
         <div class="card-header">
-            {{ trans('company-management.company_list') }}
+            {{ __('transaction-log.logs') }}
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
                 <thead>
                 <tr>
-                    <th width="10"></th>
-                    <th>{{ trans('company-management.id') }}</th>
-                    <th>{{ trans('company-management.company_name') }}</th>
-                    <th>{{ trans('company-management.credit') }}</th>
-                    <th>{{ trans('company-management.start_month') }}</th>
-                    <th>{{ trans('company-management.end_month') }}</th>
-                    <th>{{ trans('company-management.phone') }}</th>
-                    <th>{{ trans('company-management.address') }}</th>
-                    <th>{{ trans('company-management.actions') }}</th>
+                    <th width="10">
+
+                    </th>
+                    <th>
+                        {{ __('transaction-log.id') }}
+                    </th>
+                    <th>
+                        {{ __('transaction-log.amount') }}
+                    </th>
+                    <th>
+                        {{ __('transaction-log.type') }}
+                    </th>
+                    <th>
+                        {{ __('transaction-log.statement') }}
+                    </th>
+
+                    <th>
+                        {{ __('transaction-log.created_at') }}
+                    </th>
+                    <th>
+                        {{ __('transaction-log.actions') }}
+                    </th>
+
                 </tr>
                 <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                    </td> <td>
+                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                    </td>
+
+                    <td>
+                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ __('borrow.search') }}">
+
+                    </td>
+
+
                     <td></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('company-management.search') }}"></td>
-                    <td>&nbsp;</td>
+
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
+
 @endsection
 @section('scripts')
     {{--    @parent--}}
@@ -51,10 +73,10 @@
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             {{--@can('user_delete')--}}
-            let deleteButtonTrans = '{{ trans('company-management.delete_selected') }}';
+            let deleteButtonTrans = '{{ __('borrow.delete_selected') }}';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('company.massDestroy') }}",
+                url: "{{ route('borrowing.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
@@ -62,13 +84,14 @@
                     });
 
                     if (ids.length === 0) {
-                        alert('{{ trans('company-management.no_rows_selected') }}');
-                        return;
+                        alert('{{ __('global.no_rows_selected') }}')
+
+                        return
                     }
 
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
+                    if (confirm('{{ __('global.are_you_sure') }}')) {
                         $.ajax({
-                            headers: {'x-csrf-token': $('meta[name="csrf-token"]').attr('content')},
+                            headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',
                             url: config.url,
                             data: {ids: ids, _method: 'DELETE'}
@@ -88,16 +111,14 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('company.index') }}",
+                ajax: "{{ route('transactionLog.index') }}",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'credit', name: 'credit'},
-                    {data: 'start_month', name: 'start_month'},
-                    {data: 'end_month', name: 'end_month'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
+                    {data: 'amount', name: 'amount'},
+                    {data: 'type', name: 'type'},
+                    {data: 'statement', name: 'statement'},
+                    {data: 'created_at', name: 'created_at'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,
