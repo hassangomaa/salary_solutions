@@ -93,11 +93,11 @@ class TransactionLogController extends Controller
 
     public static function withdrawLog($company,$withdrawDetails){
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this reason '
-        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
+        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
 
         $statement_ar = 'لقد تم سحب  '.  $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
@@ -115,11 +115,11 @@ class TransactionLogController extends Controller
 
     public static function depositLog($company,$withdrawDetails){
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this reason '
-        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
+        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
 
         $statement_ar = 'لقد تم ايداع المبلغ  '.  $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
@@ -133,5 +133,29 @@ class TransactionLogController extends Controller
 
 
     }
+
+
+    public static function salariesLog($company,$totalNetSalaries,$month){
+
+        $statement_en = 'The amount '.  $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: '.$month . ' Salaries '
+             . '...' . 'The company current credit is '  . $company->credit;
+
+        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة الشركة لدفع مرتبات شهر   '
+            . $month . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+
+
+        $log = new TransactionLog();
+        $log->company_id = $company->id;
+        $log->amount = $totalNetSalaries;
+        $log->type_ar = 'مرتبات';
+        $log->type_en = 'Salaries';
+        $log->statement_ar = $statement_ar;
+        $log->statement_en = $statement_en;
+
+        $log->save();
+
+
+    }
+
 
 }
