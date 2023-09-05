@@ -23,6 +23,8 @@ class CompanyFactory extends Factory
             'credit' => $this->faker->randomNumber(),
             'start_month' => 1,
             'end_month' => 30,
+            'current_month' => 9,
+            'current_year' => 2023,
             'isSameMonth' => true,
         ];
     }

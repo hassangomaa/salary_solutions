@@ -13,10 +13,10 @@ return new class extends Migration
     {
             Schema::create('excel_details', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('company_id');
-                $table->integer('month');
-                $table->integer('year');
-                $table->string('file_name');
+                $table->unsignedBigInteger('company_id')->nullable();
+                $table->integer('month')->nullable();
+                $table->integer('year')->nullable();
+                $table->string('file_name')->nullable();
                 $table->softDeletes();
                 $table->timestamps();
 

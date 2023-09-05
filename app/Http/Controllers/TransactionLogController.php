@@ -33,8 +33,7 @@ class TransactionLogController extends Controller
                 return $row->amount ? $row->amount : '';
             });
 
-            if (App::getLocale() == 'ar')
-            {
+            if (App::getLocale() == 'ar') {
                 $table->editColumn('statement', function ($row) {
                     return $row->statement_ar ? $row->statement_ar : '';
                 });
@@ -42,7 +41,7 @@ class TransactionLogController extends Controller
                     return $row->type_ar ? $row->type_ar : '';
                 });
 
-            }else{
+            } else {
                 $table->editColumn('statement', function ($row) {
                     return $row->statement_en ? $row->statement_en : '';
                 });
@@ -60,5 +59,79 @@ class TransactionLogController extends Controller
 
         }
         $flag = 1;
-        return view('transaction-log.index',compact('flag'));
-    }}
+        return view('transaction-log.index', compact('flag'));
+    }
+
+    public function show($id)
+    {
+        $transaction = TransactionLog::find($id);
+        $flag = 1 ;
+        return view('transaction-log.show',compact('flag','transaction'));
+    }
+
+    public static function borrowLog($employeeId, $amount)
+    {
+        $employee = Employee::with('company')->where('id', $employeeId)->first();
+        $log = new TransactionLog();
+
+        $statement_en = 'The employee ' . $employee->name . ' has borrowed the money amount ' . $amount .
+            '. The current company credit is ' . $employee->company->credit;
+
+        $statement_ar = 'الموظف ' . $employee->name . ' استلف ' . $amount .
+            '. المال المتوفر في الخزينة:  ' . $employee->company->credit;
+
+
+        $log->company_id = $employee->company->id;
+        $log->amount = $amount;
+        $log->type_ar = 'سلفه';
+        $log->type_en = 'Borrowing';
+        $log->statement_ar = $statement_ar;
+        $log->statement_en = $statement_en;
+
+        $log->save();
+    }
+
+    public static function withdrawLog($company,$withdrawDetails){
+
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this reason '
+        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+
+        $statement_ar = 'لقد تم سحب  '.  $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
+        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+
+        $log = new TransactionLog();
+        $log->company_id = $company->id;
+        $log->amount = $withdrawDetails->amount;
+        $log->type_ar = 'سحب';
+        $log->type_en = 'withdraw';
+        $log->statement_ar = $statement_ar;
+        $log->statement_en = $statement_en;
+
+        $log->save();
+
+
+    }
+
+
+    public static function depositLog($company,$withdrawDetails){
+
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this reason '
+        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+
+        $statement_ar = 'لقد تم ايداع المبلغ  '.  $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
+        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+
+        $log = new TransactionLog();
+        $log->company_id = $company->id;
+        $log->amount = $withdrawDetails->amount;
+        $log->type_ar = 'ايداع';
+        $log->type_en = 'deposit';
+        $log->statement_ar = $statement_ar;
+        $log->statement_en = $statement_en;
+
+        $log->save();
+
+
+    }
+
+}

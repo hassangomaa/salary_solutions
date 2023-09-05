@@ -4,6 +4,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
 use App\Models\Incentives;
+use App\Models\TransactionLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -259,14 +260,11 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 
 Route::get('/test', function () {
-    return FollowUp::with('employee')
-        ->whereHas('employee', function ($query) {
-            $query->where('company_id', 1);
-        })
-        ->where('month', 9)
-        ->where('year', 2023)
-        ->get();
+    $employee = Employee::with('company')->where('id',1)->first();
+    $log = new TransactionLog();
 
+
+    return $employee->company->id;
 });
 Route::get('/test2', function () {
 $report = new Controllers\ReportController();
