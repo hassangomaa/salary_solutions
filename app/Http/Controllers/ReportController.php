@@ -48,7 +48,7 @@ class ReportController extends Controller
 
         $this->calculateBorrows($companyId,$month,$year);
 
-        $this->calculateTotalNetSalary($followUps,$companyId);
+        $this->calculateTotalNetSalary($followUps,$companyId,$month);
 
         //Generate Excel file
         ExcelController::generateExcelFile($companyId,$month,$year);
@@ -138,7 +138,7 @@ class ReportController extends Controller
 
     }
 
-    public function calculateTotalNetSalary($followUps,$companyId){
+    public function calculateTotalNetSalary($followUps,$companyId,$month){
         $company = Company::find($companyId);
         $totalPaidSalary = 0;
         foreach ($followUps as $followUp)
@@ -154,6 +154,7 @@ class ReportController extends Controller
         }
         $company->credit -= $totalPaidSalary;
              $company->save();
+             TransactionLogController::salariesLog($company,$totalPaidSalary,$month);
     }
 
 

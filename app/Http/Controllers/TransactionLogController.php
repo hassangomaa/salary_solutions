@@ -134,4 +134,28 @@ class TransactionLogController extends Controller
 
     }
 
+
+    public static function salariesLog($company,$totalNetSalaries,$month){
+
+        $statement_en = 'The amount '.  $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: '.$month . ' Salaries '
+             . '...' . 'The company current credit is '  . $company->credit;
+
+        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة الشركة لدفع مرتبات شهر   '
+            . $month . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+
+
+        $log = new TransactionLog();
+        $log->company_id = $company->id;
+        $log->amount = $totalNetSalaries;
+        $log->type_ar = 'مرتبات';
+        $log->type_en = 'Salaries';
+        $log->statement_ar = $statement_ar;
+        $log->statement_en = $statement_en;
+
+        $log->save();
+
+
+    }
+
+
 }
