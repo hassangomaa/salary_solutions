@@ -93,11 +93,11 @@ class TransactionLogController extends Controller
 
     public static function withdrawLog($company,$withdrawDetails){
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this reason '
-        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
+        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
 
         $statement_ar = 'لقد تم سحب  '.  $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
@@ -115,11 +115,11 @@ class TransactionLogController extends Controller
 
     public static function depositLog($company,$withdrawDetails){
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this reason '
-        . $withdrawDetails->reason . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
+        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
 
         $statement_ar = 'لقد تم ايداع المبلغ  '.  $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->reason . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
