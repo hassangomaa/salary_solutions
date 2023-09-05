@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Borrow;
 use App\Models\Employee;
 use App\Models\TransactionLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransactionLogController extends Controller
@@ -24,7 +26,15 @@ class TransactionLogController extends Controller
                 $viewButton = '<a class="btn btn-xs btn-primary" href="' . route('transactionLog' . '.show', $row->id) . '">' .
                     trans('global.view') . '
     </a>';
-                return $viewButton;
+
+                $deleteButton = '<form action="'.route('transactionLog' . '.destroy', $row->id) . '" method="POST" onsubmit="return confirm(' . trans('global.areYouSure') .')" style="display: inline-block;">
+
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="'. csrf_token()  . '">
+        <input type="submit" class="btn btn-xs btn-danger" value="' . trans('global.delete') .'">
+    </form>' ;
+                $buttons = $viewButton . '<br>' . $deleteButton ;
+                return $buttons;
 
 
             });
@@ -65,8 +75,8 @@ class TransactionLogController extends Controller
     public function show($id)
     {
         $transaction = TransactionLog::find($id);
-        $flag = 1 ;
-        return view('transaction-log.show',compact('flag','transaction'));
+        $flag = 1;
+        return view('transaction-log.show', compact('flag', 'transaction'));
     }
 
     public static function borrowLog($employeeId, $amount)
@@ -91,13 +101,14 @@ class TransactionLogController extends Controller
         $log->save();
     }
 
-    public static function withdrawLog($company,$withdrawDetails){
+    public static function withdrawLog($company, $withdrawDetails)
+    {
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
-        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
+            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
 
-        $statement_ar = 'لقد تم سحب  '.  $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
+            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
@@ -113,13 +124,14 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function depositLog($company,$withdrawDetails){
+    public static function depositLog($company, $withdrawDetails)
+    {
 
-        $statement_en = 'The amount '.  $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
-        . $withdrawDetails->statement . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
+            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
 
-        $statement_ar = 'لقد تم ايداع المبلغ  '.  $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
-        . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
+            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
 
         $log = new TransactionLog();
         $log->company_id = $company->id;
@@ -135,13 +147,14 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function salariesLog($company,$totalNetSalaries,$month){
+    public static function salariesLog($company, $totalNetSalaries, $month)
+    {
 
-        $statement_en = 'The amount '.  $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: '.$month . ' Salaries '
-             . '...' . 'The company current credit is '  . $company->credit;
+        $statement_en = 'The amount ' . $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: ' . $month . ' Salaries '
+            . '...' . 'The company current credit is ' . $company->credit;
 
         $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة الشركة لدفع مرتبات شهر   '
-            . $month . '...' . 'رصيد الشركة الحالي:  '  . $company->credit;
+            . $month . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
 
 
         $log = new TransactionLog();
@@ -157,5 +170,18 @@ class TransactionLogController extends Controller
 
     }
 
+    public function massDestroy(Request $request)
+    {
+        TransactionLog::whereIn('id', request('ids'))->delete();
 
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function destroy(TransactionLog $transactionLog)
+    {
+
+        $transactionLog->delete();
+
+        return back();
+    }
 }
