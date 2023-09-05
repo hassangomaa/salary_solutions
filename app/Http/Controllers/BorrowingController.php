@@ -6,6 +6,7 @@ use App\Models\Borrow;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
+use App\Models\TransactionLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -79,7 +80,12 @@ class BorrowingController extends Controller
     public function store(Request $request)
     {
         $companyId = Session::get('companyId');
-        $this->decreaseCompanyCredit($companyId,$request->amount);
+        $company = Company::find($companyId);
+
+        $this->decreaseCompanyCredit($company,$request->amount);
+        $company->save();
+        TransactionLogController::borrowLog($request['employee_id'],$request->amount);
+
         $borrowing = new Borrow();
 
         $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
@@ -110,11 +116,9 @@ class BorrowingController extends Controller
     }
 
 
-    public  function decreaseCompanyCredit($companyId,$amount)
+    public  function decreaseCompanyCredit($company,$amount)
     {
-        $company = Company::find($companyId);
         $company->credit -= $amount;
-        $company->save();
     }
 
     public function show(Borrow $borrow){
@@ -148,24 +152,7 @@ class BorrowingController extends Controller
         $company->save();
     }
 
-    public static function getCurrentMonth($companyID)
-    {
-        $company = Company::find($companyID);
-        $day = Carbon::today()->day;
-        $companyLastDay =(int)$company->end_month;
-        $lastDayOfTheMonth =  Carbon::today()->endOfMonth()->day;
-        $isSameMonth = $company->isSameMonth;
-        if($isSameMonth == 1)
-        {
-            return Carbon::today()->month;
-        }
-        if($companyLastDay <= $day && $day <= $lastDayOfTheMonth)
-        {
-            return ++Carbon::today()->month;
-        }else{
-            return Carbon::today()->month;
-        }
-    }
+
 
     //TODO : dont remove until finishing the system
     public function indexAjax()

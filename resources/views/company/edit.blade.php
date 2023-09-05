@@ -39,6 +39,21 @@
                         <span class="text-danger">{{ $errors->first('credit') }}</span>
                     @endif
                 </div>
+
+                <div class="form-group">
+                    <label class="required" for="start_month">{{ trans('company-management.start_month') }}</label>
+                    <input class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" type="number" name="start_month" id="start_month" value="{{ old('start_month', $company->start_month) }}" required>
+                    @if($errors->has('start_month'))
+                        <span class="text-danger">{{ $errors->first('start_month') }}</span>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label class="required" for="end_month">{{ trans('company-management.end_month') }}</label>
+                    <input class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}" type="number" name="end_month" id="end_month" value="{{ old('end_month', $company->end_month) }}" required>
+                    @if($errors->has('end_month'))
+                        <span class="text-danger">{{ $errors->first('end_month') }}</span>
+                    @endif
+                </div>
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.save') }}

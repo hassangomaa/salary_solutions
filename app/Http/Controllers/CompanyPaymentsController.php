@@ -70,16 +70,21 @@ class CompanyPaymentsController extends Controller
         $company = Company::find($companyId);
 
         if ($request->type == 'deposit') {
+            $depositDetails = $request;
             $this->deposit($company, $request);
+            $company->save();
+            TransactionLogController::depositLog($company,$depositDetails);
+
+
         }
         if ($request->type == 'withdrawal') {
-            $flag = $this->withdraw($company, $request);
-            if ($flag == false) {
-                return redirect()->back();
-            }
+            $withdrawDetails = $request;
+           $this->withdraw($company, $request);
+            $company->save();
+            TransactionLogController::withdrawLog($company,$withdrawDetails);
+
         }
 
-        $company->save();
         return redirect(route('companyPayments.index'));
     }
 
@@ -94,13 +99,9 @@ class CompanyPaymentsController extends Controller
     private function withdraw($company, $request)
     {
         $amount = $request->amount;
-        if ($company->credit < $amount) {
-            return false;
-        }
-
         $company->credit -= $amount;
         $this->saveTransactionDetails($company->id, $request);
-        return true;
+
     }
 
 

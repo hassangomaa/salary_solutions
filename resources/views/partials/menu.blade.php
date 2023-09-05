@@ -190,6 +190,17 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs("transactionLog.index") ? "active" : "" }}"
+                                   href="{{ route("transactionLog.index") }}">
+                                    <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                    </i>
+                                    <p>
+                                        {{ trans('transaction-log.logs') }}
+                                    </p>
+                                </a>
+                            </li>
+
 
                         </ul>
                     <li class="nav-item">

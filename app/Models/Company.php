@@ -24,5 +24,9 @@ class Company extends Model
         return $this->hasMany(CompanyPayment::class);
     }
 
+    public function transactionLogs(){
+        return $this->hasMany(TransactionLog::class);
+    }
+
 
 }

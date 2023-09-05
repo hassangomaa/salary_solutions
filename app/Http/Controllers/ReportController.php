@@ -15,7 +15,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-
+    public function clickToGenerateReport()
+    {
+        $companyId = Session::get('companyId');
+        $company = Company::find($companyId);
+        $this->calculateMonthlyReport($companyId, $company->current_month, $company->current_year);
+        return back();
+    }
 
 
     public function calculateMonthlyReport($companyId1,$month1,$year1)

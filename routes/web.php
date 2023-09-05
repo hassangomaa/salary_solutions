@@ -4,6 +4,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
 use App\Models\Incentives;
+use App\Models\TransactionLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,7 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
     Route::delete('/massDestroy', [\App\Http\Controllers\CompanyController::class, 'massDestroy'])->name('massDestroy');
     Route::get('/clickOnCompany/{id}', [\App\Http\Controllers\CompanyController::class, 'clickOnCompany'])->name('clickOnCompany');
     Route::get('/receiveMoneyBlade', [\App\Http\Controllers\CompanyController::class, 'receiveMoneyBlade'])->name('receiveMoneyBlade');
+    Route::get('/clickToGenerateReport', [\App\Http\Controllers\ReportController::class, 'clickToGenerateReport'])->name('clickToGenerateReport');
 
 
 });
@@ -82,6 +84,12 @@ Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['a
 
     Route::get('/index', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
     Route::post('/addDeduction', [\App\Http\Controllers\DeductionController::class, 'addDeduction'])->name('addDeduction');
+});
+
+Route::group(['prefix' => 'transactionLog', 'as' => 'transactionLog.', 'middleware' => ['auth']], function () {
+
+    Route::get('/index', [\App\Http\Controllers\TransactionLogController::class, 'index'])->name('index');
+    Route::get('/show/{id}', [\App\Http\Controllers\TransactionLogController::class, 'show'])->name('show');
 });
 
 /*
@@ -252,14 +260,11 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 
 Route::get('/test', function () {
-    return FollowUp::with('employee')
-        ->whereHas('employee', function ($query) {
-            $query->where('company_id', 1);
-        })
-        ->where('month', 9)
-        ->where('year', 2023)
-        ->get();
+    $employee = Employee::with('company')->where('id',1)->first();
+    $log = new TransactionLog();
 
+
+    return $employee->company->id;
 });
 Route::get('/test2', function () {
 $report = new Controllers\ReportController();
