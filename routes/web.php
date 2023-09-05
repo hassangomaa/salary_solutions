@@ -90,6 +90,8 @@ Route::group(['prefix' => 'transactionLog', 'as' => 'transactionLog.', 'middlewa
 
     Route::get('/index', [\App\Http\Controllers\TransactionLogController::class, 'index'])->name('index');
     Route::get('/show/{id}', [\App\Http\Controllers\TransactionLogController::class, 'show'])->name('show');
+    Route::delete('/destroy/{transactionLog}', [\App\Http\Controllers\TransactionLogController::class, 'destroy'])->name('destroy');
+    Route::delete('/massDestroy', [\App\Http\Controllers\TransactionLogController::class, 'massDestroy'])->name('massDestroy');
 });
 
 /*

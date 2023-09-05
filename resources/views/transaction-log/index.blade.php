@@ -76,7 +76,7 @@
             let deleteButtonTrans = '{{ __('borrow.delete_selected') }}';
             let deleteButton = {
                 text: deleteButtonTrans,
-                url: "{{ route('borrowing.massDestroy') }}",
+                url: "{{ route('transactionLog.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({selected: true}).data(), function (entry) {
