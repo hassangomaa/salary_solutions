@@ -172,15 +172,15 @@ class CompanyController extends Controller
     {
         $company = Company::find($companyId);
         $companyStartDay = (int)$company->start_month;
-        $actualDay = today()->day + 1 ; // To get the actual day
+        $actualDay = today()->day ; // To get the actual day
         $companyCurrentMonth = $company->current_month;
         $companyCurrentYear = $company->current_year;
         $actualMonth = today()->month;
 
         $report = new ReportController();
         //Check if new Month Started
-                //  3 <= 3 && 8 % 13 == 8 < 9
-        if (($companyStartDay <= $actualDay) && ($companyCurrentMonth % 13 < $actualMonth % 13)) {
+                //  3 <= 3 && 8 % 13 == 8 < 9    12 < 1
+        if (($companyStartDay <= $actualDay) && ( ($companyCurrentMonth < $actualMonth) || ($companyCurrentMonth == 12 && $actualMonth == 1)) ) {
             $report->calculateMonthlyReport($companyId, $companyCurrentMonth, $companyCurrentYear);
 
             if ($companyCurrentMonth == 12) {
