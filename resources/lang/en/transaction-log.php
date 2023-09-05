@@ -11,9 +11,9 @@ return [
 
     'show_company_details' => 'Show Transaction Details',
     'back_to_list' => 'Back to List',
-    'type_ar' => 'Type (Arabic)',
-    'type_en' => 'Type (English)',
-    'statement_ar' => 'Statement (Arabic)',
-    'statement_en' => 'Statement (English)',
+    'type_ar' => 'Type',
+    'type_en' => 'Type',
+    'statement_ar' => 'Statement',
+    'statement_en' => 'Statement',
 
 ];
