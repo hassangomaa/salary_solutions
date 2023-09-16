@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -29,8 +30,8 @@ use Illuminate\Support\Facades\Session;
 Route::get('/loginBlade', [AuthenticationController::class, 'loginBlade'])->name('loginBlade');
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-
-Route::get('/', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
+Route::get('/',DashboardController::class)->name('dashborad');
+Route::get('/company_dashboard', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
 
 Route::get('/setLanguage',[Controllers\LanguageController::class,'update'])->name('setLanguage');
 

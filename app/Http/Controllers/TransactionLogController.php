@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrow;
+use App\Models\Borrowing\borrowing_dates;
+use App\Models\Borrowing\employeeBorrowing;
 use App\Models\Employee;
 use App\Models\TransactionLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
@@ -79,8 +82,47 @@ class TransactionLogController extends Controller
         return view('transaction-log.show', compact('flag', 'transaction'));
     }
 
-    public static function borrowLog($employeeId, $amount)
+    public static function borrowLog($employeeId, $amount,$date)
     {
+            $start = \Carbon\Carbon::createFromFormat('m-Y', $date[0]);
+            $end = \Carbon\Carbon::createFromFormat('m-Y', $date[1]);
+
+            $numberOfMonths = $end->diffInMonths($start);
+
+            $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
+
+            foreach ($period as $date) {
+                $monthFormat = $date->format('m');
+                $yearFormat = $date->format('Y');
+
+                $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+                $amount_value = ($numberOfMonths > 0) ? $amount / $numberOfMonths : $amount;
+                $percentage = ($numberOfMonths > 0) ? ($amount_value / $amount) * 100 : 100;
+
+            if($borrowing_date){
+                 employeeBorrowing::create([
+                    'user_id'=>$employeeId,
+                    'amount'=>$amount_value,
+                    'date_id'=>$borrowing_date->id,
+                    'percentage'=>$percentage
+                ]);
+            }else{
+                $borrowing_date=borrowing_dates::create([
+                    'month'=>$monthFormat,
+                    'year'=>$yearFormat,
+                ]);
+                 employeeBorrowing::create([
+                    'user_id'=>$employeeId,
+                    'amount'=>$amount_value,
+                    'date_id'=>$borrowing_date->id,
+                    'percentage'=>$percentage
+                ]);
+
+            }
+        }
+
+
         $employee = Employee::with('company')->where('id', $employeeId)->first();
         $log = new TransactionLog();
 

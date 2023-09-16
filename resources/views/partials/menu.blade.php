@@ -94,7 +94,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("extraHours.index") ? "active" : "" }}"
                            href="{{ route("extraHours.index") }}">
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
@@ -103,7 +103,7 @@
                                 {{ trans('sidebar.extraHours') }}
                             </p>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("incentive.index") ? "active" : "" }}"
                            href="{{ route("incentive.index") }}">

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('content')
     @include('partials.menu', [$flag])
 
@@ -21,6 +22,9 @@
                     <th>{{ trans('attendance.daily_fare') }}</th>
                     <th>{{ trans('attendance.number_of_days') }}</th>
                     <th>{{ trans('attendance.set_worked_days') }}</th>
+                    <th>{{ trans('extra-hours.extra_hour_fare') }}</th>
+                    <th>{{ trans('extra-hours.number_of_extra_hours') }}</th>
+                    <th>{{ trans('extra-hours.set_extra_hours') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +38,13 @@
                         <td>
                             <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
                             <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('attendance.save') }}</button>
+                        </td>
+                        <td>{{ $followUp->employee->overtime_hour_fare }}</td>
+                        <td id="attended-hours-{{ $followUp->id }}">{{ $followUp->extra_hours }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+
+                        <td>
+                            <input type="number" class="extra_days-input" name="extra_numberOFHoures" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('extra-hours.enter_hours') }}">
+                            <button class="btn btn-primary extra_save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('extra-hours.save') }}</button>
                         </td>
                     </tr>
                 @endforeach
@@ -77,5 +88,41 @@
                     });
                 });
             });
+
+
+
+            $(function () {
+                // Handle Save Button Click
+                $('.datatable-User').on('click', '.extra_save-days-btn', function () {
+                    console.log('ff');
+                    let followUpId = $(this).attr('data-followUp-id');
+                    let extra_numberOFHoures = $('.extra_days-input[data-followUp-id="' + followUpId + '"]').val();
+                    console.log(followUpId,' ',extra_numberOFHoures);
+                    // Perform Ajax Request
+                    $.ajax({
+                        url: "{{ route('extraHours.updateNumberOfHours') }}",
+                        method: 'POST',
+                        data: {
+                            follow_up_id: followUpId,
+                            number_of_hours: extra_numberOFHoures,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            // Handle success response, if needed
+                            $('#attended-hours-' + followUpId).text(extra_numberOFHoures);
+                            // alert('Number of hours updated successfully.');
+
+                            $('.extra_save-days[data-followUp-id="' + followUpId + '"]').css('background-color', 'red');
+
+                            console.log(response);
+                        },
+                        error: function (xhr) {
+                            // Handle error response, if needed
+                            console.error(xhr);
+                        }
+                    });
+                });
+            });
         </script>
+
     @endsection

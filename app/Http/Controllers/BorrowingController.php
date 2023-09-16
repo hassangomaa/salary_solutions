@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SafeActions;
+use App\Http\Requests\Borrowing\BorrowingRequest;
 use App\Models\Borrow;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
+use App\Models\Safe\Safe;
+use App\Models\Safe\SafeTransactions;
 use App\Models\TransactionLog;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -70,34 +75,72 @@ class BorrowingController extends Controller
 
         $employees = Employee::where('company_id',$companyId)->get();
         $company = Company::find($companyId);
-        $currntMonth = $company->current_month;
+        $currentDate = $company->current_month . '-' . $company->current_year;
+        $specificDate = Carbon::createFromFormat('m-Y', $currentDate);
 
-        $months = [$currntMonth%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13,(++$currntMonth)%13];
-        $flag = 1;
-        return view('borrowing.create',compact('employees','flag','months'));
+        $currentDate = Carbon::now();
+
+        $numberOfMonths = $currentDate->diffInMonths($specificDate);
+
+        $months = [];
+
+        for ($i = 0; $i < $numberOfMonths; $i++) {
+            $date = $specificDate->copy()->addMonths($i);
+            $monthYear = [
+                'month' => $date->format('m'),
+                'year' => $date->format('Y')
+            ];
+            $months[] = $monthYear;
+        }
+        //  json_decode($months);
+            $flag = 1;
+            $safes=Safe::get();
+        return view('borrowing.create',compact('employees','flag','months','safes'));
     }
 
-    public function store(Request $request)
+    public function store(BorrowingRequest $request)
     {
+
+        // return $request;
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
 
         $this->decreaseCompanyCredit($company,$request->amount);
         $company->save();
-        TransactionLogController::borrowLog($request['employee_id'],$request->amount);
+
+        if($request->has('other_employee_id') && $request->other_employee_id != NULL){
+            $request['employee_id']=$request->other_employee_id;
+            $user=User::find($request['employee_id']);
+            if(!$user)
+                return redirect()->back()->withErrors('this User Not Found');
+        }
+
+        $date=[$request->start_month ,$request->end_month];
+
+        TransactionLogController::borrowLog($request['employee_id'],$request->amount,$date);
 
         $borrowing = new Borrow();
+        $modifiedStartMonth = '01-' . $request['start_month'];
+
+        $start = \Carbon\Carbon::parse($modifiedStartMonth);
+        $month = $start->format('m');
+
 
         $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
-        $borrowing->month = $request['month'];
+        $borrowing->month = $month;
         $borrowing->amount = $request['amount'];
         $borrowing->statement = $request['statement'];
-
         // Save the new borrowing record
         $borrowing->save();
 
 
-        return redirect(route('borrowing.index'));
+        $safe=(new SafeActions($request['safe_id'],SafeTransactions::BORROWING,$request['amount'],User::class,$request['employee_id']));
+
+        $safe->withdraw();
+
+
+
+        return redirect(route('borrowing.index'))->with('success','Successfully');
     }
 
     public function massDestroy(Request $request)

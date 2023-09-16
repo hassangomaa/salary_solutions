@@ -10,7 +10,7 @@
         </div>
         <div class="col-lg-6">
             <a class="btn btn-success" href="#">
-                {{ trans('payments.current_credit') }} = {{$company->credit}}
+                {{ trans('payments.current_credit') }} = {{(isset($company))?$company->credit:0}}
             </a>
         </div>
     </div>

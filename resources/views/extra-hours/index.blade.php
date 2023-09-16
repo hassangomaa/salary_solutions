@@ -65,7 +65,7 @@
                         success: function (response) {
                             // Handle success response, if needed
                             $('#attended-hours-' + followUpId).text(numberOfHours);
-                            $('.save-days-btn[data-followUp-id="' + followUpId + '"]').css('background-color', 'red');
+                            $('.save-days-btn[data-followUp-id="' + followUpId + '"]').css('background-color', 'green');
 
                             console.log(response);
                         },

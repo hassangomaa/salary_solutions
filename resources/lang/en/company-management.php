@@ -12,6 +12,7 @@ return [
     // Index Page
     'company_list' => 'Company List',
     'add_company' => 'Add Company',
+    'add_branche'=>'Add Branch',
     'current_credit' => 'Current Credit',
 
     // Show Page
@@ -24,6 +25,7 @@ return [
 
     // Create Page
     'create_company' => 'Create Company',
+    'create_branch'=>'Create Branch',
     'create' => 'Create',
 
     // DataTable
@@ -38,6 +40,7 @@ return [
     'phone' => 'Phone',
     'address' => 'Address',
     'actions' => 'Actions',
-
+    'module'=>'Module',
+    'salaries'=>'Salariesx'
 ];
 
