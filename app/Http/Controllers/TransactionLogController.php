@@ -20,7 +20,7 @@ class TransactionLogController extends Controller
     {
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = TransactionLog::select('*')->where('company_id', $companyId)->orderBy('created_at', 'DESC');
+            $query = TransactionLog::select('*')->orderBy('created_at', 'DESC');
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -82,8 +82,9 @@ class TransactionLogController extends Controller
         return view('transaction-log.show', compact('flag', 'transaction'));
     }
 
-    public static function borrowLog($employeeId, $amount,$date)
+    public static function borrowLog($employeeId, $amount,$date,$safe)
     {
+        // return $safe;
             $start = \Carbon\Carbon::createFromFormat('m-Y', $date[0]);
             $end = \Carbon\Carbon::createFromFormat('m-Y', $date[1]);
 
@@ -121,19 +122,19 @@ class TransactionLogController extends Controller
 
             }
         }
+        // $safe
 
-
-        $employee = Employee::with('company')->where('id', $employeeId)->first();
+        $employee = Employee::where('id', $employeeId)->first();
         $log = new TransactionLog();
 
         $statement_en = 'The employee ' . $employee->name . ' has borrowed the money amount ' . $amount .
-            '. The current company credit is ' . $employee->company->credit;
+            '. The current safe credit is ' . $safe->value;
 
         $statement_ar = 'الموظف ' . $employee->name . ' استلف ' . $amount .
-            '. المال المتوفر في الخزينة:  ' . $employee->company->credit;
+            '. المال المتوفر في الخزينة:  ' . $safe->value;
 
 
-        $log->company_id = $employee->company->id;
+        // $log->company_id = $employee->company->id;
         $log->amount = $amount;
         $log->type_ar = 'سلفه';
         $log->type_en = 'Borrowing';
@@ -143,17 +144,17 @@ class TransactionLogController extends Controller
         $log->save();
     }
 
-    public static function withdrawLog($company, $withdrawDetails)
+    public static function withdrawLog($company, $withdrawDetails,$safe)
     {
 
         $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
-            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
+            . $withdrawDetails->statement . '...' . 'The current safe is ' . $safe->value;
 
         $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
+        // $log->company_id = $company->id;
         $log->amount = $withdrawDetails->amount;
         $log->type_ar = 'سحب';
         $log->type_en = 'withdraw';
@@ -166,17 +167,17 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function depositLog($company, $withdrawDetails)
+    public static function depositLog( $withdrawDetails,$safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
-            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the  safe for this statement '
+            . $withdrawDetails->statement . '...' . 'The Safe credit is ' . $safe->value;
 
-        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة لهذا السبب  '
+            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
+        // $log->company_id = $company->id;
         $log->amount = $withdrawDetails->amount;
         $log->type_ar = 'ايداع';
         $log->type_en = 'deposit';
@@ -189,18 +190,17 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function salariesLog($company, $totalNetSalaries, $month)
+    public static function salariesLog($safe, $totalNetSalaries, $month)
     {
 
-        $statement_en = 'The amount ' . $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: ' . $month . ' Salaries '
-            . '...' . 'The company current credit is ' . $company->credit;
+        $statement_en = 'The amount ' . $totalNetSalaries . ' has been withdrawn from  safe for paying month: ' . $month . ' Salaries '
+            . '...' . 'The Current Safe is ' . $safe->value;
 
-        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة الشركة لدفع مرتبات شهر   '
-            . $month . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة  لدفع مرتبات شهر   '
+            . $month . '...' . 'رصيد الخزنه الحالي:  ' . $safe->safe;
 
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
         $log->amount = $totalNetSalaries;
         $log->type_ar = 'مرتبات';
         $log->type_en = 'Salaries';

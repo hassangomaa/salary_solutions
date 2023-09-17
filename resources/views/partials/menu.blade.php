@@ -189,8 +189,8 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs("excel.index") ? "active" : "" }}"
-                                   href="{{ route("excel.index") }}">
+                                <a class="nav-link {{ request()->routeIs("Reports.index") ? "active" : "" }}"
+                                   href="{{ route("Reports.index") }}">
                                     <i class="fas fa-fw fa-tachometer-alt nav-icon">
                                     </i>
                                     <p>

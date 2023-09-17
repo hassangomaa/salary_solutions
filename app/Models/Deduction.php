@@ -11,7 +11,7 @@ class Deduction extends Model
     use HasFactory;
     use SoftDeletes; // Use the trait
 
-    protected $fillable = ['employee_id','month' ,'year','absence','penalty','housing'];
+    protected $fillable = ['employee_id','month' ,'year','absence','penalty','housing','status'];
 
     public function employee()
     {

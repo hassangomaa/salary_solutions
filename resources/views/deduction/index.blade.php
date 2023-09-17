@@ -7,6 +7,9 @@
             {{ trans('deductions.deduction_list') }}
         </div>
 
+        <div class="form-group">
+            <a href="{{ route('deduction.refreshData') }}" class="btn btn-success">Refresh Data</a>
+        </div>
         <div class="card-body">
             <div class="form-group">
                 <label for="search">{{ trans('global.search') }}</label>

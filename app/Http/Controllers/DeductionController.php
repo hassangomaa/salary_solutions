@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Deduction;
+use App\Models\FollowUp;
 use App\Models\Incentives;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,7 +23,9 @@ class DeductionController extends Controller
         $deductions = Deduction::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);
         })
-            ->where('month',$currntMonth)
+            // ->where('month',$currntMonth)
+            ->where('status',FollowUp::USE)
+
             ->paginate(10);
         $flag = 1 ;
         return view('deduction.index',compact('flag','deductions'));
@@ -38,6 +42,30 @@ class DeductionController extends Controller
 
     }
 
+    public function refreshData(){
+        $employee_ids=Deduction::select('employee_id')->distinct('employee_id')->pluck('employee_id');
+        $deduction_ids=Deduction::where('month',Carbon::now()->format('m'))->where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
+
+        foreach($employee_ids as $item){
+            if(isset($deduction_ids[$item])){
+                continue;
+            }
+            Deduction::where('employee_id',$item)->latest()->first()->update([
+                'status'=>FollowUp::DONE
+            ]);
+
+            Deduction::create([
+                'month'=>Carbon::now()->format('m'),
+                'year'=>Carbon::now()->format('Y'),
+                'absence'=>0,
+                'penalty'=>0,
+                'housing'=>0,
+                'employee_id'=>$item,
+                'status'=>FollowUp::USE
+        ]);
+    }
+    return redirect()->back()->with('message',"Successfull");
+    }
 
    /* public function index(Request $request,$id)
     {
@@ -114,3 +142,4 @@ class DeductionController extends Controller
         return back();
     }*/
 }
+

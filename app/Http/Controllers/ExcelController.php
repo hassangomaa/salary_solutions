@@ -25,18 +25,18 @@ class ExcelController extends Controller
 
         public static function generateExcelFile($companyId,$month,$year)
         {
-    $company = Company::find($companyId);
-    $fileName = $company->name . '-' . $month . '-' . $year.'.xlsx';
-    $excelDetails = ExcelDetail::create([
-       'company_id'=>$companyId,
-       'month'=>$month,
-       'year'=>$year,
-        'file_name' => $fileName
-    ]);
-    $excelDetails->save();
-            $file =  Excel::raw(new ReportExport($companyId,$month,$year), ExcelFacade::XLSX);
-            $filePath = 'Excel/'.$fileName; // Desired path within the public folder
-            Storage::disk('public')->put($filePath, $file);
+            $company = Company::find($companyId);
+            $fileName = $company->name . '-' . $month . '-' . $year.'.xlsx';
+            $excelDetails = ExcelDetail::create([
+            'company_id'=>$companyId,
+            'month'=>$month,
+            'year'=>$year,
+                'file_name' => $fileName
+            ]);
+            $excelDetails->save();
+                    $file =  Excel::raw(new ReportExport($companyId,$month,$year), ExcelFacade::XLSX);
+                    $filePath = 'Excel/'.$fileName; // Desired path within the public folder
+                    Storage::disk('public')->put($filePath, $file);
 
 //            Excel::store($file->getFile(),$filePath,'public',ExcelFacade::XLSX);
 

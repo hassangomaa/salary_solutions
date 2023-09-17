@@ -10,6 +10,20 @@
 
         <div class="card-body">
             <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <a href="{{ route('salary_pay') }}" class="btn btn-primary">pay</a>
+                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success">Refresh Data</a>
+                    </div>
+                    <div class="col-md-6">
+                        <p>{{ $total_attendance_houres }}: اجمالي عدد ساعات الحضور</p>
+                        <p>{{ $total_extra_hours }}: اجمالي عدد الساعات الاضافيه</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="search">{{ trans('global.search') }}</label>
                 <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">
             </div>

@@ -23,17 +23,24 @@ class AttendanceController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        $month = $company->current_month;
-        $year=  $company->current_year;
+        // $month = $company->current_month;
+        // $year=  $company->current_year;
 
-        $followUps = FollowUp::with('employee')->whereHas('employee',function ($query) use($companyId){
-            $query->where('company_id',$companyId);
+        $followUps = FollowUp::with('employee')
+        ->whereHas('employee', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId);
         })
-            ->where('month',$month)
-            ->where('year',$year)
-            ->paginate(10);
+        // ->where('month', Carbon::now()->format('m'))
+        // ->where('year', Carbon::now()->format('Y'))
+        // ->get();
+        ->where('status',FollowUp::USE);
+
+        $total_attendance_houres=$followUps->sum('attended_days');
+        $total_extra_hours=$followUps->sum('extra_hours');
+        $followUps=$followUps->paginate(10);
+
         $flag = 1 ;
-        return view('attendance.index',compact('flag','followUps'));
+        return view('attendance.index',compact('flag','followUps','total_attendance_houres','total_extra_hours'));
     }
 
     public function updateNumberOfDays(Request $request)
@@ -182,4 +189,35 @@ class AttendanceController extends Controller
         return redirect(route('attendance.index'));
 
     }*/
+
+    public function refreshData(){
+        $employee_ids=FollowUp::select('employee_id')->distinct('employee_id')->pluck('employee_id');
+        $follow_ups=FollowUp::where('month',Carbon::now()->format('m'))->where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
+
+        foreach($employee_ids as $item){
+            if(isset($follow_ups[$item])){
+                continue;
+            }
+            FollowUp::where('employee_id',$item)->latest()->first()->update([
+                'status'=>FollowUp::DONE
+            ]);
+
+            FollowUp::create([
+                'attended_days'=>0,
+                'month'=>Carbon::now()->format('m'),
+                'year'=>Carbon::now()->format('Y'),
+                'daily_wages_earned'=>0,
+                'extra_hours'=>0,
+                'total_extras'=>0,
+                'borrows'=>0,
+                'incentives'=>0,
+                'deductions'=>0,
+                'net_salary'=>0,
+                'employee_id'=>$item,
+                'status'=>FollowUp::USE
+        ]);
+    }
+    return redirect()->back()->with('message',"Successfull");
+
+    }
 }

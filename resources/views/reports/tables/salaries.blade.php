@@ -1,36 +1,15 @@
-@extends('layouts.admin')
-@section('content')
-    @include('partials.menu', [$flag])
-    @include('partials.reports')
-    @php
-        $i = 1;
-        $days = 0;
-        $bouns = 0;
-        $inc = 0;
-        $regural = 0;
-        $total_salary = 0;
-        $borrows = 0;
-        $deduction = 0;
-        $net_salary = 0;
-    @endphp
-    <div class="card">
-        <div class="card-header">
-            {{ trans('reports.reports_list') }}
-        </div>
-
-        <div class="card-body">
-            <div class="col-lg-6">
-                <a class="btn btn-success" href="{{ route('company.clickToGenerateReport') }}">
-                    انشئ التقرير لهذا الشهر
-                </a>
-            </div>
-            <div class="form-group">
-                <label for="search">{{ trans('global.search') }}</label>
-                <input class="form-control" type="text" id="search" name="search"
-                    placeholder="{{ trans('global.search_placeholder') }}">
-            </div>
-
-            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User"DIR="RTL">
+@php
+$i = 1;
+$days = 0;
+$bouns = 0;
+$inc = 0;
+$regural = 0;
+$total_salary = 0;
+$borrows = 0;
+$deduction = 0;
+$net_salary = 0;
+@endphp
+<table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User"DIR="RTL">
                 <thead>
                     <tr>
                         <th colspan="15" style="text-align:center">
@@ -122,20 +101,16 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>{{ $days }}</td>
+                        <td><b>{{ $days }}</b></td>
                         <td></td>
-                        <td>{{ $bouns }}</td>
-                        <td>{{ $inc }}</td>
-                        <td>{{ $regural }}</td>
-                        <td>{{ $total_salary }}</td>
-                        <td>{{ $borrows }}</td>
-                        <td>{{ $deduction }}</td>
-                        <td>{{ $net_salary }}</td>
+                        <td><b>{{ $bouns }}</b></td>
+                        <td><b>{{ $inc }}</b></td>
+                        <td><b>{{ $regural }}</b></td>
+                        <td><b>{{ $total_salary }}</b></td>
+                        <td><b>{{ $borrows }}</b></td>
+                        <td><b>{{ $deduction }}</b></td>
+                        <td><b>{{ $net_salary }}</b></td>
                     </tr>
-                    
+
                 </tbody>
             </table>
-        </div>
-        {{-- {{ $files->links('vendor.pagination.bootstrap-5') }} --}}
-    </div>
-@endsection

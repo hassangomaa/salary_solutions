@@ -40,6 +40,8 @@ class SafeActions {
         $this->safe->save();
 
         self::transactions($this->ammount);
+        return $this->safe;
+
     }
 
     public function withdraw(){
@@ -48,7 +50,7 @@ class SafeActions {
         $this->safe->value=($value-$this->ammount);
         $this->safe->save();
         self::transactions(-$this->ammount);
-
+        return $this->safe;
     }
 
 

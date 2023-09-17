@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Exports\ExcelReportController;
+use App\Http\Controllers\Safe\PaymentController;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FollowUp;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Reports\ReportsController;
 use App\Http\Controllers\Safe\SafeController;
 use Illuminate\Support\Facades\Session;
 
@@ -61,6 +64,7 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => [
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
+    Route::get('/refreshData',[\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
  /*   Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
     Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
@@ -80,12 +84,16 @@ Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['a
 
     Route::get('/index', [\App\Http\Controllers\IncentiveController::class, 'index'])->name('index');
     Route::post('/addIncentives', [\App\Http\Controllers\IncentiveController::class, 'addIncentives'])->name('addIncentives');
+    Route::get('/refreshData',[\App\Http\Controllers\IncentiveController::class, 'refreshData'])->name('refreshData');
+
 });
 
 Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
     Route::post('/addDeduction', [\App\Http\Controllers\DeductionController::class, 'addDeduction'])->name('addDeduction');
+    Route::get('/refreshData',[\App\Http\Controllers\DeductionController::class, 'refreshData'])->name('refreshData');
+
 });
 
 Route::group(['prefix' => 'transactionLog', 'as' => 'transactionLog.', 'middleware' => ['auth']], function () {
@@ -122,6 +130,9 @@ Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['a
 
 
 
+});
+Route::controller(ExcelReportController::class)->prefix('excels')->group(function(){
+    Route::get('salaries','salariesExport')->name('excels.salaries_export');
 });
 
 Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => ['auth']/*, 'namespace' => 'Users'*/], function () {
@@ -262,6 +273,19 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 });
 
+Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'],], function () {
+    Route::get('/index', [ReportsController::class, 'index'])->name('index');
+    Route::get('/attendance', [ReportsController::class, 'index'])->name('attendance');
+    Route::get('/expenses', [ReportsController::class, 'index'])->name('expenses');
+    Route::get('/apposition', [ReportsController::class, 'index'])->name('apposition');
+    Route::get('/deductiona', [ReportsController::class, 'index'])->name('deductiona');
+    Route::get('/incentives', [ReportsController::class, 'index'])->name('incentives');
+    Route::get('/bouns', [ReportsController::class, 'index'])->name('bouns');
+
+    // Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
+
+});
+
 Route::controller(SafeController::class)->prefix('safes')->group(function(){
     Route::get('index','index')->name('safes.index');
     Route::get('create','create')->name('safes.create');
@@ -274,6 +298,9 @@ Route::controller(SafeController::class)->prefix('safes')->group(function(){
     Route::get('transactions/{id}','transactions')->name('safes.transactions');
 });
 
+Route::controller(PaymentController::class)->prefix('payment')->group(function(){
+    Route::get('/salary_pay','__invoke')->name('salary_pay');
+});
 
 Route::get('/test', function () {
     $employee = Employee::with('company')->where('id',1)->first();

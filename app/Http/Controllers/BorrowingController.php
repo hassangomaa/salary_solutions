@@ -105,8 +105,8 @@ class BorrowingController extends Controller
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
 
-        $this->decreaseCompanyCredit($company,$request->amount);
-        $company->save();
+        // $this->decreaseCompanyCredit($company,$request->amount);
+        // $company->save();
 
         if($request->has('other_employee_id') && $request->other_employee_id != NULL){
             $request['employee_id']=$request->other_employee_id;
@@ -117,7 +117,6 @@ class BorrowingController extends Controller
 
         $date=[$request->start_month ,$request->end_month];
 
-        TransactionLogController::borrowLog($request['employee_id'],$request->amount,$date);
 
         $borrowing = new Borrow();
         $modifiedStartMonth = '01-' . $request['start_month'];
@@ -136,7 +135,9 @@ class BorrowingController extends Controller
 
         $safe=(new SafeActions($request['safe_id'],SafeTransactions::BORROWING,$request['amount'],User::class,$request['employee_id']));
 
-        $safe->withdraw();
+        $safe=$safe->withdraw();
+
+        TransactionLogController::borrowLog($request['employee_id'],$request->amount,$date,$safe);
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\Borrowing;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,6 @@ class employeeBorrowing extends Model
     }
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(Employee::class,'user_id');
     }
 }

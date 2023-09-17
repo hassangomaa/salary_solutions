@@ -83,6 +83,7 @@ class EmployeeController extends Controller
 
         $company = Company::find($companyId);
         $emp = Employee::create($employee);
+
         $this->addEmployeeToFollowUpList($emp->id, $company->current_month, $company->current_year);
 
         return redirect(route('employee.index'));

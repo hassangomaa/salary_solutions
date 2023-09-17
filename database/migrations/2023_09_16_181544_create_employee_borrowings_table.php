@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('employee_borrowings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreignId('user_id')->references('id')->on('employees')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->float('amount',20,5);
             $table->foreignId('date_id')->references('id')->on('borrowing_dates')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->float('percentage');

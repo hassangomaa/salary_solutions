@@ -66,6 +66,7 @@ class CompanyPaymentsController extends Controller
 
     public function store(Request $request)
     {
+        //TODO
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
 
@@ -73,6 +74,7 @@ class CompanyPaymentsController extends Controller
             $depositDetails = $request;
             $this->deposit($company, $request);
             $company->save();
+
             TransactionLogController::depositLog($company,$depositDetails);
 
 
