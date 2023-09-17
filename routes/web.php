@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Safe\SafeController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -259,6 +260,18 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
     Route::get('/index', [\App\Http\Controllers\ExcelController::class, 'index'])->name('index');
     Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
 
+});
+
+Route::controller(SafeController::class)->prefix('safes')->group(function(){
+    Route::get('index','index')->name('safes.index');
+    Route::get('create','create')->name('safes.create');
+    Route::get('show','show')->name('safes.show');
+    Route::post('store','store')->name('safes.store');
+
+    Route::get('edit/{id}','edit')->name('safes.edit');
+    Route::post('update/{id}','update')->name('safes.update');
+    Route::get('destroy','destroy')->name('safes.destroy');
+    Route::get('transactions/{id}','transactions')->name('safes.transactions');
 });
 
 

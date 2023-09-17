@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('safes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('type');
             $table->float('value',20,5);
-            $table->foreignId('type_id')->references('id')->on('safe_types')->onUpdate('CASCADE')->onDelete('CASCADE');
+            // $table->foreignId('type_id')->references('id')->on('safe_types')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

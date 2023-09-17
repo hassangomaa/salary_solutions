@@ -39,7 +39,7 @@ class SafeActions {
         $this->safe->value=($value+$this->ammount);
         $this->safe->save();
 
-        self::transactions();
+        self::transactions($this->ammount);
     }
 
     public function withdraw(){
@@ -47,18 +47,19 @@ class SafeActions {
 
         $this->safe->value=($value-$this->ammount);
         $this->safe->save();
-        self::transactions();
+        self::transactions(-$this->ammount);
 
     }
 
 
-    public function transactions(){
+    public function transactions($ammount){
+        $reason=(SafeTransactions::details($this->reason_id) != NULL)?SafeTransactions::details($this->reason_id):$this->reason_id;
         SafeTransactions::create([
             'safe_id'=>$this->safe->id,
-            'value'=>$this->ammount,
+            'value'=>$ammount,
             'reasonable_type'=>$this->reasonable_type,
             'reasonable_id'=>$this->reasonable_id,
-            'details'=>$this->reason_id
+            'details'=>$reason
         ]);
     }
 

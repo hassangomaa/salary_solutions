@@ -134,7 +134,16 @@
                             </p>
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("safes.index") ? "active" : "" }}"
+                           href="{{ route("safes.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.safes') }}
+                            </p>
+                        </a>
+                    </li>
 {{--                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"--}}
 {{--                        data-accordion="false">--}}
 

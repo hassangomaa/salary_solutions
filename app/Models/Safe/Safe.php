@@ -12,7 +12,7 @@ class Safe extends Model
     protected $fillable=[
         'value',
         'name',
-        'type_id',
+        'type',
     ];
 
 
