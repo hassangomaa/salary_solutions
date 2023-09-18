@@ -4,6 +4,7 @@
 
     {{--@can('user_create')--}}
     <div style="margin-bottom: 10px;" class="row">
+        {{-- {{ $query }} --}}
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('borrowing.create') }}">
                 {{ __('borrow.add_borrowing') }}

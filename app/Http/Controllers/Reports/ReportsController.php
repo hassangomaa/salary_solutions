@@ -32,8 +32,9 @@ class ReportsController extends Controller
 
         }
          $followUps =Employee::whereHas('followUps',function($s)use($request){
-                    if(isset($request->days)&& $request->days != "")
-                    $s->where('attended_days',$request->days);
+                    if((isset($request->from_days)&& $request->from_days != "") && isset($request->to_days)&& $request->to_days != "")
+                    $s->where('attended_days','>=',$request->from_days)
+                    ->where('attended_days','<=',$request->to_days);
                 })->with([
                 'followUps'=>function($q)use($month,$year,$request){
                             $q->where('month',$month)->where('year',$year);

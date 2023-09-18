@@ -23,12 +23,18 @@
             <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.index') }}">
                 {{-- <label for="search">{{ trans('global.filter') }}</label> --}}
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <input class="form-control" type="month" id="" name="date"
+                            <div class="row">
+                                <input class="form-control col-md-4" type="month" id="" name="date"
                                 placeholder="{{ trans('global.search_placeholder') }}">
-                                <input class="form-control" type="number"  min="1" id="" name="days"
-                                placeholder=" ايام الحضور">
+                                <input class="form-control col-md-4" type="number"  min="1" id="" name="to_days"
+                                placeholder=" الي عدد ايام">
+                                <input class="form-control col-md-4" type="number"  min="1" id="" name="from_days"
+                                placeholder=" من عدد ايام">
+
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-md-2">
