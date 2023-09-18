@@ -283,6 +283,7 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
     Route::get('/deduction', [ReportsController::class, 'deduction'])->name('deduction');
     Route::get('/incentives', [ReportsController::class, 'incentives'])->name('incentives');
     Route::get('/bouns', [ReportsController::class, 'bouns'])->name('bouns');
+    Route::get('/safe-transactions', [ReportsController::class, 'safe_transactions'])->name('safe_transactions');
 
     // Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
 

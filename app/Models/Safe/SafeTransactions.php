@@ -22,7 +22,8 @@ class SafeTransactions extends Model
         'value',
         'reasonable_type',
         'reasonable_id',
-        'details'
+        'details',
+        'created_at'
     ];
 
     public function user(){
@@ -40,6 +41,10 @@ class SafeTransactions extends Model
             default:
             return null;
         }
+    }
+
+    public function safe(){
+        return $this->belongsTo(Safe::class,'safe_id');
     }
 
 }

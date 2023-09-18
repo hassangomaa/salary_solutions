@@ -10,6 +10,10 @@
             <div class="form-group">
                 <a href="{{ route('incentive.refreshData') }}" class="btn btn-success">Refresh Data</a>
             </div>
+            <div class="form-group" style="text-align: right">
+                <h4>{{ $incentives->sum('bonus')+$incentives->sum('incentive')+$incentives->sum('regularity')+$incentives->sum('gift') }} : مجموع الحوافز</h4>
+            </div>
+
         <div class="form-group">
             <label for="search">{{ trans('global.search') }}</label>
             <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">

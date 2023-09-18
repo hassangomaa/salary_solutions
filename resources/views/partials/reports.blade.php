@@ -31,6 +31,9 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::is('Reports.bouns') ? 'active' : '' }}" href="{{ route('Reports.bouns') }}">الاضافي</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::is('Reports.safe_transactions') ? 'active' : '' }}" href="{{ route('Reports.safe_transactions') }}">الخزن</a>
+            </li>
         </ul>
     </div>
 </nav>

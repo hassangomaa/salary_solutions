@@ -2,17 +2,7 @@
 @section('content')
     @include('partials.menu', [$flag])
     @include('partials.reports')
-    @php
-        $i = 1;
-        $days = 0;
-        $bouns = 0;
-        $inc = 0;
-        $regural = 0;
-        $total_salary = 0;
-        $borrows = 0;
-        $deduction = 0;
-        $net_salary = 0;
-    @endphp
+
     <div class="card">
         <div class="card-header">
             {{ trans('reports.reports_list') }}
@@ -20,15 +10,19 @@
 
         <div class="card-body">
 
-            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.index') }}">
-                {{-- <label for="search">{{ trans('global.filter') }}</label> --}}
+
+            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.safe_transactions') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <input class="form-control" type="month" id="" name="date"
                                 placeholder="{{ trans('global.search_placeholder') }}">
-                                <input class="form-control" type="number"  min="1" id="" name="days"
-                                placeholder=" ايام الحضور">
+                            <select name="safe_id" id="" class="form-control">
+                                <option value="">الكل </option>
+                                @foreach ($safes as $safe)
+                                    <option value="{{ $safe->id }}">{{ $safe->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -55,7 +49,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <a href="{{ route('Reports.index') }}" class="btn btn-primary"><svg
+                            <a href="{{ route('Reports.safe_transactions') }}" class="btn btn-primary"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
@@ -69,8 +63,9 @@
 
 
             </form>
-            @include('reports.tables.salaries')
-        </div>
+            @include('reports.tables.safe_transctions')
+
+                    </div>
         {{-- {{ $files->links('vendor.pagination.bootstrap-5') }} --}}
     </div>
 @endsection

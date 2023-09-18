@@ -10,6 +10,7 @@ use App\Exports\ExpensesExport as ExportsExpensesExport;
 use App\Exports\Exports\ExpensesExport;
 use App\Exports\incentivesExport;
 use App\Exports\ReportDataExport;
+use App\Exports\safeTransactionsExport;
 use App\Exports\salariesExport;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -51,5 +52,7 @@ class ExcelReportController extends Controller
     public function bouns($month,$year){
         return Excel::download(new bounsExport($month,$year),'bouns.xlsx');
     }
-
+    public function safeTransactions($date,$safe_id){
+        return Excel::download(new safeTransactionsExport($date,$safe_id),'safetransactions.xlsx');
+    }
 }

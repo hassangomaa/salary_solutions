@@ -11,6 +11,11 @@
             <a href="{{ route('deduction.refreshData') }}" class="btn btn-success">Refresh Data</a>
         </div>
         <div class="card-body">
+
+            <div class="form-group" style="text-align: right">
+                <h4>{{ $deductions->sum('housing')+$deductions->sum('penalty')+$deductions->sum('absence') }} : مجموع الخصومات</h4>
+            </div>
+
             <div class="form-group">
                 <label for="search">{{ trans('global.search') }}</label>
                 <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">

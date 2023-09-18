@@ -8,6 +8,8 @@ use App\Http\Controllers\Exports\ExcelReportController;
 use App\Models\Borrow;
 use App\Models\CompanyPayment;
 use App\Models\Employee;
+use App\Models\Safe\Safe;
+use App\Models\Safe\SafeTransactions;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -29,9 +31,13 @@ class ReportsController extends Controller
             return $excel->salariesExport($month,$year,$date);
 
         }
-         $followUps =Employee::with([
-                'followUps'=>function($q)use($month,$year){
+         $followUps =Employee::whereHas('followUps',function($s)use($request){
+                    if(isset($request->days)&& $request->days != "")
+                    $s->where('attended_days',$request->days);
+                })->with([
+                'followUps'=>function($q)use($month,$year,$request){
                             $q->where('month',$month)->where('year',$year);
+
                         },
                 "deductions"=>function($dq)use($month,$year){
                     $dq->where('month',$month)->where('year',$year);
@@ -227,4 +233,29 @@ class ReportsController extends Controller
 
         return view('reports.bouns',compact('employees','flag'));
     }
+
+    public function safe_transactions(Request $request){
+
+        $date=(isset($request->date))?$request->date:Carbon::now();
+
+
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->safeTransactions($date,$request->safe_id);
+
+        }
+         $safes_trans=SafeTransactions::
+            whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
+            ->with('safe')->where(function($q)use($request){
+                if( (isset($request->safe_id))&& $request->safe_id != "")
+                $q->where('safe_id',$request->safe_id);
+            })->get();
+
+
+
+        $flag = 1;
+        $safes=Safe::all();
+        return view('reports.safeTransactions',compact('safes','flag','safes_trans'));
+    }
+
 }
