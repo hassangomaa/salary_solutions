@@ -14,6 +14,7 @@ class SafeTransactions extends Model
 
     public const PAY_SALARIES=1;
     public const BORROWING=2;
+    public const PAYMENT=3;
 
     protected $table="safe_transactions";
     protected $fillable=[

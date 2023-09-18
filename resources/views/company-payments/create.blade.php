@@ -36,6 +36,19 @@
                         <span class="text-danger">{{ $errors->first('type') }}</span>
                     @endif
                 </div>
+                <div class="form-group">
+                    <label class="required" for="type">{{ trans('payments.safe') }}</label>
+                    <select class="form-control {{ $errors->has('safe') ? 'is-invalid' : '' }}" name="safe" id="safe" required>
+                        @foreach($safes as $safe)
+                            <option value="{{ $safe->id }}" >
+                                {{ $safe->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('type'))
+                        <span class="text-danger">{{ $errors->first('type') }}</span>
+                    @endif
+                </div>
         </div>
         <div class="form-group">
             <button class="btn btn-danger" type="submit">

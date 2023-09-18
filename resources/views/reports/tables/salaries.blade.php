@@ -12,7 +12,8 @@ $net_salary = 0;
 <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User"DIR="RTL">
                 <thead>
                     <tr>
-                        <th colspan="15" style="text-align:center">
+                        <th colspan="5">مرتبات شهر</th>
+                        <th colspan="10" style="text-align:center">
                             {{ $date }}
                         </th>
                     </tr>
@@ -48,9 +49,9 @@ $net_salary = 0;
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->position }}</td>
                             <td>0</td>
-                            <td>{{ $item->followUps ? $item->followUps->first()->attended_days : 0 }}</td>
+                            <td>{{ $item->followUps ? ($item->followUps->first())?$item->followUps->first()->attended_days:'0' : '0' }}</td>
                             @php
-                                $days += $item->followUps ? $item->followUps->first()->attended_days : 0;
+                                $days += $item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0;
                             @endphp
                             <td>{{ $item->daily_fare }}</td>
                             <td>{{ $item->incentives->sum('bonus') }}</td>
@@ -62,7 +63,7 @@ $net_salary = 0;
                                 $regural += $item->incentives->sum('regularity');
                             @endphp
                             <td>
-                                {{ $item->daily_fare * ($item->followUps->isNotEmpty() ? $item->followUps->first()->attended_days : 0) +
+                                {{ $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
                                     $item->incentives->sum('bonus') +
                                     $item->incentives->sum('incentive') +
                                     $item->incentives->sum('regularity') }}
@@ -72,21 +73,21 @@ $net_salary = 0;
                             <td>{{ $item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence') }}
                             </td>
                             <td>
-                                {{ $item->daily_fare * ($item->followUps ? $item->followUps->first()->attended_days : 0) +
+                                {{ $item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
                                     $item->incentives->sum('bonus') +
                                     $item->incentives->sum('incentive') +
                                     $item->incentives->sum('regularity') -
                                     $item->deductions->sum('deduction_amount') }}
                             </td>
                             @php
-                                $total_salary += $item->daily_fare * ($item->followUps->isNotEmpty() ? $item->followUps->first()->attended_days : 0) +
+                                $total_salary += $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
                                     $item->incentives->sum('bonus') +
                                     $item->incentives->sum('incentive') +
                                     $item->incentives->sum('regularity');
 
                                 $borrows += $item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0;
                                 $deduction += $item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence');
-                                $net_salary += $item->daily_fare * ($item->followUps ? $item->followUps->first()->attended_days : 0) +
+                                $net_salary += $item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
                                     $item->incentives->sum('bonus') +
                                     $item->incentives->sum('incentive') +
                                     $item->incentives->sum('regularity') -
@@ -94,6 +95,23 @@ $net_salary = 0;
                             @endphp
                         </tr>
                     @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td></td>
                         <td></td>

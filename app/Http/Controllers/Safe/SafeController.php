@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Safe;
 
+use App\Actions\SafeActions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Safe\SafeRequest;
+use App\Http\Requests\SafeTransferRequest;
 use App\Models\Safe\Safe;
+use App\Models\Safe\SafeTransactions;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -130,5 +133,34 @@ class SafeController extends Controller
         return view('admin.Safe.transaction',compact('flag','safe_transactions','user'));
         // return "f";
     }
+public function safe_transfer_create(){
+    $safes=Safe::all();
+    $flag=1;
+    return view('admin.Safe.Transafers.create',compact('safes','flag'));
+}
+
+public function destroy($id){
+    $safe=Safe::findOrFail($id);
+    if($safe->transactions->count()>0){
+        return redirect()->back()->withErrors('لا يمكن حذف هذه الخزنه ');
+    }
+    else{
+        $safe->delete();
+        return redirect()->route('safes.index')->with('message',"Success");
+
+    }
+}
+
+public function safe_transfer_store(SafeTransferRequest $request){
+
+    $safe_from=Safe::find($request->safe_from);
+
+    $safe_to=Safe::find($request->safe_to);
+
+    $safe=(new SafeActions($request['safe_from'],"transfer $request->ammount from safe $safe_from->name to safe $safe_to->name ",$request['amount'],Safe::class,$request['safe_to']));
+
+    $safe=$safe->transfer($safe_to);
+    return redirect()->route('safes.index')->with('message',"Success");
+}
 
 }

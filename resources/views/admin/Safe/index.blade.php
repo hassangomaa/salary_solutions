@@ -11,6 +11,14 @@
             </a>
         </div>
     </div>
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-info  " href="{{ route('safes.safe_transfer.create') }}">
+                تحويلات بين الخزن
+            </a>
+        </div>
+    </div>
+    {{--  --}}
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
@@ -81,8 +89,10 @@
                         render: function (data, type, row) {
                         let editUrl = "{{ route('safes.edit', ':id') }}";
                         let transactionUrl = "{{ route('safes.transactions', ':id') }}";
+                        let deleteUrl = "{{ route('safes.destroy', ':id') }}";
                         editUrl = editUrl.replace(':id', row.id);
                         transactionUrl = transactionUrl.replace(':id', row.id);
+                        deleteUrl = deleteUrl.replace(':id', row.id);
                         return `
                             <a href="${editUrl}" class="btn btn-sm btn-primary">
                                 {{ __('edit') }}
@@ -90,6 +100,9 @@
                             <br>
                             <a href="${transactionUrl}" class="btn btn-sm btn-success">
                                 {{ __('transactions') }}
+                            </a>
+                            <a href="${deleteUrl}" class="btn btn-sm btn-danger">
+                                {{ __('delete') }}
                             </a>
                         `;
                         }

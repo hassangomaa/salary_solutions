@@ -133,6 +133,7 @@ Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['a
 });
 Route::controller(ExcelReportController::class)->prefix('excels')->group(function(){
     Route::get('salaries','salariesExport')->name('excels.salaries_export');
+
 });
 
 Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => ['auth']/*, 'namespace' => 'Users'*/], function () {
@@ -275,12 +276,13 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'],], function () {
     Route::get('/index', [ReportsController::class, 'index'])->name('index');
-    Route::get('/attendance', [ReportsController::class, 'index'])->name('attendance');
-    Route::get('/expenses', [ReportsController::class, 'index'])->name('expenses');
-    Route::get('/apposition', [ReportsController::class, 'index'])->name('apposition');
-    Route::get('/deductiona', [ReportsController::class, 'index'])->name('deductiona');
-    Route::get('/incentives', [ReportsController::class, 'index'])->name('incentives');
-    Route::get('/bouns', [ReportsController::class, 'index'])->name('bouns');
+    Route::get('/attendance', [ReportsController::class, 'attendance'])->name('attendance');
+    Route::get('/report', [ReportsController::class, 'report'])->name('report');
+    Route::get('/expenses', [ReportsController::class, 'expenses'])->name('expenses');
+    Route::get('/apposition', [ReportsController::class, 'apposition'])->name('apposition');
+    Route::get('/deduction', [ReportsController::class, 'deduction'])->name('deduction');
+    Route::get('/incentives', [ReportsController::class, 'incentives'])->name('incentives');
+    Route::get('/bouns', [ReportsController::class, 'bouns'])->name('bouns');
 
     // Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
 
@@ -294,8 +296,11 @@ Route::controller(SafeController::class)->prefix('safes')->group(function(){
 
     Route::get('edit/{id}','edit')->name('safes.edit');
     Route::post('update/{id}','update')->name('safes.update');
-    Route::get('destroy','destroy')->name('safes.destroy');
+    Route::get('destroy/{id}','destroy')->name('safes.destroy');
     Route::get('transactions/{id}','transactions')->name('safes.transactions');
+    Route::get('safe_transfer','safe_transfer_create')->name('safes.safe_transfer.create');
+    Route::post('safe_transfer','safe_transfer_store')->name('safes.safe_transfer_store');
+
 });
 
 Route::controller(PaymentController::class)->prefix('payment')->group(function(){

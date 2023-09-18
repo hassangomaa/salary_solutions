@@ -3,7 +3,7 @@
     @include('partials.menu',[$flag])
     <div class="row">
         <div class="col-md-4 mb-4">
-                <a href="{{ route('admin.home')}}" class="card-link">
+                <a href="{{ route('home')}}" class="card-link">
                     <div class="card">
                         <div class="card-header">
 

@@ -144,13 +144,13 @@ class TransactionLogController extends Controller
         $log->save();
     }
 
-    public static function withdrawLog($company, $withdrawDetails,$safe)
+    public static function withdrawLog($withdrawDetails,$safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from  safe '.$safe->name.' for this statement '
             . $withdrawDetails->statement . '...' . 'The current safe is ' . $safe->value;
 
-        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
+        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة '.$safe->name.' لهذا السبب  '
             . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
@@ -170,10 +170,10 @@ class TransactionLogController extends Controller
     public static function depositLog( $withdrawDetails,$safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the  safe for this statement '
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the  safe '.$safe->name.' for this statement '
             . $withdrawDetails->statement . '...' . 'The Safe credit is ' . $safe->value;
 
-        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة لهذا السبب  '
+        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة '.$safe->name.' لهذا السبب  '
             . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();

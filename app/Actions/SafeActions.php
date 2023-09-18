@@ -53,9 +53,20 @@ class SafeActions {
         return $this->safe;
     }
 
+    public function transfer($safe_to){
+        $value=$this->safe->value;
+        $this->safe->value=($value-$this->ammount);
+        $this->safe->save();
 
+        $value_to=$this->safe->value;
+        $safe_to->value=($value_to+$this->ammount);
+        $safe_to->save();
+        // $safe=Safe::find($safe_to);
+        self::transactions(-$this->ammount);
+        return $this->safe;
+    }
     public function transactions($ammount){
-        $reason=(SafeTransactions::details($this->reason_id) != NULL)?SafeTransactions::details($this->reason_id):$this->reason_id;
+        $reason=$this->reason_id;
         SafeTransactions::create([
             'safe_id'=>$this->safe->id,
             'value'=>$ammount,

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -11,42 +12,21 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 // use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-
-class SalariesExport implements FromView , WithEvents
+class AttendanceExport implements FromView , WithEvents
 {
-    public $month, $year, $month_salary;
+    public $period,$month_name;
 
-    public function __construct($month, $year, $month_salary)
+    public function __construct($period,$month_name)
     {
-        $this->month = $month;
-        $this->year = $year;
-        $this->month_salary = $month_salary;
+        $this->period = $period;
+        $this->month_name  =$month_name;
     }
     public function view(): View
     {
 
-        $month=Carbon::now()->format('m');
-        $year=Carbon::now()->format('Y');
-        // return
-         $followUps =Employee::with([
-                'followUps'=>function($q)use($month,$year){
-                            $q->where('month',$month)->where('year',$year);
-                        },
-                "deductions"=>function($dq)use($month,$year){
-                    $dq->where('month',$month)->where('year',$year);
-                },
-                "incentives"=>function($qi)use($month,$year){
-                    $qi->where('month',$month)->where('year',$year);
-                },
-                "employeeBorrowinng"=>function($qb)use($month,$year){
-                    $qb->whereHas('date',function($subq)use($month,$year){
+        $employees =Employee::all();
 
-                        $subq->where('month',$month)->where('year',$year);
-                    });
-                },
-                ])->get();
-
-        return view('reports.tables.salaries',['followUps'=>$followUps,'date'=>$this->month_salary,'i'=>$i=1]);
+        return view('reports.tables.attendance',['employees'=>$employees,'period'=>$this->period,'month_name'=>$this->month_name]);
     }
 
     public function registerEvents(): array
@@ -72,15 +52,15 @@ class SalariesExport implements FromView , WithEvents
                     $event->sheet->getColumnDimension($column)->setAutoSize(true);
                 }
                 //  center and change background color of header
-                $event->sheet->getStyle('A3:O3')->applyFromArray([
+                $event->sheet->getStyle('A2:AI3')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'startColor' => [
-                            'argb' => '92d050',
+                            'argb' => 'c0504d',
                         ],
                     ],
                 ]);
-
+                
                 // $event->sheet->getStyle('A:B')->applyFromArray([
                 //     'fill' => [
                 //         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,

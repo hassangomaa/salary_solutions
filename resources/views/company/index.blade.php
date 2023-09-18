@@ -12,7 +12,7 @@
     {{--@endcan--}}
     <div class="card">
         <div class="card-header">
-            {{ trans('company-management.company_list') }}
+            قائمه الفروع
         </div>
 
         <div class="card-body">
@@ -21,7 +21,7 @@
                 <tr>
                     <th width="10"></th>
                     <th>{{ trans('company-management.id') }}</th>
-                    <th>{{ trans('company-management.company_name') }}</th>
+                    <th>اسم الفرع</th>
                     <th>{{ trans('company-management.credit') }}</th>
                     <th>{{ trans('company-management.start_month') }}</th>
                     <th>{{ trans('company-management.end_month') }}</th>

@@ -8,11 +8,11 @@
                 {{ trans('payments.add_payment') }}
             </a>
         </div>
-        <div class="col-lg-6">
+        {{-- <div class="col-lg-6">
             <a class="btn btn-success" href="#">
                 {{ trans('payments.current_credit') }} = {{(isset($company))?$company->credit:0}}
             </a>
-        </div>
+        </div> --}}
     </div>
     {{--@endcan--}}
     <div class="card">
