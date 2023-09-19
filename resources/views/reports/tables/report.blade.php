@@ -62,11 +62,11 @@
                             <th><b>خصم </b></th>
                         </tr>
                         <tr >
-                            <td style="background:#c3d69b"><b>{{ $item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
-                                $item->incentives->sum('bonus') +
+                            <td style="background:#c3d69b"><b>{{ ($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +
+                                (($item->incentives->sum('bonus') +
                                 $item->incentives->sum('incentive') +
-                                $item->incentives->sum('regularity') -
-                                $item->deductions->sum('deduction_amount') }}</b></td>
+                                $item->incentives->sum('regularity'))) -
+                                ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) ) }}</b></td>
                         <th style="background:#c3d69b"><b>الصافى</b></th>
                         </tr>
                     </thead>

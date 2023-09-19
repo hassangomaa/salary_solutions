@@ -13,8 +13,28 @@
     $deduction = 0;
     $net_salary = 0;
 @endphp
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #print, #print * {
+            visibility: visible;
+        }
+        #print {
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        .no-print, .no-print *
+    {
+        display: none !important;
+    }
+    }
+
+</style>
     <div class="card">
-        <div class="card-header">
+        <div class="card-header ">
             {{ trans('reports.reports_list') }}
         </div>
 
@@ -62,15 +82,22 @@
                                         d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
                                 </svg></a>
                         </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-info" onclick="printContent()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                              </svg></button>
+                        </div>
                     </div>
                 </div>
 
 
             </form>
 
-            <table DIR="RTL" style="display: flex;">
-                <thead>
-                    <tr>
+<div id="print">
+    <table DIR="RTL" style="display: flex;">
+        <thead>
+                    <tr class="no-print">
                         <th><b>مجموع الموظفين</</th>
                         <td>{{ $followUps_count }}</td>
                     </tr>
@@ -132,11 +159,11 @@
                                     </tr>
                                     <tr style="background:#c3d69b">
                                         <th >الصافى</b></th>
-                                        <td><b>{{ $item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
-                                            $item->incentives->sum('bonus') +
+                                        <td><b>{{ ($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +
+                                            (($item->incentives->sum('bonus') +
                                             $item->incentives->sum('incentive') +
-                                            $item->incentives->sum('regularity') -
-                                            $item->deductions->sum('deduction_amount') }}</b></td>
+                                            $item->incentives->sum('regularity'))) -
+                                            ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) ) }}</b></td>
                                     </tr>
                                 </thead>
 
@@ -149,9 +176,23 @@
                     </tr>
                         @endforeach
                 </thead>
-                {{$followUps->appends($_GET)->links("pagination::bootstrap-4")}}
+                <div class="no-print">
+                    {{$followUps->appends($_GET)->links("pagination::bootstrap-4")}}
+                </div>
             </table>
+        </div>
                     </div>
         {{-- {{ $files->links('vendor.pagination.bootstrap-5') }} --}}
     </div>
 @endsection
+
+
+<script>
+    function printContent() {
+        var printContent = document.getElementById("print").innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>
