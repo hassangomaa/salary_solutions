@@ -31,7 +31,8 @@ return
     'edit_payment_data' => 'تحرير بيانات الدفع',
     'company_name' => 'اسم الشركة',
 
-
+    'withdrawal'=>'سحب',
+    'deposit'=>'إيداع'
 
 
 ];

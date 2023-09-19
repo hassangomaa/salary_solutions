@@ -30,25 +30,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="start_month">{{ trans('borrow.start_month') }}</label>
-                    <select class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month" id="start_month" required>
-                        <option value="" disabled selected>{{ trans('borrow.select_month') }}</option>
-                        @foreach($months as $month)
-                        <option value="{{ $month['month']."-".$month['year'] }}">{{ $month['month']."-".$month['year']}}</option>
-                    @endforeach
-                    </select>
+                    <label class="required" for="start_month">بدايه من </label>
+                    <input type="month" class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month">
                     @if($errors->has('start_month'))
                         <span class="text-danger">{{ $errors->first('start_month') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
-                    <label class="required" for="end_month">{{ trans('borrow.end_month') }}</label>
-                    <select class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}" name="end_month" id="end_month" required>
-                        <option value="" disabled selected>{{ trans('borrow.select_month') }}</option>
-                        @foreach($months as $month)
-                            <option value="{{ $month['month']."-".$month['year'] }}">{{ $month['month']."-".$month['year']}}</option>
-                        @endforeach
-                    </select>
+                    <label class="required" for="end_month">نهايه في </label>
+                    <input type="month" class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}" name="end_month" id="end_month">
                     @if($errors->has('end_month'))
                         <span class="text-danger">{{ $errors->first('end_month') }}</span>
                     @endif
@@ -61,7 +51,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label class="required" for="safe_id">{{ trans('borrow.safe_id') }}</label>
+                    <label class="required" for="safe_id">االخزنه </label>
                     <select class="form-control {{ $errors->has('safe_id') ? 'is-invalid' : '' }}" name="safe_id" id="safe_id" required>
                         <option value="" disabled selected>{{ trans('borrow.select_safe') }}</option>
                         @foreach($safes as $safe)
@@ -77,6 +67,21 @@
                     <input class="form-control {{ $errors->has('statement') ? 'is-invalid' : '' }}" type="text" name="statement" id="statement" value="{{ old('statement') }}" required>
                     @if($errors->has('statement'))
                         <span class="text-danger">{{ $errors->first('statement') }}</span>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <input {{ $errors->has('percentage_check') ? 'is-invalid' : '' }}" type="checkbox" name="percentage_check" id="percentage_check" value="1">
+                    <label class="" for="percentage_check">اضافه نسبه </label>
+
+                    @if($errors->has('percentage_check'))
+                        <span class="text-danger">{{ $errors->first('percentage_check') }}</span>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label class="" for="percentage">النسبه</label>
+                    <input class="form-control {{ $errors->has('percentage') ? 'is-invalid' : '' }}" type="number" step="any" min="1" name="percentage" id="percentage" value="{{ old('percentage') }}">
+                    @if($errors->has('percentage'))
+                        <span class="text-danger">{{ $errors->first('percentage') }}</span>
                     @endif
                 </div>
                 <div class="form-group">

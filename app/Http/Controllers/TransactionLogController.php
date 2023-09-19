@@ -85,43 +85,7 @@ class TransactionLogController extends Controller
     public static function borrowLog($employeeId, $amount,$date,$safe)
     {
         // return $safe;
-            $start = \Carbon\Carbon::createFromFormat('m-Y', $date[0]);
-            $end = \Carbon\Carbon::createFromFormat('m-Y', $date[1]);
 
-            $numberOfMonths = $end->diffInMonths($start);
-
-            $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
-
-            foreach ($period as $date) {
-                $monthFormat = $date->format('m');
-                $yearFormat = $date->format('Y');
-
-                $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
-
-                $amount_value = ($numberOfMonths > 0) ? $amount / $numberOfMonths : $amount;
-                $percentage = ($numberOfMonths > 0) ? ($amount_value / $amount) * 100 : 100;
-
-            if($borrowing_date){
-                 employeeBorrowing::create([
-                    'user_id'=>$employeeId,
-                    'amount'=>$amount_value,
-                    'date_id'=>$borrowing_date->id,
-                    'percentage'=>$percentage
-                ]);
-            }else{
-                $borrowing_date=borrowing_dates::create([
-                    'month'=>$monthFormat,
-                    'year'=>$yearFormat,
-                ]);
-                 employeeBorrowing::create([
-                    'user_id'=>$employeeId,
-                    'amount'=>$amount_value,
-                    'date_id'=>$borrowing_date->id,
-                    'percentage'=>$percentage
-                ]);
-
-            }
-        }
         // $safe
 
         $employee = Employee::where('id', $employeeId)->first();

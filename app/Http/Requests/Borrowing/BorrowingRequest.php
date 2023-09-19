@@ -22,10 +22,12 @@ class BorrowingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee_id'=>'required|exists:users,id,deleted_at,NULL',
-            'other_employee_id'=>'nullable|exists:users,id,deleted_at,NULL',
-            'start_month'=>'required|date_format:m-Y',
-            'end_month'=>'required|date_format:m-Y|after_or_equal:start_month'
+            'employee_id'=>'required|exists:employees,id,deleted_at,NULL',
+            'other_employee_id'=>'nullable|exists:employees,id,deleted_at,NULL',
+            'start_month'=>'required|date',
+            'end_month'=>'required|date|after_or_equal:start_month',
+            'percentage_check'=>'nullable',
+            'percentage'=>"required_if:percentage_check,1"
         ];
     }
 }

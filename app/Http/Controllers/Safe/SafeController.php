@@ -156,8 +156,8 @@ public function safe_transfer_store(SafeTransferRequest $request){
     $safe_from=Safe::find($request->safe_from);
 
     $safe_to=Safe::find($request->safe_to);
-
-    $safe=(new SafeActions($request['safe_from'],"transfer $request->ammount from safe $safe_from->name to safe $safe_to->name ",$request['amount'],Safe::class,$request['safe_to']));
+        $safe=(new SafeActions($request['safe_from'],"نقل مبلغ $request->ammount من خزنه $safe_from->name الي خزنه $safe_to->name"
+        ,$request['amount'],Safe::class,$request['safe_to']));
 
     $safe=$safe->transfer($safe_to);
     return redirect()->route('safes.index')->with('message',"Success");
