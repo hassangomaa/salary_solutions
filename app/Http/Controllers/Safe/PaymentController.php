@@ -12,18 +12,14 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     public function __invoke(Request $request){
-        $date=Carbon::now();
+        $date=Carbon::parse($request->month);
 
-        // $date=$request->date;
+        
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
         $date=Carbon::parse($date)->format('Y-M');
 
-          $followUps =Employee::whereHas('followUps',function($s)use($request){
-                    if((isset($request->from_days)&& $request->from_days != "") && isset($request->to_days)&& $request->to_days != "")
-                    $s->where('attended_days','>=',$request->from_days)
-                    ->where('attended_days','<=',$request->to_days);
-                })->with([
+          $followUps =Employee::with([
                 'followUps'=>function($q)use($month,$year,$request){
                             $q->where('month',$month)->where('year',$year);
 
@@ -58,7 +54,7 @@ class PaymentController extends Controller
                 $flag=1;
                 $paymentTypes = CompanyPayment::paymentType();
 
-                    return view('company-payments.create',compact('total','reason','flag','paymentTypes','safes'));
+                return view('company-payments.create',compact('total','reason','flag','paymentTypes','safes'));
 
             }
 }
