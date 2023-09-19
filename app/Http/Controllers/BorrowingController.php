@@ -121,7 +121,7 @@ class BorrowingController extends Controller
 
 
         // Save the new borrowing record
-        // $borrowing->save();
+        $borrowing->save();
 
 
         $safe=(new SafeActions($request['safe_id'],"سلفه للموظف $user->name ",$request['amount'],User::class,$request['employee_id']));
