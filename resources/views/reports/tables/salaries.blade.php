@@ -89,7 +89,7 @@ $net_salary = 0;
                                     $item->incentives->sum('incentive') +
                                     $item->incentives->sum('regularity'))) -
                                     ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) )
-                                     ;
+                                     
                             @endphp
 
                         </tr>
