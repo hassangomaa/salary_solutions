@@ -39,35 +39,36 @@
                             <th><b>راتب يومي</b></th>
                         </tr>
                         <tr>
-                            <td><b>{{ $item->incentives->sum('bonus') }}</b></td>
+
                             <th><b>الاضافي</b></th>
+                            <td><b>{{ $item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus') }}</b></td>
                         </tr>
                         <tr>
-                            <td><b>{{ $item->incentives->sum('regularity') }}</b></td>
                             <th><b>بدل انتظام</b></th>
+                            <td><b>{{ $item->incentives->sum('regularity') }}</b></td>
                         </tr>
-                        <tr >
-                            <td style="background:#c3d69b"><b>{{ $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
+                        <tr style="background:#c3d69b">
+                            <th >اجمالي الراتب</b></th>
+                            <td><b>{{ $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
                                 $item->incentives->sum('bonus') +
                                 $item->incentives->sum('incentive') +
-                                $item->incentives->sum('regularity') }}</b></td>
-                        <th style="background:#c3d69b"><b>اجمالي الراتب</b></th>
+                                $item->incentives->sum('regularity')+$item->incentives->sum('gift') }}</b></td>
                         </tr>
                         <tr>
-                            <td><b>{{ $item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0 }}</b></td>
                             <th><b>سلف </b></th>
+                            <td><b>{{ $item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0 }}</b></td>
                         </tr>
                         <tr>
-                            <td><b>{{ $item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence') }}</b></td>
                             <th><b>خصم </b></th>
+                            <td><b>{{ $item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence') }}</b></td>
                         </tr>
-                        <tr >
-                            <td style="background:#c3d69b"><b>{{ ($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +
-                                (($item->incentives->sum('bonus') +
+                        <tr style="background:#c3d69b">
+                            <th >الصافى</b></th>
+                            <td><b>{{ ($item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
+                                $item->incentives->sum('bonus') +
                                 $item->incentives->sum('incentive') +
-                                $item->incentives->sum('regularity'))) -
+                                $item->incentives->sum('regularity')+$item->incentives->sum('gift')) -
                                 ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) ) }}</b></td>
-                        <th style="background:#c3d69b"><b>الصافى</b></th>
                         </tr>
                     </thead>
 
