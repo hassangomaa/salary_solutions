@@ -13,8 +13,7 @@
                 <div class="row">
                     <div class="col-md-6">
 
-                        <a href="{{ route('salary_pay') }}" class="btn btn-primary">pay</a>
-                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success">Refresh Data</a>
+                        <a href="{{ route('salary_pay') }}" class="btn btn-primary" onclick="return confirmPay(event, '{{ \Carbon\Carbon::now()->format('Y-M') }}')"> {{ \Carbon\Carbon::now()->format('Y-M') }}: دفع مرتبات </a>                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success">Refresh Data</a>
                     </div>
                     <div class="col-md-6">
                         <p>{{ $total_attendance_houres }}: اجمالي عدد ساعات الحضور</p>
@@ -137,6 +136,15 @@
                     });
                 });
             });
-        </script>
 
+
+        </script>
+<script>
+    function confirmPay(event, date) {
+        var confirmation = confirm('ستقوم الان بدفع مرتبات: ' + date);
+        if (!confirmation) {
+            event.preventDefault();
+        }
+    }
+</script>
     @endsection

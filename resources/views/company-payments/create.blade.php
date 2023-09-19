@@ -11,14 +11,14 @@
                 @csrf
                 <div class="form-group">
                     <label class="required" for="amount">{{ trans('payments.amount') }}</label>
-                    <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" id="amount" value="{{ old('amount', '') }}" required>
+                    <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" id="amount"  @if(isset($total)) value="{{ $total }}" @endif  required>
                     @if($errors->has('amount'))
                         <span class="text-danger">{{ $errors->first('amount') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label class="required" for="statement">{{ trans('payments.statement') }}</label>
-                    <input class="form-control {{ $errors->has('statement') ? 'is-invalid' : '' }}" type="text" name="statement" id="statement" value="{{ old('statement', '') }}" required>
+                    <input class="form-control {{ $errors->has('statement') ? 'is-invalid' : '' }}" type="text" name="statement" id="statement"   @if(isset($reason)) value="{{ $reason }}" @endif required>
                     @if($errors->has('statement'))
                         <span class="text-danger">{{ $errors->first('statement') }}</span>
                     @endif
