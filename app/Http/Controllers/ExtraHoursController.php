@@ -28,9 +28,13 @@ class ExtraHoursController extends Controller
 
     public function updateNumberOfHours(Request $request)
     {
+        // return "G";
+
         $followUp =FollowUp::find($request->follow_up_id);
         $followUp->extra_hours = $request->number_of_hours;
         $followUp->save();
+
+        return true;
 
     }
 }

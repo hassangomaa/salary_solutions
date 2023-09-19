@@ -11,7 +11,7 @@ class TransactionLog extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'company_id',
+        // 'company_id',
         'amount',
         'type_ar',
         'type_en',

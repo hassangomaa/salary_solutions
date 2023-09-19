@@ -18,6 +18,7 @@ class Incentives extends Model
         'bonus',
         'regularity',
         'gift',
+        'status'
     ];
 
     public static function reason(){

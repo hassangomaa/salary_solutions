@@ -15,5 +15,6 @@ return [
             'incentive'=>'Incentive',
             'deduction'=>'Deductions',
             'reports'=>'Reports',
+'safes'=>'Safes',
 
 ];

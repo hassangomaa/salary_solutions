@@ -16,6 +16,6 @@ return [
         'incentive'=>'الحوافز',
     'deduction'=>'الجزاءات',
     'reports'=>'تقارير',
-
+    'safes'=>'الخزن'
 
 ];

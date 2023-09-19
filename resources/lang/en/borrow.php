@@ -36,4 +36,5 @@ return [
     'other' => 'Other',
     'other_employee_id' => 'Other Employee ID',
     'select_month' => 'Select a month',
+    'select_safe'=>'Select Safe',
 ];

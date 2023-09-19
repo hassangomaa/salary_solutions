@@ -30,26 +30,46 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="month">{{ trans('borrow.month') }}</label>
-                    <select class="form-control {{ $errors->has('month') ? 'is-invalid' : '' }}" name="month" id="month" required>
+                    <label class="required" for="start_month">{{ trans('borrow.start_month') }}</label>
+                    <select class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month" id="start_month" required>
                         <option value="" disabled selected>{{ trans('borrow.select_month') }}</option>
                         @foreach($months as $month)
-                            @if($month==0)
-                                @continue
-                            @endif
-                            <option value="{{ $month }}">{{ $month }}</option>
-                        @endforeach
+                        <option value="{{ $month['month']."-".$month['year'] }}">{{ $month['month']."-".$month['year']}}</option>
+                    @endforeach
                     </select>
-                    @if($errors->has('month'))
-                        <span class="text-danger">{{ $errors->first('month') }}</span>
+                    @if($errors->has('start_month'))
+                        <span class="text-danger">{{ $errors->first('start_month') }}</span>
                     @endif
                 </div>
-
+                <div class="form-group">
+                    <label class="required" for="end_month">{{ trans('borrow.end_month') }}</label>
+                    <select class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}" name="end_month" id="end_month" required>
+                        <option value="" disabled selected>{{ trans('borrow.select_month') }}</option>
+                        @foreach($months as $month)
+                            <option value="{{ $month['month']."-".$month['year'] }}">{{ $month['month']."-".$month['year']}}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('end_month'))
+                        <span class="text-danger">{{ $errors->first('end_month') }}</span>
+                    @endif
+                </div>
                 <div class="form-group">
                     <label class="required" for="amount">{{ trans('borrow.amount') }}</label>
                     <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="number" name="amount" id="amount" value="{{ old('amount') }}" required>
                     @if($errors->has('amount'))
                         <span class="text-danger">{{ $errors->first('amount') }}</span>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label class="required" for="safe_id">{{ trans('borrow.safe_id') }}</label>
+                    <select class="form-control {{ $errors->has('safe_id') ? 'is-invalid' : '' }}" name="safe_id" id="safe_id" required>
+                        <option value="" disabled selected>{{ trans('borrow.select_safe') }}</option>
+                        @foreach($safes as $safe)
+                        <option value="{{ $safe->id }}">{{ $safe->name}}</option>
+                    @endforeach
+                    </select>
+                    @if($errors->has('safe_id'))
+                        <span class="text-danger">{{ $errors->first('safe_id') }}</span>
                     @endif
                 </div>
                 <div class="form-group">

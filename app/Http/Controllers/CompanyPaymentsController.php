@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SafeActions;
 use App\Models\Company;
 use App\Models\CompanyPayment;
+use App\Models\Safe\Safe;
+use App\Models\Safe\SafeTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -12,10 +15,10 @@ class CompanyPaymentsController extends Controller
 {
     public function index(Request $request)
     {
-        $companyId = Session::get('companyId');
+        // $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = CompanyPayment::select('*')
-                ->where('company_id', $companyId);
+            $query = CompanyPayment::select('*');
+                // ->where('company_id', $companyId);
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp; <br>');
@@ -46,10 +49,10 @@ class CompanyPaymentsController extends Controller
 
             return $table->make(true);
         }
-        $company = Company::find($companyId);
+        // $company = Company::find($companyId);
         $paymentTypes = CompanyPayment::paymentType();
         $flag = 1;
-        return view('company-payments.index', compact('flag', 'company', 'paymentTypes'));//, compact('roles'));
+        return view('company-payments.index', compact('flag', 'paymentTypes'));//, compact('roles'));
     }
 
     /*
@@ -60,58 +63,61 @@ class CompanyPaymentsController extends Controller
     {
         $flag = 1;
         $paymentTypes = CompanyPayment::paymentType();
-
-        return view('company-payments.create', compact('flag', 'paymentTypes'));
+        $safes=Safe::all();
+        return view('company-payments.create', compact('flag', 'paymentTypes','safes'));
     }
 
     public function store(Request $request)
     {
+        //TODO
         $companyId = Session::get('companyId');
-        $company = Company::find($companyId);
+        $safe=Safe::find($request->safe);
 
         if ($request->type == 'deposit') {
             $depositDetails = $request;
-            $this->deposit($company, $request);
-            $company->save();
-            TransactionLogController::depositLog($company,$depositDetails);
+            $this->deposit($safe,$request);
+            $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
 
-
+            $safe=$safe->deposit();
+            TransactionLogController::depositLog($depositDetails,$safe);
         }
+
         if ($request->type == 'withdrawal') {
             $withdrawDetails = $request;
-           $this->withdraw($company, $request);
-            $company->save();
-            TransactionLogController::withdrawLog($company,$withdrawDetails);
+            return $this->withdraw($safe,$request);
+
+            $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
+            $safe=$safe->withdraw();
+            TransactionLogController::withdrawLog($withdrawDetails,$safe);
 
         }
 
         return redirect(route('companyPayments.index'));
     }
 
-    private function deposit($company, $request)
+    private function deposit($safe, $request)
     {
-        $amount = $request->amount;
-        $company->credit += $amount;
-        $this->saveTransactionDetails($company->id, $request);
+
+        $this->saveTransactionDetails($safe->id, $request);
 
     }
 
-    private function withdraw($company, $request)
+    private function withdraw($safe, $request)
     {
-        $amount = $request->amount;
-        $company->credit -= $amount;
-        $this->saveTransactionDetails($company->id, $request);
+        // $amount = $request->amount;
+        // $company->credit -= $amount;
+        $this->saveTransactionDetails($safe->id, $request);
 
     }
 
 
-    private function saveTransactionDetails($companyId, $request)
+    private function saveTransactionDetails($safe, $request)
     {
         $companyPayment = new CompanyPayment;
         $companyPayment->amount = $request->input('amount');
         $companyPayment->statement = $request->input('statement');
         $companyPayment->type = $request->type;
-        $companyPayment->company_id = $companyId;
+        $companyPayment->company_id = $safe;
         $companyPayment->save();
     }
 

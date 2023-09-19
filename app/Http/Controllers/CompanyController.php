@@ -20,6 +20,8 @@ class CompanyController extends Controller
         self::$companyId = null;
     }
 
+
+    
     public function companyDashboard()
     {
         if (auth()->check()) {

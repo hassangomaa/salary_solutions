@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrow;
+use App\Models\Borrowing\borrowing_dates;
+use App\Models\Borrowing\employeeBorrowing;
 use App\Models\Employee;
 use App\Models\TransactionLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
@@ -17,7 +20,7 @@ class TransactionLogController extends Controller
     {
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = TransactionLog::select('*')->where('company_id', $companyId)->orderBy('created_at', 'DESC');
+            $query = TransactionLog::select('*')->orderBy('created_at', 'DESC');
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -79,19 +82,59 @@ class TransactionLogController extends Controller
         return view('transaction-log.show', compact('flag', 'transaction'));
     }
 
-    public static function borrowLog($employeeId, $amount)
+    public static function borrowLog($employeeId, $amount,$date,$safe)
     {
-        $employee = Employee::with('company')->where('id', $employeeId)->first();
+        // return $safe;
+            $start = \Carbon\Carbon::createFromFormat('m-Y', $date[0]);
+            $end = \Carbon\Carbon::createFromFormat('m-Y', $date[1]);
+
+            $numberOfMonths = $end->diffInMonths($start);
+
+            $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
+
+            foreach ($period as $date) {
+                $monthFormat = $date->format('m');
+                $yearFormat = $date->format('Y');
+
+                $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+                $amount_value = ($numberOfMonths > 0) ? $amount / $numberOfMonths : $amount;
+                $percentage = ($numberOfMonths > 0) ? ($amount_value / $amount) * 100 : 100;
+
+            if($borrowing_date){
+                 employeeBorrowing::create([
+                    'user_id'=>$employeeId,
+                    'amount'=>$amount_value,
+                    'date_id'=>$borrowing_date->id,
+                    'percentage'=>$percentage
+                ]);
+            }else{
+                $borrowing_date=borrowing_dates::create([
+                    'month'=>$monthFormat,
+                    'year'=>$yearFormat,
+                ]);
+                 employeeBorrowing::create([
+                    'user_id'=>$employeeId,
+                    'amount'=>$amount_value,
+                    'date_id'=>$borrowing_date->id,
+                    'percentage'=>$percentage
+                ]);
+
+            }
+        }
+        // $safe
+
+        $employee = Employee::where('id', $employeeId)->first();
         $log = new TransactionLog();
 
         $statement_en = 'The employee ' . $employee->name . ' has borrowed the money amount ' . $amount .
-            '. The current company credit is ' . $employee->company->credit;
+            '. The current safe credit is ' . $safe->value;
 
         $statement_ar = 'الموظف ' . $employee->name . ' استلف ' . $amount .
-            '. المال المتوفر في الخزينة:  ' . $employee->company->credit;
+            '. المال المتوفر في الخزينة:  ' . $safe->value;
 
 
-        $log->company_id = $employee->company->id;
+        // $log->company_id = $employee->company->id;
         $log->amount = $amount;
         $log->type_ar = 'سلفه';
         $log->type_en = 'Borrowing';
@@ -101,17 +144,17 @@ class TransactionLogController extends Controller
         $log->save();
     }
 
-    public static function withdrawLog($company, $withdrawDetails)
+    public static function withdrawLog($withdrawDetails,$safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from company\'s safe for this statement '
-            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from  safe '.$safe->name.' for this statement '
+            . $withdrawDetails->statement . '...' . 'The current safe is ' . $safe->value;
 
-        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة الشركة لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة '.$safe->name.' لهذا السبب  '
+            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
+        // $log->company_id = $company->id;
         $log->amount = $withdrawDetails->amount;
         $log->type_ar = 'سحب';
         $log->type_en = 'withdraw';
@@ -124,17 +167,17 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function depositLog($company, $withdrawDetails)
+    public static function depositLog( $withdrawDetails,$safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the company\'s safe for this statement '
-            . $withdrawDetails->statement . '...' . 'The company current credit is ' . $company->credit;
+        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the  safe '.$safe->name.' for this statement '
+            . $withdrawDetails->statement . '...' . 'The Safe credit is ' . $safe->value;
 
-        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة الشركة لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة '.$safe->name.' لهذا السبب  '
+            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
+        // $log->company_id = $company->id;
         $log->amount = $withdrawDetails->amount;
         $log->type_ar = 'ايداع';
         $log->type_en = 'deposit';
@@ -147,18 +190,17 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function salariesLog($company, $totalNetSalaries, $month)
+    public static function salariesLog($safe, $totalNetSalaries, $month)
     {
 
-        $statement_en = 'The amount ' . $totalNetSalaries . ' has been withdrawn from company\'s safe for paying month: ' . $month . ' Salaries '
-            . '...' . 'The company current credit is ' . $company->credit;
+        $statement_en = 'The amount ' . $totalNetSalaries . ' has been withdrawn from  safe for paying month: ' . $month . ' Salaries '
+            . '...' . 'The Current Safe is ' . $safe->value;
 
-        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة الشركة لدفع مرتبات شهر   '
-            . $month . '...' . 'رصيد الشركة الحالي:  ' . $company->credit;
+        $statement_ar = 'لقد تم سحب  ' . $totalNetSalaries . ' من خزنة  لدفع مرتبات شهر   '
+            . $month . '...' . 'رصيد الخزنه الحالي:  ' . $safe->safe;
 
 
         $log = new TransactionLog();
-        $log->company_id = $company->id;
         $log->amount = $totalNetSalaries;
         $log->type_ar = 'مرتبات';
         $log->type_en = 'Salaries';
