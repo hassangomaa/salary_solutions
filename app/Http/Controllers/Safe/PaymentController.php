@@ -58,8 +58,7 @@ class PaymentController extends Controller
                 $flag=1;
                 $paymentTypes = CompanyPayment::paymentType();
 
-                return view('company-payments.create',compact('total','reason','flag','paymentTypes','safes'));
-                return $total;
+                    return view('company-payments.create',compact('total','reason','flag','paymentTypes','safes'));
 
             }
 }
