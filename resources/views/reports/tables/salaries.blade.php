@@ -17,11 +17,7 @@ $net_salary = 0;
                             {{ $date }}
                         </th>
                     </tr>
-                    <tr>
-                        <th colspan="15" style="text-align:center">
-                            مرتبات شركه الرساله للتوريدات العموميه قسم
-                        </th>
-                    </tr>
+
                     <tr>
                         <th>م</th>
                         <th>الكود</th>
