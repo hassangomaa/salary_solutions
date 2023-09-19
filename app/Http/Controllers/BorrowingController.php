@@ -86,7 +86,7 @@ class BorrowingController extends Controller
 
     public function store(BorrowingRequest $request)
     {
-return $request;
+
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
 

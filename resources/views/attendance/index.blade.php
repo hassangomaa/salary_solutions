@@ -12,8 +12,14 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
+                        <form action="{{ route('salary_pay') }}" method="get">
+                            <div class="row">
 
-                        <a href="{{ route('salary_pay') }}" class="btn btn-primary" onclick="return confirmPay(event, '{{ \Carbon\Carbon::now()->format('Y-M') }}')"> {{ \Carbon\Carbon::now()->format('Y-M') }}: دفع مرتبات </a>                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success">Refresh Data</a>
+                                <input type="month" name="month"  id="month" class="form-control col-md-6">
+                                <button type="submet" class="btn btn-primary col-md-3" onclick="return confirmPay(event)">  دفع مرتبات </button>
+                            </form>
+                            <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <p>{{ $total_attendance_houres }}: اجمالي عدد ساعات الحضور</p>
@@ -141,7 +147,8 @@
         </script>
 <script>
     function confirmPay(event, date) {
-        var confirmation = confirm('ستقوم الان بدفع مرتبات: ' + date);
+        var monthValue = document.getElementById('month').value;
+        var confirmation = confirm('ستقوم الان بدفع مرتبات: ' + monthValue);
         if (!confirmation) {
             event.preventDefault();
         }
