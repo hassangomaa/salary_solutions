@@ -22,7 +22,7 @@ class BorrowingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee_id'=>'required|exists:employees,id,deleted_at,NULL',
+            'employee_id'=>'required',
             'other_employee_id'=>'nullable|exists:employees,id,deleted_at,NULL',
             'start_month'=>'required|date',
             'end_month'=>'required|date|after_or_equal:start_month',
