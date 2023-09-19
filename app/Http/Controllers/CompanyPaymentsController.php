@@ -84,7 +84,7 @@ class CompanyPaymentsController extends Controller
 
         if ($request->type == 'withdrawal') {
             $withdrawDetails = $request;
-            return $this->withdraw($safe,$request);
+             $this->withdraw($safe,$request);
 
             $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
             $safe=$safe->withdraw();
@@ -92,7 +92,7 @@ class CompanyPaymentsController extends Controller
 
         }
 
-        return redirect(route('companyPayments.index'));
+        return redirect()->route('companyPayments.index')->with('message','تم بنجاح');
     }
 
     private function deposit($safe, $request)

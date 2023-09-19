@@ -28,7 +28,7 @@
                     <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" id="type" required>
                         @foreach($paymentTypes as $type)
                             <option value="{{ $type }}" selected >
-                                {{ ucfirst($type) }}
+                                {{ trans('payments.'.$type) }}
                             </option>
                         @endforeach
                     </select>
@@ -37,7 +37,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label class="required" for="type">{{ trans('payments.safe') }}</label>
+                    <label class="required" for="type">الخزنه</label>
                     <select class="form-control {{ $errors->has('safe') ? 'is-invalid' : '' }}" name="safe" id="safe" required>
                         @foreach($safes as $safe)
                             <option value="{{ $safe->id }}" >
