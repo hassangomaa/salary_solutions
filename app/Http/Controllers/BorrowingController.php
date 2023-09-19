@@ -131,7 +131,7 @@ class BorrowingController extends Controller
 if(!isset($request['percentage_check'])){
 // return "F";
     $start = Carbon::parse($request['start_month'].'-1');
-    $end = Carbon::parse($request['end_month'].'-1');
+    $end = Carbon::parse($request['end_month'].'-1')->addMonth();
 
         $numberOfMonths = $end->diffInMonths($start);
 
