@@ -50,7 +50,7 @@ $net_salary = 0;
                                 $days += $item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0;
                             @endphp
                             <td>{{ $item->daily_fare }}</td>
-                            <td>{{ $item->incentives->sum('bonus') }}</td>
+                            <td>{{ $item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus') }}</td>
                             <td>{{ $item->incentives->sum('incentive') }}</td>
                             <td>{{ $item->incentives->sum('regularity') }}</td>
                             @php
@@ -60,9 +60,7 @@ $net_salary = 0;
                             @endphp
                             <td>
                                 {{ $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
-                                    $item->incentives->sum('bonus') +
-                                    $item->incentives->sum('incentive') +
-                                    $item->incentives->sum('regularity') }}
+                                    $item->incentives->sum('regularity')+$item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus') }}
                             </td>
                             <td>{{ $item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0 }}
                             </td>
@@ -70,26 +68,20 @@ $net_salary = 0;
                             </td>
                             <td>
                                 {{ ($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +
-                                    (($item->incentives->sum('bonus') +
-                                    $item->incentives->sum('incentive') +
-                                    $item->incentives->sum('regularity'))) -
+                                    ($item->incentives->sum('regularity')+$item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus')) -
                                     ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) )
                                      }}
                             </td>
                             @php
                                 $total_salary += $item->daily_fare * ($item->followUps->isNotEmpty() ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0) +
-                                    $item->incentives->sum('bonus') +
-                                    $item->incentives->sum('incentive') +
-                                    $item->incentives->sum('regularity');
+                                $item->incentives->sum('regularity')+$item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus');
 
                                 $borrows += $item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0;
                                 $deduction += $item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence');
                                 $net_salary += ($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +
-                                    (($item->incentives->sum('bonus') +
-                                    $item->incentives->sum('incentive') +
-                                    $item->incentives->sum('regularity'))) -
+                                    ($item->incentives->sum('regularity')+$item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus')) -
                                     ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) )
-                                     
+
                             @endphp
 
                         </tr>
