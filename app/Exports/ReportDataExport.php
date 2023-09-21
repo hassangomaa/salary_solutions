@@ -4,6 +4,7 @@ namespace App\Exports;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 // use Maatwebsite\Excel\Concerns\FromView;
@@ -25,8 +26,10 @@ class ReportDataExport implements FromView , WithEvents
     public function view(): View
     {
 
-        $month=Carbon::now()->format('m');
-        $year=Carbon::now()->format('Y');
+        $month=$this->month;
+        $year=$this->year;
+        $company_id=Session::get('companyId');
+
         // return
         $followUps =Employee::with([
             'followUps'=>function($q)use($month,$year){
@@ -44,7 +47,7 @@ class ReportDataExport implements FromView , WithEvents
                     $subq->where('month',$month)->where('year',$year);
                 });
             },
-            ])->get();
+            ])->where('company_id',$company_id)->get();
 
         return view('reports.tables.report',['followUps'=>$followUps,'date_name'=>$this->month_salary,'i'=>$i=1]);
     }

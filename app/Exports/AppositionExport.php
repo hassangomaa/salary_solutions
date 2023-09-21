@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 // use Maatwebsite\Excel\Concerns\FromView;
@@ -26,12 +27,13 @@ class AppositionExport implements FromView , WithEvents
 
     $month=$this->month;
     $year=$this->year;
+    $company_id=Session::get('companyId');
 
     $employees=Employee::with([
         "borrows"=>function($q)use($month,$year){
                 $q->where('month',$month)->where('year',$year);
         },
-        ])->get();
+        ])->where('company_id',$company_id)->get();
 
         return view('reports.tables.apposition',['employees'=>$employees]);
     }

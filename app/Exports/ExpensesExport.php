@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\CompanyPayment;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 // use Maatwebsite\Excel\Concerns\FromView;
@@ -25,9 +26,10 @@ class ExpensesExport implements FromView , WithEvents
     {
 
         $date=$this->date;
+        $company_id=Session::get('companyId');
 
         $expenses=CompanyPayment::whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
-        ->get();
+        ->where('company_id',$company_id)->get();
 
         return view('reports.tables.expenses',['expenses'=>$expenses]);
     }
