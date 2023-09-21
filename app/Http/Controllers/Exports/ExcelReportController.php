@@ -22,7 +22,7 @@ class ExcelReportController extends Controller
 
     public function salariesExport($month,$year,$date){
 
-        return Excel::download(new salariesExport($month,$year,Carbon::now()->format('Y-M')), 'salaries.xlsx');
+        return Excel::download(new salariesExport($month,$year,$date), 'salaries.xlsx');
     }
 
 

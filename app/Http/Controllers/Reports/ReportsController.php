@@ -13,19 +13,20 @@ use App\Models\Safe\SafeTransactions;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Session ;
 
 class ReportsController extends Controller
 {
+
     public function index(Request $request){
 
-        $companyId = FacadesSession::get('companyId');
+        $company_id=session()->all()['companyId'];
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
         $date=Carbon::parse($date)->format('Y-M');
+
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
             return $excel->salariesExport($month,$year,$date);
@@ -52,7 +53,7 @@ class ReportsController extends Controller
                         $subq->where('month',$month)->where('year',$year);
                     });
                 },
-                ])->get();
+                ])->where('company_id',$company_id)->get();
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.salaries',compact('followUps','flag','date'));
@@ -60,6 +61,7 @@ class ReportsController extends Controller
 
     public function attendance(Request $request){
 
+        $company_id=session()->all()['companyId'];
 
         $date=(isset($request->date))?Carbon::parse($request->date)->format('Y-m'):Carbon::now()->format('Y-m');
         $to_date=(isset($request->date))?Carbon::parse($request->date)->addMonth()->format('Y-m'):Carbon::now()->addMonth()->format('Y-m');
@@ -68,7 +70,7 @@ class ReportsController extends Controller
         $period = CarbonPeriod::create($from,$to);
         $month_name=Carbon::parse($date)->format('Y-M');
 
-        $companyId = FacadesSession::get('companyId');
+        $companyId = Session::get('companyId');
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -79,7 +81,8 @@ class ReportsController extends Controller
             return $excel->attendanceExport($period,$month_name);
 
         }
-         $employees =Employee::all();
+         $employees =Employee::where('company_id',$company_id)->get();
+
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.attendance',compact('employees','period','flag','date','month_name'));
@@ -89,8 +92,7 @@ class ReportsController extends Controller
 
     public function report(Request $request){
 
-
-        // $companyId = FacadesSession::get('companyId');
+        $company_id=session()->all()['companyId'];
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -117,8 +119,8 @@ class ReportsController extends Controller
                         $subq->where('month',$month)->where('year',$year);
                     });
                 },
-                ])->paginate(1);
-                $followUps_count=Employee::count();
+                ])->where('company_id',$company_id)->paginate(1);
+                $followUps_count=Employee::where('company_id',$company_id)->count();
         $flag = 1;
 
         $date=Carbon::now()->format('Y-M');
@@ -142,6 +144,8 @@ class ReportsController extends Controller
     }
 
     public function apposition(Request $request){
+        $company_id=session()->all()['companyId'];
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -156,7 +160,7 @@ class ReportsController extends Controller
             "borrows"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->paginate(10);
+            ])->where('company_id',$company_id)->paginate(10);
 
 
 
@@ -166,6 +170,8 @@ class ReportsController extends Controller
     }
 
     public function deduction(Request $request){
+        $company_id=session()->all()['companyId'];
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -180,7 +186,7 @@ class ReportsController extends Controller
             "deductions"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->paginate(10);
+            ])->where('company_id',$company_id)->paginate(10);
 
 
 
@@ -189,6 +195,8 @@ class ReportsController extends Controller
         return view('reports.deductions',compact('employees','flag'));
     }
     public function incentives(Request $request){
+        $company_id=session()->all()['companyId'];
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -203,7 +211,7 @@ class ReportsController extends Controller
             "incentives"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->paginate(10);
+            ])->where('company_id',$company_id)->paginate(10);
 
 
 
@@ -212,6 +220,8 @@ class ReportsController extends Controller
         return view('reports.incentives',compact('employees','flag'));
     }
     public function bouns(Request $request){
+        $company_id=session()->all()['companyId'];
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
@@ -226,7 +236,7 @@ class ReportsController extends Controller
             "followUps"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->paginate(10);
+            ])->where('company_id',$company_id)->paginate(10);
 
 
 
@@ -237,6 +247,8 @@ class ReportsController extends Controller
 
     public function safe_transactions(Request $request){
 
+
+        $company_id=session()->all()['companyId'];
         $date=(isset($request->date))?$request->date:Carbon::now();
 
 

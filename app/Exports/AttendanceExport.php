@@ -6,6 +6,7 @@ namespace App\Exports;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 // use Maatwebsite\Excel\Concerns\FromView;
@@ -23,8 +24,9 @@ class AttendanceExport implements FromView , WithEvents
     }
     public function view(): View
     {
+        $company_id=Session::get('companyId');
 
-        $employees =Employee::all();
+        $employees =Employee::where('company_id',$company_id)->get();
 
         return view('reports.tables.attendance',['employees'=>$employees,'period'=>$this->period,'month_name'=>$this->month_name]);
     }
@@ -60,7 +62,7 @@ class AttendanceExport implements FromView , WithEvents
                         ],
                     ],
                 ]);
-                
+
                 // $event->sheet->getStyle('A:B')->applyFromArray([
                 //     'fill' => [
                 //         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,

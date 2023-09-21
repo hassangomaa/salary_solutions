@@ -25,8 +25,8 @@ class SalariesExport implements FromView , WithEvents
     public function view(): View
     {
 
-        $month=Carbon::now()->format('m');
-        $year=Carbon::now()->format('Y');
+        $month=$this->month;
+        $year=$this->year;
         // return
          $followUps =Employee::with([
                 'followUps'=>function($q)use($month,$year){
