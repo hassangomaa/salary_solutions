@@ -24,8 +24,8 @@ class BorrowingRequest extends FormRequest
         return [
             'employee_id'=>'required',
             'other_employee_id'=>'nullable|exists:employees,id,deleted_at,NULL',
-            'start_month'=>'required|date',
-            'end_month'=>'required|date|after_or_equal:start_month',
+            'start_month'=>'nullable|date',
+            'end_month'=>'nullable|date|after_or_equal:start_month',
             'percentage_check'=>'nullable',
             'percentage'=>"required_if:percentage_check,1"
         ];

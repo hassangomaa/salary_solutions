@@ -31,17 +31,21 @@
 
                 <div class="form-group">
                     <label class="required" for="start_month">بدايه من </label>
-                    <input type="month" class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month">
-                    @if($errors->has('start_month'))
+                    <input type="month"
+
+                    class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month">
+                    {{-- @if($errors->has('start_month'))
                         <span class="text-danger">{{ $errors->first('start_month') }}</span>
-                    @endif
+                    @endif --}}
                 </div>
                 <div class="form-group">
                     <label class="required" for="end_month">نهايه في </label>
-                    <input type="month" class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}" name="end_month" id="end_month">
-                    @if($errors->has('end_month'))
+                    <input type="month"
+                     class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}"
+                     name="end_month" id="end_month">
+                    {{-- @if($errors->has('end_month'))
                         <span class="text-danger">{{ $errors->first('end_month') }}</span>
-                    @endif
+                    @endif --}}
                 </div>
                 <div class="form-group">
                     <label class="required" for="amount">{{ trans('borrow.amount') }}</label>
