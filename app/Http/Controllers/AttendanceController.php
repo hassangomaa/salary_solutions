@@ -23,24 +23,26 @@ class AttendanceController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        // $month = $company->current_month;
-        // $year=  $company->current_year;
+        $month = $company->current_month;
+        $year=  $company->current_year;
 
         $followUps = FollowUp::with('employee')
         ->whereHas('employee', function ($query) use ($companyId) {
             $query->where('company_id', $companyId);
         })
-        // ->where('month', Carbon::now()->format('m'))
-        // ->where('year', Carbon::now()->format('Y'))
-        // ->get();
-        ->where('status',FollowUp::USE);
+        ->where('month', Carbon::now()->format('m'))
+        ->where('year', Carbon::now()->format('Y'))
+        // e->get()
+        ;
+        // ->where('status',FollowUp::USE);
 
         $total_attendance_houres=$followUps->sum('attended_days');
         $total_extra_hours=$followUps->sum('extra_hours');
         $followUps=$followUps->paginate(10);
 
         $flag = 1 ;
-        return view('attendance.index',compact('flag','followUps','total_attendance_houres','total_extra_hours'));
+            //    return $followUps;
+ return view('attendance.index',compact('flag','followUps','total_attendance_houres','total_extra_hours'));
     }
 
     public function updateNumberOfDays(Request $request)

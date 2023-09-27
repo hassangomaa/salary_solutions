@@ -23,8 +23,8 @@ class DeductionController extends Controller
         $deductions = Deduction::with('employee')->whereHas('employee',function ($query) use($companyId){
             $query->where('company_id',$companyId);
         })
-            // ->where('month',$currntMonth)
-            ->where('status',FollowUp::USE)
+            ->where('month',$currntMonth)
+            // ->where('status',FollowUp::USE)
 
             ->paginate(10);
         $flag = 1 ;

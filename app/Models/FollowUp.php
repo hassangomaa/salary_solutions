@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FollowUp extends Model
 {
-
-
     use HasFactory,SoftDeletes;
+
     public const DONE=1;
     public const USE=2;
+
     protected $fillable = [
         'employee_id',
         'month',
