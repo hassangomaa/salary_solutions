@@ -14,8 +14,8 @@ return new class extends Migration
             Schema::create('excel_details', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('company_id')->nullable();
-                $table->integer('month')->nullable();
-                $table->integer('year')->nullable();
+                $table->integer('month')->default(now()->month); // Set the default month to the current month
+                $table->integer('year')->default(now()->year);   // Set the default year to the current year
                 $table->string('file_name')->nullable();
                 $table->softDeletes();
                 $table->timestamps();

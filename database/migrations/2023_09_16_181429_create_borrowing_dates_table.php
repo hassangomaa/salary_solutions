@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('borrowing_dates', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('month');
-            $table->integer('year');
+            // $table->tinyInteger('month');
+            // $table->integer('year');
+            $table->integer('month')->default(now()->month); // Set the default month to the current month
+            $table->integer('year')->default(now()->year);   // Set the default year to the current year
             $table->timestamps();
         });
     }

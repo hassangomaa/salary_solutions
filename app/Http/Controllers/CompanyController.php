@@ -40,6 +40,7 @@ class CompanyController extends Controller
 
         return view('company.index', compact('flag'));
     }
+   // /media/hassan/AE24833A24830515/php_Projects/htdocs/projects/salary_solutions/resources/views/dashboard/index.blade.php 
 
     public function index(Request $request)
     {

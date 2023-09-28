@@ -15,9 +15,9 @@ return [
     'end_month' => 'نهاية الشهر في',
 
     // صفحة القائمة
-    'company_list' => 'قائمة الشركات',
+    'company_list' => 'قائمة الفروع',
     'add_company' => 'إضافة شركة',
-    'add_branche'=>'انشاء فرع',
+    'add_branche' => 'انشاء فرع',
     'current_credit' => 'الرصيد الحالي',
 
     // صفحة العرض
@@ -30,7 +30,7 @@ return [
 
     // صفحة الإنشاء
     'create_company' => 'إنشاء شركة',
-    'create_branch'=>'انشاء فرع',
+    'create_branch' => 'انشاء فرع',
     'create' => 'إنشاء',
 
     // جدول البيانات
@@ -45,6 +45,6 @@ return [
     'phone' => 'الهاتف',
     'address' => 'العنوان',
     'actions' => 'الإجراءات',
-    'salaries'=>'الرواتب',
-    'module'=>'وحدة'
+    'salaries' => 'الرواتب',
+    'module' => 'وحدة'
 ];

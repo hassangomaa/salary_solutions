@@ -47,7 +47,7 @@
                             </p>
                         </a>
                     </li>
-                    @if( Config::get('app.locale') == 'ar')
+                    {{-- @if( Config::get('app.locale') == 'ar')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
                                href="{{ route("setLanguage",2) }}">
@@ -69,7 +69,7 @@
                                 </p>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"

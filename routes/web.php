@@ -31,13 +31,23 @@ use Illuminate\Support\Facades\Session;
 */
 
 //Authentication
-Route::get('/loginBlade', [AuthenticationController::class, 'loginBlade'])->name('loginBlade');
-Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
-Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-Route::get('/',DashboardController::class)->name('dashborad');
-Route::get('/company_dashboard', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
 
-Route::get('/setLanguage',[Controllers\LanguageController::class,'update'])->name('setLanguage');
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/loginBlade', [AuthenticationController::class, 'loginBlade'])->name('loginBlade');
+    // Route::get('/', [AuthenticationController::class, 'loginBlade'])->name('loginBlade');
+    Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', DashboardController::class)->name('dashborad');
+    Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+    Route::get('/company_dashboard', [\App\Http\Controllers\CompanyController::class, 'companyDashboard'])->name('home');
+});
+
+
+Route::get('/setLanguage', [Controllers\LanguageController::class, 'update'])->name('setLanguage');
 
 
 
@@ -56,16 +66,14 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
     Route::get('/clickOnCompany/{id}', [\App\Http\Controllers\CompanyController::class, 'clickOnCompany'])->name('clickOnCompany');
     Route::get('/receiveMoneyBlade', [\App\Http\Controllers\CompanyController::class, 'receiveMoneyBlade'])->name('receiveMoneyBlade');
     Route::get('/clickToGenerateReport', [\App\Http\Controllers\ReportController::class, 'clickToGenerateReport'])->name('clickToGenerateReport');
-
-
 });
 
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
-    Route::get('/refreshData',[\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
- /*   Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
+    Route::get('/refreshData', [\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
+    /*   Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
     Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [\App\Http\Controllers\AttendanceController::class, 'edit'])->name('edit');
@@ -84,16 +92,14 @@ Route::group(['prefix' => 'incentive', 'as' => 'incentive.', 'middleware' => ['a
 
     Route::get('/index', [\App\Http\Controllers\IncentiveController::class, 'index'])->name('index');
     Route::post('/addIncentives', [\App\Http\Controllers\IncentiveController::class, 'addIncentives'])->name('addIncentives');
-    Route::get('/refreshData',[\App\Http\Controllers\IncentiveController::class, 'refreshData'])->name('refreshData');
-
+    Route::get('/refreshData', [\App\Http\Controllers\IncentiveController::class, 'refreshData'])->name('refreshData');
 });
 
 Route::group(['prefix' => 'deduction', 'as' => 'deduction.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\DeductionController::class, 'index'])->name('index');
     Route::post('/addDeduction', [\App\Http\Controllers\DeductionController::class, 'addDeduction'])->name('addDeduction');
-    Route::get('/refreshData',[\App\Http\Controllers\DeductionController::class, 'refreshData'])->name('refreshData');
-
+    Route::get('/refreshData', [\App\Http\Controllers\DeductionController::class, 'refreshData'])->name('refreshData');
 });
 
 Route::group(['prefix' => 'transactionLog', 'as' => 'transactionLog.', 'middleware' => ['auth']], function () {
@@ -126,14 +132,9 @@ Route::group(['prefix' => 'borrowing', 'as' => 'borrowing.', 'middleware' => ['a
     Route::put('/update/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'update'])->name('update');
     Route::delete('/destroy/{borrow}', [\App\Http\Controllers\BorrowingController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\BorrowingController::class, 'massDestroy'])->name('massDestroy');
-
-
-
-
 });
-Route::controller(ExcelReportController::class)->prefix('excels')->group(function(){
-    Route::get('salaries','salariesExport')->name('excels.salaries_export');
-
+Route::controller(ExcelReportController::class)->prefix('excels')->group(function () {
+    Route::get('salaries', 'salariesExport')->name('excels.salaries_export');
 });
 
 Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => ['auth']/*, 'namespace' => 'Users'*/], function () {
@@ -149,87 +150,8 @@ Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => ['auth']/*,
     Route::put('/update/{userId}', [\App\Http\Controllers\UsersController::class, 'update'])->name('update');
     Route::delete('/destroy/{userId}', [\App\Http\Controllers\UsersController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\UsersController::class, 'massDestroy'])->name('massDestroy');
-
-
 });
 
-
-//Route::get('/en', function () {
-//    return view('welcome');
-//})->name('welcome');
-//Route::get('/', function () {
-//    return view('welcome_ar')
-//    ;
-//})->name('welcome_ar');
-
-
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']/*, 'namespace' => 'Admin'*/], function () {
-    Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('home');
-    // Permissions //Working
-    Route::delete('permissions/destroy', [Controllers\PermissionsController::class, 'massDestroy'])->name('permissions.massDestroy');
-    Route::resource('permissions', Controllers\PermissionsController::class);
-
-    // Roles
-    Route::delete('roles/destroy', [Controllers\RolesController::class, 'massDestroy'])->name('roles.massDestroy');
-    Route::resource('roles', \App\Http\Controllers\RolesController::class);
-
-//    //// Users //Dont use it
-//    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-//    Route::resource('users', Controllers\UsersController::class);
-
-//    //salaries
-//    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-//    Route::resource('users', 'UsersController');
-    // Products
-    Route::delete('products/destroy', 'ProductsController@massDestroy')->name('products.massDestroy');
-    Route::resource('products', 'ProductsController');
-
-    // Categories
-    Route::delete('categories/destroy', 'CategoriesController@massDestroy')->name('categories.massDestroy');
-    Route::resource('categories', 'CategoriesController');
-
-    // Details
-    Route::delete('details/destroy', 'DetailsController@massDestroy')->name('details.massDestroy');
-    Route::resource('details', 'DetailsController');
-
-    // Variation
-    Route::delete('variations/destroy', 'VariationController@massDestroy')->name('variations.massDestroy');
-    Route::resource('variations', 'VariationController');
-
-    // Service
-    Route::delete('services/destroy', 'ServiceController@massDestroy')->name('services.massDestroy');
-    Route::resource('services', 'ServiceController');
-
-    // Images
-    Route::delete('images/destroy', 'ImagesController@massDestroy')->name('images.massDestroy');
-    Route::resource('images', 'ImagesController', ['except' => ['show']]);
-
-    // Brand
-    Route::delete('brands/destroy', 'BrandController@massDestroy')->name('brands.massDestroy');
-    Route::resource('brands', 'BrandController');
-
-    // Modeel
-    Route::delete('modeels/destroy', 'ModeelController@massDestroy')->name('modeels.massDestroy');
-    Route::resource('modeels', 'ModeelController');
-
-    // Year
-    Route::delete('years/destroy', 'YearController@massDestroy')->name('years.massDestroy');
-    Route::resource('years', 'YearController');
-
-    // Engine Capacity Cc
-    Route::delete('engine-capacity-ccs/destroy', 'EngineCapacityCcController@massDestroy')->name('engine-capacity-ccs.massDestroy');
-    Route::resource('engine-capacity-ccs', 'EngineCapacityCcController');
-
-    Route::get('messenger', 'MessengerController@index')->name('messenger.index');
-    Route::get('messenger/create', 'MessengerController@createTopic')->name('messenger.createTopic');
-    Route::post('messenger', 'MessengerController@storeTopic')->name('messenger.storeTopic');
-    Route::get('messenger/inbox', 'MessengerController@showInbox')->name('messenger.showInbox');
-    Route::get('messenger/outbox', 'MessengerController@showOutbox')->name('messenger.showOutbox');
-    Route::get('messenger/{topic}', 'MessengerController@showMessages')->name('messenger.showMessages');
-    Route::delete('messenger/{topic}', 'MessengerController@destroyTopic')->name('messenger.destroyTopic');
-    Route::post('messenger/{topic}/reply', 'MessengerController@replyToTopic')->name('messenger.reply');
-    Route::get('messenger/{topic}/reply', 'MessengerController@showReply')->name('messenger.showReply');
-});
 
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth'], 'namespace' => 'Employee'], function () {
 
@@ -242,7 +164,6 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::put('/update/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('update');
     Route::delete('/destroy/{employee}', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\EmployeeController::class, 'massDestroy'])->name('massDestroy');
-
 });
 
 Route::group(['prefix' => 'companyPayments', 'as' => 'companyPayments.', 'middleware' => ['auth'], 'namespace' => 'Company'], function () {
@@ -271,7 +192,6 @@ Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => [
 Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],], function () {
     Route::get('/index', [\App\Http\Controllers\ExcelController::class, 'index'])->name('index');
     Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
-
 });
 
 Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'],], function () {
@@ -289,34 +209,68 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
 
 });
 
-Route::controller(SafeController::class)->prefix('safes')->group(function(){
-    Route::get('index','index')->name('safes.index');
-    Route::get('create','create')->name('safes.create');
-    Route::get('show','show')->name('safes.show');
-    Route::post('store','store')->name('safes.store');
+Route::controller(SafeController::class)->prefix('safes')->group(function () {
+    Route::get('index', 'index')->name('safes.index');
+    Route::get('create', 'create')->name('safes.create');
+    Route::get('show', 'show')->name('safes.show');
+    Route::post('store', 'store')->name('safes.store');
 
-    Route::get('edit/{id}','edit')->name('safes.edit');
-    Route::post('update/{id}','update')->name('safes.update');
-    Route::get('destroy/{id}','destroy')->name('safes.destroy');
-    Route::get('transactions/{id}','transactions')->name('safes.transactions');
-    Route::get('safe_transfer','safe_transfer_create')->name('safes.safe_transfer.create');
-    Route::post('safe_transfer','safe_transfer_store')->name('safes.safe_transfer_store');
-
+    Route::get('edit/{id}', 'edit')->name('safes.edit');
+    Route::post('update/{id}', 'update')->name('safes.update');
+    Route::get('destroy/{id}', 'destroy')->name('safes.destroy');
+    Route::get('transactions/{id}', 'transactions')->name('safes.transactions');
+    Route::get('safe_transfer', 'safe_transfer_create')->name('safes.safe_transfer.create');
+    Route::post('safe_transfer', 'safe_transfer_store')->name('safes.safe_transfer_store');
 });
 
-Route::controller(PaymentController::class)->prefix('payment')->group(function(){
-    Route::get('/salary_pay','__invoke')->name('salary_pay');
+Route::controller(PaymentController::class)->prefix('payment')->group(function () {
+    Route::get('/salary_pay', '__invoke')->name('salary_pay');
 });
 
 Route::get('/test', function () {
-    $employee = Employee::with('company')->where('id',1)->first();
+    $employee = Employee::with('company')->where('id', 1)->first();
     $log = new TransactionLog();
 
 
     return $employee->company->id;
 });
 Route::get('/test2', function () {
-$report = new Controllers\ReportController();
-$report->calculateMonthlyReport(1,9,2023);
-    Controllers\ExcelController::generateExcelFile(1,9,2023);
+    $report = new Controllers\ReportController();
+    $report->calculateMonthlyReport(1, 9, 2023);
+    Controllers\ExcelController::generateExcelFile(1, 9, 2023);
+});
+
+
+###################################################
+
+
+//Route::get('/en', function () {
+//    return view('welcome');
+//})->name('welcome');
+//Route::get('/', function () {
+//    return view('welcome_ar')
+//    ;
+//})->name('welcome_ar');
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']/*, 'namespace' => 'Admin'*/], function () {
+    Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('home');
+    // Permissions //Working
+    Route::delete('permissions/destroy', [Controllers\PermissionsController::class, 'massDestroy'])->name('permissions.massDestroy');
+    Route::resource('permissions', Controllers\PermissionsController::class);
+
+    // Roles
+    Route::delete('roles/destroy', [Controllers\RolesController::class, 'massDestroy'])->name('roles.massDestroy');
+    Route::resource('roles', \App\Http\Controllers\RolesController::class);
+
+    //    //// Users //Dont use it
+    //    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+    //    Route::resource('users', Controllers\UsersController::class);
+
+    //    //salaries
+    //    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+    //    Route::resource('users', 'UsersController');
+    // Products
+
+
 });
