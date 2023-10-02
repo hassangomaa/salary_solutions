@@ -7,6 +7,12 @@
             {{ trans('incentive.incentives_list') }}
         </div>
         <div class="card-body">
+            <div class="form-group">
+                <a href="{{ route('incentive.refreshData') }}" class="btn btn-success">Refresh Data</a>
+            </div>
+            <div class="form-group" style="text-align: right">
+                <h4>{{ $incentives->sum('bonus')+$incentives->sum('incentive')+$incentives->sum('regularity')+$incentives->sum('gift') }} : مجموع الحوافز</h4>
+            </div>
 
         <div class="form-group">
             <label for="search">{{ trans('global.search') }}</label>
@@ -21,7 +27,7 @@
                     <th>{{ trans('incentive.position') }}</th>
                     <th>{{ trans('incentive.incentive') }}</th>
                     <th>{{ trans('incentive.bonus') }}</th>
-                    <th>{{ trans('incentive.regularity') }}</th>
+                    <th>{{ trans('incentive.regularity')    }}</th>
                     <th>{{ trans('incentive.gift') }}</th>
                     <th>{{ trans('incentive.set_incentives') }}</th>
                 </tr>

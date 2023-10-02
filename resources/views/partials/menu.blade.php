@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 917px;">
     <!-- Brand Logo -->
     <div class="d-flex justify-content-center">
-        <a href="/admin" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">{{ trans('panel.site_title') }}</span>
         </a>
     </div>
@@ -32,7 +32,7 @@
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
                             </i>
                             <p>
-                                {{ trans('sidebar.companies_management') }}
+                                اداره الفروع
                             </p>
                         </a>
                     </li>
@@ -47,7 +47,7 @@
                             </p>
                         </a>
                     </li>
-                    @if( Config::get('app.locale') == 'ar')
+                    {{-- @if( Config::get('app.locale') == 'ar')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs("company.index") ? "active" : "" }}"
                                href="{{ route("setLanguage",2) }}">
@@ -69,7 +69,7 @@
                                 </p>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("employee.index") ? "active" : "" }}"
@@ -94,7 +94,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("extraHours.index") ? "active" : "" }}"
                            href="{{ route("extraHours.index") }}">
                             <i class="fas fa-fw fa-tachometer-alt nav-icon">
@@ -103,7 +103,7 @@
                                 {{ trans('sidebar.extraHours') }}
                             </p>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("incentive.index") ? "active" : "" }}"
                            href="{{ route("incentive.index") }}">
@@ -134,7 +134,16 @@
                             </p>
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs("safes.index") ? "active" : "" }}"
+                           href="{{ route("safes.index") }}">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                {{ trans('sidebar.safes') }}
+                            </p>
+                        </a>
+                    </li>
 {{--                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"--}}
 {{--                        data-accordion="false">--}}
 
@@ -180,8 +189,8 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs("excel.index") ? "active" : "" }}"
-                                   href="{{ route("excel.index") }}">
+                                <a class="nav-link {{ request()->routeIs("Reports.index") ? "active" : "" }}"
+                                   href="{{ route("Reports.index") }}">
                                     <i class="fas fa-fw fa-tachometer-alt nav-icon">
                                     </i>
                                     <p>

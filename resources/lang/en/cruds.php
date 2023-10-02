@@ -70,6 +70,27 @@ return [
             'adress_helper'            => ' ',
         ],
     ],
+    'safe' => [
+        'id'                       => 'ID',
+        'title' => 'Safes',
+        'title_singular' => 'Safe',
+        'create'=>'Create Safe',
+        'edit'=>'Edit Safe',
+        'transaction'=>'Safe Transactions',
+        'amount'=>'Ammount',
+        'details'=>'Details',
+        'created_at' => 'Created At ',
+
+        'fields' => [
+            'name' => 'Safe Name',
+            'created_at' => 'Created At ',
+            'updated_at' => 'Updated At',
+            'deleted_at' => 'Deleted Aa',
+            'balance'=>'Balance',
+            'transaction'=>'Transactions ',
+            'type'=>'Safe Type'
+        ],
+    ],
     'product' => [
         'title'          => 'Products',
         'title_singular' => 'Product',

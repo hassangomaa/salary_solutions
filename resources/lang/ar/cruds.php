@@ -69,6 +69,26 @@ return [
             'adress' => 'العنوان',
             'address_helper' => ' ',
         ],
+    ], 'safe' => [
+        'title' => 'الخزن',
+        'title_singular' => 'خزنه',
+        'create'=>'اضافه خزنه',
+        'transaction'=>'المعاملات',
+        'edit'=>'تعديل خزنه',
+        'amount'=>'المبلغ',
+        'details'=>'التفاصيل',
+        'created_at' => 'تم الإنشاء في',
+
+        'fields' => [
+            'id' => 'المعرّف',
+            'name' => 'اسم الخزنه',
+            'created_at' => 'تم الإنشاء في',
+            'updated_at' => 'تم التحديث في',
+            'deleted_at' => 'تم الحذف في',
+            'balance'=>'الرصيد',
+            'transaction'=>'المعاملات ',
+            'type'=>'النوع'
+        ],
     ],
     'product' => [
         'title'          => 'Products',

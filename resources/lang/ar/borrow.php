@@ -35,4 +35,5 @@ return [
     'other' => 'آخر',
     'other_employee_id' => 'معرف الموظف الآخر',
     'select_month' => 'اختر شهر',
+    'select_safe'=>'اختار خزنه'
 ];

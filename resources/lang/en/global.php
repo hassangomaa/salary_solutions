@@ -323,6 +323,8 @@ return [
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
     'loginForm' => 'Login',
-    'search_placeholder'=> 'Search Placeholder'
-
+    'search_placeholder'=> 'Search Placeholder',
+    'filter'=>'Filter',
+    'withdrawal'=>'WithDrawal',
+    'deposit'=>'Deposit'
 ];

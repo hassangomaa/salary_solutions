@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\FollowUp;
 use App\Models\Incentives;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -21,6 +22,8 @@ class IncentiveController extends Controller
             $query->where('company_id',$companyId);
         })
             ->where('month',$currntMonth)
+            // ->where('status',FollowUp::USE)
+
             ->paginate(10);
         $flag = 1 ;
         return view('incentive.index',compact('flag','incentives'));
@@ -39,4 +42,30 @@ class IncentiveController extends Controller
 
     }
 
+    public function refreshData(){
+        $employee_ids=Incentives::select('employee_id')->distinct('employee_id')->pluck('employee_id');
+        $deduction_ids=Incentives::where('month',Carbon::now()->format('m'))->where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
+
+        foreach($employee_ids as $item){
+            if(isset($deduction_ids[$item])){
+                continue;
+            }
+            Incentives::where('employee_id',$item)->latest()->first()->update([
+                'status'=>FollowUp::DONE
+            ]);
+
+            Incentives::create([
+                'month'=>Carbon::now()->format('m'),
+                'year'=>Carbon::now()->format('Y'),
+                'incentive'=>0,
+                'bonus'=>0,
+                'regularity'=>0,
+                'gift'=>0,
+                'employee_id'=>$item,
+                'status'=>FollowUp::USE
+        ]);
+    }
+return redirect()->back()->with('message',"Successfull");
+
+}
 }

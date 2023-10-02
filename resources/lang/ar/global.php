@@ -42,7 +42,9 @@ return
         'searching' => 'جاري البحث',
         'no_results' => 'لا توجد نتائج',
         'results_could_not_be_loaded' => 'لا يمكن تحميل النتائج',
-        'search_placeholder'=> 'انقر للبحث'
-
+        'search_placeholder'=> 'انقر للبحث',
+        'filter'=>'فلتر',
+        'withdrawal'=>'سحب',
+        'deposit'=>'إيداع'
 
     ];

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Borrowing\employeeBorrowing;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Employee extends Model
+class   Employee extends Model
 {
     use HasFactory,SoftDeletes;
     protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','company_id','phone','overtime_hour_fare'];
@@ -30,7 +31,7 @@ class Employee extends Model
     }
 
     public function followUps(){
-        return $this->hasMany(FollowUp::class);
+        return $this->hasMany(FollowUp::class,'employee_id');
     }
 
     public function borrows(){
@@ -40,6 +41,10 @@ class Employee extends Model
     public function incentives()
     {
         return $this->hasMany(Incentives::class);
+    }
+
+    public function employeeBorrowinng(){
+        return $this->hasMany(employeeBorrowing::class,'user_id');
     }
 
 
