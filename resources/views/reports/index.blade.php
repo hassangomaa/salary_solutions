@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('content')
     @include('partials.menu', [$flag])
 
@@ -8,43 +9,31 @@
         </div>
 
         <div class="card-body">
-            <div class="col-lg-6">
-                <a class="btn btn-success" href="{{route('company.clickToGenerateReport')}}">
-                انشئ التقرير لهذا الشهر
-                </a>
-            </div>
-            <div class="form-group">
-                <label for="search">{{ trans('global.search') }}</label>
-                <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">
-            </div>
-
-            <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
-                <thead>
-                <tr>
-                    <th>{{ trans('reports.id') }}</th>
-                    <th>{{ trans('reports.file_name') }}</th>
-                    <th>{{ trans('reports.month') }}</th>
-                    <th>{{ trans('reports.year') }}</th>
-                    <th>{{ trans('reports.download') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($files as $file)
-                    <tr>
-                        <td>{{ $file->id }}</td>
-                        <td>{{ $file->file_name }}</td>
-                        <td>{{ $file->month }}</td>
-                        <td>{{ $file->year }}</td>
-                        <td>
-                            <a href="{{ route('excel.downloadFile',$file->id) }}" class="btn btn-primary">
-                                {{ trans('reports.download') }} Excel
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+            <form method="POST" action="{{ route('company.clickToGenerateReport') }}">
+                @csrf
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="month">Select Month:</label>
+                        <select class="form-control" name="month" id="month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <!-- Add options for all 12 months -->
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="year">Select Year:</label>
+                        <select class="form-control" name="year" id="year">
+                            @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="invisible">Generate Report:</label>
+                        <button type="submit" class="btn btn-primary btn-block">Generate Report</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        {{ $files->links('vendor.pagination.bootstrap-5') }}
     </div>
 @endsection
