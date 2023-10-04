@@ -53,4 +53,10 @@ class ExcelController extends Controller
             return response()->download($filePath, $file->file_name, [], 'inline');
 
         }
+
+        public function downloadImportEmployeeTemplate(){
+            $filePath = public_path("storage/Templates/ImportEmployeeTemplate.xlsx");
+
+            return response()->download($filePath);
+        }
 }

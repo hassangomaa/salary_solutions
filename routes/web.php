@@ -156,6 +156,8 @@ Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => ['auth']/*,
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth'], 'namespace' => 'Employee'], function () {
 
     Route::get('/getAllEmployees', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees'])->name('getAllEmployees');
+    Route::get('/importEmployeesBlade', [\App\Http\Controllers\EmployeeController::class, 'importEmployeesBlade'])->name('importEmployeesBlade');
+    Route::post('/importEmployees', [\App\Http\Controllers\EmployeeController::class, 'importEmployees'])->name('importEmployees');
     Route::get('/index', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('index');
     Route::get('/show/{employee}', [\App\Http\Controllers\EmployeeController::class, 'show'])->name('show');
     Route::get('/create', [\App\Http\Controllers\EmployeeController::class, 'create'])->name('create');
@@ -192,6 +194,7 @@ Route::group(['prefix' => 'commission', 'as' => 'commission.', 'middleware' => [
 Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],], function () {
     Route::get('/index', [\App\Http\Controllers\ExcelController::class, 'index'])->name('index');
     Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
+    Route::get('/downloadImportEmployeeTemplate', [\App\Http\Controllers\ExcelController::class, 'downloadImportEmployeeTemplate'])->name('downloadImportEmployeeTemplate');
 });
 
 Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'],], function () {

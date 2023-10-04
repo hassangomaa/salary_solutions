@@ -44,7 +44,12 @@ class IncentiveController extends Controller
 
     public function refreshData(){
         $employee_ids=Incentives::select('employee_id')->distinct('employee_id')->pluck('employee_id');
-        $deduction_ids=Incentives::where('month',Carbon::now()->format('m'))->where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
+
+        $deduction_ids=Incentives::
+        where('month',Carbon::now()->format('m'))
+            ->where('year',Carbon::now()->format('Y'))
+            ->get()
+            ->keyBy('employee_id');
 
         foreach($employee_ids as $item){
             if(isset($deduction_ids[$item])){

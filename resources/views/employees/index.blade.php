@@ -7,8 +7,15 @@
             <a class="btn btn-success" href="{{ route('employee.create') }}">
                 {{ trans('employee.add_new') }}
             </a>
+            <a class="btn btn-primary" href="{{route('excel.downloadImportEmployeeTemplate') }}">
+                Download Template
+            </a>
+            <a class="btn btn-info" href="{{route('employee.importEmployeesBlade') }}">
+                Import Employees
+            </a>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">
             {{ trans('employee.title') }}
@@ -24,8 +31,8 @@
                     <th>{{ trans('employee.position') }}</th>
                     <th>{{ trans('employee.daily_fare') }}</th>
                     <th>{{ trans('employee.overtime_hour_fare') }}</th>
-                    <th>{{ trans('employee.phone') }}</th>
-                    <th>{{ trans('employee.address') }}</th>
+{{--                    <th>{{ trans('employee.phone') }}</th>--}}
+{{--                    <th>{{ trans('employee.address') }}</th>--}}
                     <th>{{ trans('global.actions') }}</th>
                 </tr>
                 <tr>
@@ -34,8 +41,8 @@
                     <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
                     <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
                     <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
-                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
+{{--                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>--}}
+{{--                    <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>--}}
                     <td><input class="search" type="text" placeholder="{{ trans('global.search') }}"></td>
                     <td>&nbsp;</td>
                 </tr>
@@ -96,8 +103,8 @@
                     {data: 'position', name: 'position'},
                     {data: 'daily_fare', name: 'daily_fare'},
                     {data: 'overtime_hour_fare', name: 'overtime_hour_fare'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
+                    // {data: 'phone', name: 'phone'},
+                    // {data: 'address', name: 'address'},
                     {data: 'actions', name: 'actions'}
                 ],
                 orderCellsTop: true,

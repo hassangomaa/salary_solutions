@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\EmployeesImport;
 use App\Models\Borrow;
 use App\Models\Company;
 use App\Models\Deduction;
@@ -10,6 +11,8 @@ use App\Models\FollowUp;
 use App\Models\Incentives;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -168,6 +171,32 @@ class EmployeeController extends Controller
         $followUp->save();
         $deduction->save();
         $incentive->save();
+    }
+
+    public function importEmployeesBlade()
+    {
+        $flag = 1;
+        return view('employees.import-all-employees', compact('flag'));
+    }
+
+    public function importEmployees(Request $request)
+    {
+        $companyId = Session::get('companyId');
+
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls|max:2048', // Adjust file size limit if needed
+        ]);
+
+
+        // Get the file and store it in a temporary location
+        $file = $request->file('excel_file');
+
+        // Import the Excel file using the defined import class
+        Excel::import(new EmployeesImport($companyId), $file);
+
+
+
+        return redirect()->back()->with('success', 'Excel file imported successfully.');
     }
 
 }
