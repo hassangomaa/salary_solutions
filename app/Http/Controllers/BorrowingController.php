@@ -307,7 +307,7 @@ class BorrowingController extends Controller
             } else {
                 $borrowing_date = borrowing_dates::create([
                     'month' => $monthFormat,
-                    'year' => $yearFormat,
+                    'year' => $yearFormat->format('Y'),
                 ]);
                 employeeBorrowing::create([
                     'user_id' => $request['employee_id'],

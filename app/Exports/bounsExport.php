@@ -33,7 +33,11 @@ class bounsExport implements FromView , WithEvents
         "followUps"=>function($q)use($month,$year){
                 $q->where('month',$month)->where('year',$year);
         },
-        ])->where('company_id',$company_id)->get();
+        ])->where('company_id',$company_id)
+        ->whereYear('created_at','<=',$year)
+        ->whereMonth('created_at','<=',$month)
+        ->withTrashed()
+        ->get();
 
         return view('reports.tables.bouns',['employees'=>$employees]);
     }

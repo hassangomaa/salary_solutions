@@ -53,7 +53,10 @@ class ReportsController extends Controller
                         $subq->where('month',$month)->where('year',$year);
                     });
                 },
-                ])->where('company_id',$company_id)->get();
+                ])->where('company_id',$company_id)
+             ->whereYear('created_at','<=',$year)
+             ->whereMonth('created_at','<=',$month)
+             ->withTrashed()->get();
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.salaries',compact('followUps','flag','date'));
@@ -119,7 +122,10 @@ class ReportsController extends Controller
                         $subq->where('month',$month)->where('year',$year);
                     });
                 },
-                ])->where('company_id',$company_id)->paginate(1);
+                ])->where('company_id',$company_id)
+             ->whereYear('created_at','<=',$year)
+             ->whereMonth('created_at','<=',$month)
+             ->withTrashed()->paginate(1);
                 $followUps_count=Employee::where('company_id',$company_id)->count();
         $flag = 1;
 
@@ -160,7 +166,10 @@ class ReportsController extends Controller
             "borrows"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->where('company_id',$company_id)->paginate(10);
+            ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
+             ->whereMonth('created_at','<=',$month)
+             ->withTrashed()
+             ->paginate(10);
 
 
 
@@ -170,11 +179,13 @@ class ReportsController extends Controller
     }
 
     public function deduction(Request $request){
+//        return $request->all();
         $company_id=session()->all()['companyId'];
 
         $date=(isset($request->date))?$request->date:Carbon::now();
         $month=Carbon::parse($date)->format('m');
         $year=Carbon::parse($date)->format('Y');
+//        return [$month , $year];
         $date_name=Carbon::parse($date)->format('Y-M');
 
         if(isset($request->action) && $request->action=='excel'){
@@ -186,9 +197,12 @@ class ReportsController extends Controller
             "deductions"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->where('company_id',$company_id)->paginate(10);
+            ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
+              ->whereMonth('created_at','<=',$month)
+              ->withTrashed()
+              ->paginate(10);
 
-
+//        return $employees;
 
         $flag = 1;
 
@@ -211,7 +225,10 @@ class ReportsController extends Controller
             "incentives"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->where('company_id',$company_id)->paginate(10);
+            ])->where('company_id',$company_id)
+              ->whereMonth('created_at','<=',$month)
+              ->whereYear('created_at','<=',$year)
+              ->withTrashed()->paginate(10);
 
 
 
@@ -236,7 +253,10 @@ class ReportsController extends Controller
             "followUps"=>function($q)use($month,$year){
                     $q->where('month',$month)->where('year',$year);
             },
-            ])->where('company_id',$company_id)->paginate(10);
+            ])->where('company_id',$company_id)
+              ->whereYear('created_at','<=',$year)
+              ->whereMonth('created_at','<=',$month)
+              ->withTrashed()->paginate(10);
 
 
 
