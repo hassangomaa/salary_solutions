@@ -33,7 +33,10 @@ class incentivesExport implements FromView , WithEvents
         "incentives"=>function($q)use($month,$year){
                 $q->where('month',$month)->where('year',$year);
         },
-        ])->where('company_id',$company_id)->get();
+        ])->where('company_id',$company_id)
+        ->whereMonth('created_at','<=',$month)
+        ->whereYear('created_at','<=',$year)
+        ->withTrashed()->get();
 
         return view('reports.tables.incentives',['employees'=>$employees]);
     }

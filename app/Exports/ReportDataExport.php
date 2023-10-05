@@ -47,7 +47,11 @@ class ReportDataExport implements FromView , WithEvents
                     $subq->where('month',$month)->where('year',$year);
                 });
             },
-            ])->where('company_id',$company_id)->get();
+            ])->where('company_id',$company_id)
+            ->whereYear('created_at','<=',$year)
+            ->whereMonth('created_at','<=',$month)
+            ->withTrashed()
+            ->get();
 
         return view('reports.tables.report',['followUps'=>$followUps,'date_name'=>$this->month_salary,'i'=>$i=1]);
     }

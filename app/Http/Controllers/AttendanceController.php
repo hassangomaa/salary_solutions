@@ -194,7 +194,8 @@ class AttendanceController extends Controller
 
     public function refreshData(){
         $employee_ids=FollowUp::select('employee_id')->distinct('employee_id')->pluck('employee_id');
-        $follow_ups=FollowUp::where('month',Carbon::now()->format('m'))->where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
+        $follow_ups=FollowUp::where('month',Carbon::now()->format('m'))->
+        where('year',Carbon::now()->format('Y'))->get()->keyBy('employee_id');
 
         foreach($employee_ids as $item){
             if(isset($follow_ups[$item])){
