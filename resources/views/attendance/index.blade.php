@@ -11,21 +11,39 @@
         <div class="card-body">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-6">
-                        <form action="{{ route('salary_pay') }}" method="get">
-                            <div class="row">
+{{--                    <div class="col-md-6">--}}
+{{--                        <form action="{{ route('salary_pay') }}" method="get">--}}
+{{--                            <div class="row">--}}
 
-                                <input type="month" name="month"  id="month" class="form-control col-md-6">
-                                <button type="submet" class="btn btn-primary col-md-3" onclick="return confirmPay(event)">  دفع مرتبات </button>
-                            </form>
-                            <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>
+{{--                                <input type="month" name="month"  id="month" class="form-control col-md-6" value="{{$date}}">--}}
+{{--                                <button type="submet" class="btn btn-primary col-md-3" onclick="return confirmPay(event)">  دفع مرتبات </button>--}}
+{{--                            </form>--}}
+{{--                            <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            <input type="month" name="month" id="month" class="form-control col-md-6" value="{{$date}}">
+                            <button type="button" class="btn btn-primary col-md-3" onclick="filterAttendance()">اظهار الشهر</button>
+                            <button type="button" class="btn btn-primary col-md-3" onclick="return confirmPay(event)">  دفع مرتبات </button>
                         </div>
+                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>
+
                     </div>
+
                     <div class="col-md-6">
                         <p>{{ $total_attendance_houres }}: اجمالي عدد ساعات الحضور</p>
                         <p>{{ $total_extra_hours }}: اجمالي عدد الساعات الاضافيه</p>
                     </div>
 
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <input type="number" name="days" id="days" class="form-control col-md-6" placeholder="الأيام">
+                        <input type="number" name="extra_hours" id="extra_hours" class="form-control col-md-6 " placeholder="الساعات الإضافية">
+                        <br>
+                        <button type="button" class="btn btn-primary col-md-12 mt-1" id="addForAll" onclick="submitData()">إضافة لجميع العمال في هذا الشهر</button>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -151,7 +169,55 @@
         var confirmation = confirm('ستقوم الان بدفع مرتبات: ' + monthValue);
         if (!confirmation) {
             event.preventDefault();
+        }else{
+            const selectedMonth = document.getElementById('month').value;
+            const url = `{{ route('salary_pay') }}?month=${selectedMonth}`;
+            window.location.href = url;
+
+
         }
     }
+
+    function filterAttendance() {
+        const selectedMonth = document.getElementById('month').value;
+        const url = `{{ route('attendance.filter') }}?month=${selectedMonth}`;
+        window.location.href = url;
+    }
+    function submitData() {
+        const days = document.getElementById('days').value;
+        const extraHours = document.getElementById('extra_hours').value;
+        const selectedMonth = document.getElementById('month').value;
+        const url = `{{ route('attendance.setDaysAndHoursForAllEmployeesBasedOnDate') }}?days=${days}&extra_hours=${extraHours}&month=${selectedMonth}`;
+        window.location.href = url;
+    }
+
+
+    $(function () {
+        $('#addForAll').on('click', function () {
+            const selectedMonth = document.getElementById('month').value;
+            const days = document.getElementById('days').value;
+            const extraHours = document.getElementById('extra_hours').value
+
+            console.log([selectedMonth,days,extraHours]);
+
+            $.ajax({
+                url: "{{ route('extraHours.updateNumberOfHours') }}",
+                method: 'POST',
+                data: {
+                    follow_up_id: followUpId,
+                    number_of_hours: extra_numberOFHoures,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    $('#attended-hours-' + followUpId).text(extra_numberOFHoures);
+                    $('.extra_save-days[data-followUp-id="' + followUpId + '"]').css('background-color', 'red');
+                    console.log(response);
+                },
+                error: function (xhr) {
+                    console.error(xhr);
+                }
+            });
+        });
+    });
 </script>
     @endsection

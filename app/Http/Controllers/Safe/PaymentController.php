@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 class PaymentController extends Controller
 {
     public function __invoke(Request $request){
+
+//        dd($request->all());
+
         $date=Carbon::parse($request->month);
         // return session()->all();
 // return session(['key' => 'companyId']);
@@ -41,11 +44,15 @@ $company_id=FacadesSession::get('companyId');
                 },
                 ])->where('company_id',$company_id)->get();
 
+//          return $followUps;
                 $total=0;
                 foreach($followUps as $item){
 
-                    $total +=($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0)) +((($item->overtime_hour_fare != 0)?$item->followUps->sum('extra_hours') *$item->overtime_hour_fare:0))+
-                    ($item->incentives->sum('regularity')+$item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus')) -
+                    $total +=($item->daily_fare * ($item->followUps ? (($item->followUps->first())?$item->followUps->first()->attended_days:0) : 0))
+                        +((($item->overtime_hour_fare != 0)?$item->followUps->sum('extra_hours') *$item->overtime_hour_fare:0))+
+
+                    ($item->incentives->sum('regularity')+ $item->incentives->sum('incentive')+$item->incentives->sum('gift')+$item->incentives->sum('bonus'))
+                        -
                     ($item->deductions->sum('housing') + $item->deductions->sum('penalty') + $item->deductions->sum('absence')+($item->employeeBorrowinng->first() ? $item->employeeBorrowinng->first()->amount : 0) );
                 }
                 $reason="دفع مرتبات شهر $date المبلغ $total";

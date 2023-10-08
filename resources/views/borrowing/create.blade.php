@@ -73,21 +73,21 @@
                         <span class="text-danger">{{ $errors->first('statement') }}</span>
                     @endif
                 </div>
-                <div class="form-group">
-                    <input {{ $errors->has('percentage_check') ? 'is-invalid' : '' }}" type="checkbox" name="percentage_check" id="percentage_check" value="1">
-                    <label class="" for="percentage_check">اضافه نسبه </label>
+{{--                <div class="form-group">--}}
+{{--                    <input {{ $errors->has('percentage_check') ? 'is-invalid' : '' }}" type="checkbox" name="percentage_check" id="percentage_check" value="1">--}}
+{{--                    <label class="" for="percentage_check">اضافه نسبه </label>--}}
 
-                    @if($errors->has('percentage_check'))
-                        <span class="text-danger">{{ $errors->first('percentage_check') }}</span>
-                    @endif
-                </div>
-                <div class="form-group">
-                    <label class="" for="percentage">النسبه</label>
-                    <input class="form-control {{ $errors->has('percentage') ? 'is-invalid' : '' }}" type="number" step="any" min="1" name="percentage" id="percentage" value="{{ old('percentage') }}">
-                    @if($errors->has('percentage'))
-                        <span class="text-danger">{{ $errors->first('percentage') }}</span>
-                    @endif
-                </div>
+{{--                    @if($errors->has('percentage_check'))--}}
+{{--                        <span class="text-danger">{{ $errors->first('percentage_check') }}</span>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--                <div class="form-group">--}}
+{{--                    <label class="" for="percentage">النسبه</label>--}}
+{{--                    <input class="form-control {{ $errors->has('percentage') ? 'is-invalid' : '' }}" type="number" step="any" min="1" name="percentage" id="percentage" value="{{ old('percentage') }}">--}}
+{{--                    @if($errors->has('percentage'))--}}
+{{--                        <span class="text-danger">{{ $errors->first('percentage') }}</span>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.save') }}
