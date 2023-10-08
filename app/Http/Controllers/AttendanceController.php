@@ -280,7 +280,7 @@ class AttendanceController extends Controller
 //return [$request->all(),$followUps];
             foreach ($followUps as $followUp){
                 $followUp->attended_days =$request->days ?? $followUp->attended_days;
-                $followUp->extra_hours = $request->days ?? $followUp->extra_hours;
+                $followUp->extra_hours = $request->extra_hours ?? $followUp->extra_hours;
 //                $followUp->extra_hours = $request->extraHours ??  $followUp->extra_hours;
                 $followUp->save();
             }
