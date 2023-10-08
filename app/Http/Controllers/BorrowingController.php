@@ -28,17 +28,17 @@ class BorrowingController extends Controller
     {
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
-        //        $month = ReportController::getCurrentMonth($company);
-        //        $year = ReportController::getCurrntYear($company);
-        //        $month = $company->current_month;
-        //        $year=  $company->current_year;
+//                $month = ReportController::getCurrentMonth($company);
+//                $year = ReportController::getCurrntYear($company);
+//                $month = $company->current_month;
+//                $year=  $company->current_year;
         if ($request->ajax()) {
             $query = Borrow::with('employee')
-                //                ->where('month',  $month)
-                //                ->where('year',  $year)
+//                                ->where('month',  $month)
+//                                ->where('year',  $year)
                 ->whereHas('employee', function ($query) use ($companyId) {
                     $query->where('company_id', $companyId);
-                });
+                })->orderBy('month','ASC');
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -210,7 +210,7 @@ class BorrowingController extends Controller
 
     public function store(BorrowingRequest $request)
     {
-
+//        return $request->all();
         $companyId = Session::get('companyId');
         $company = Company::find($companyId);
 
@@ -235,7 +235,11 @@ class BorrowingController extends Controller
         $start = \Carbon\Carbon::parse($modifiedStartMonth);
         $month = $start->format('m');
 
-
+        if($request['start_month']=== null && $request['end_month'] === null)
+        {
+            $month = $company->current_month;
+            $year = $company->current_year;
+        }
         $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
         $borrowing->month = $month;
         $borrowing->amount = $request['amount'];
@@ -252,7 +256,7 @@ class BorrowingController extends Controller
 
         $safe = $safe->withdraw();
 
-        if (!isset($request['percentage_check'])) {
+      /*  if (!isset($request['percentage_check'])) {
             // return "F";
             $start = Carbon::parse($request['start_month'] . '-1');
             $end = Carbon::parse($request['end_month'] . '-1')->addMonth();
@@ -279,8 +283,8 @@ class BorrowingController extends Controller
                     ]);
                 } else {
                     $borrowing_date = borrowing_dates::create([
-                        'month' => $monthFormat,
-                        'year' => $yearFormat,
+                        'month' => $month,
+                        'year' => $year,
                     ]);
                     employeeBorrowing::create([
                         'user_id' => $request['employee_id'],
@@ -290,13 +294,13 @@ class BorrowingController extends Controller
                     ]);
                 }
             }
-        } else {
+        } else {*/
             $monthFormat = $month;
             $yearFormat = Carbon::parse($request['start_date']);
             $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
 
             $amount_value = $request['amount'];
-            $percentage = $request['percentage'];
+            $percentage = 100.00;
             if ($borrowing_date) {
                 employeeBorrowing::create([
                     'user_id' => $request['employee_id'],
@@ -306,8 +310,8 @@ class BorrowingController extends Controller
                 ]);
             } else {
                 $borrowing_date = borrowing_dates::create([
-                    'month' => $monthFormat,
-                    'year' => $yearFormat->format('Y'),
+                    'month' =>  $month,
+                    'year' => $year,
                 ]);
                 employeeBorrowing::create([
                     'user_id' => $request['employee_id'],
@@ -316,7 +320,7 @@ class BorrowingController extends Controller
                     'percentage' => $percentage
                 ]);
             }
-        }
+      //  }
 
 
 

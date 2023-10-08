@@ -73,6 +73,8 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => [
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
     Route::get('/refreshData', [\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
+    Route::get('/filter', [\App\Http\Controllers\AttendanceController::class, 'filterAttendanceByMonth'])->name('filter');
+    Route::get('/setDaysAndHoursForAllEmployeesBasedOnDate', [\App\Http\Controllers\AttendanceController::class, 'setDaysAndHoursForAllEmployeesBasedOnDate'])->name('setDaysAndHoursForAllEmployeesBasedOnDate');
     /*   Route::get('/show/{id}', [\App\Http\Controllers\AttendanceController::class, 'show'])->name('show');
     Route::get('/create/{employee}/{id}', [\App\Http\Controllers\AttendanceController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('store');
@@ -276,4 +278,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']/*,
     // Products
 
 
+});
+
+
+Route::get('/test',function (){
+   return FollowUp::whereHas('employee',function ($query){
+       $query->where('company_id',1);
+   })->where('month',10)->where('year',2023)->get();
 });
