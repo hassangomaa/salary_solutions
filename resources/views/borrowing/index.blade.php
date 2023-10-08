@@ -103,7 +103,7 @@
                         return
                     }
 
-                    if (confirm('{{ __('global.are_you_sure') }}')) {
+                    if (confirm('هل انت متأكد انك تريد حذفهم؟, سيتم ارجاع المبلغ للخزينة مرة اخري')) {
                         $.ajax({
                             headers: {'x-csrf-token': /*_token*/ $('meta[name="csrf-token"]').attr('content')},
                             method: 'POST',

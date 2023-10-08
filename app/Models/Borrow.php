@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Safe\Safe;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,10 +17,16 @@ class Borrow extends Model
         'month',
         'amount',
         'statement',
+        'safe_id'
     ];
 
     public function employee(){
         return $this->belongsTo(Employee::class);
+    }
+
+    public function safe()
+    {
+        return $this->belongsTo(Safe::class, 'safe_id');
     }
 
 }
