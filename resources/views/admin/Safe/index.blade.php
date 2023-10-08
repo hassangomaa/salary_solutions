@@ -32,7 +32,7 @@
                         <th width="10"></th>
                         <th>{{ __('cruds.safe.fields.id') }}</th>
                         <th>{{ __('cruds.safe.fields.name') }}</th>
-                        <th>{{ __('cruds.safe.fields.balance') }}</th>
+                        <th>{{ __('cruds.safe.fields.balance') ?? 0}}</th>
                         <th>{{ __('cruds.safe.fields.type') }}</th>
                         {{-- <th>{{ __('borrow.month') }}</th> --}}
                         <th>{{ __('borrow.created_at') }}</th>

@@ -51,7 +51,7 @@ class SafeController extends Controller
             return $row->type ? $row->type : '';
         });
         $table->editColumn('value', function ($row) {
-            return $row->value ? $row->value : '';
+            return $row->value ? $row->value : 0;
         });
 
 

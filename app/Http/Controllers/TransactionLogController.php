@@ -131,18 +131,18 @@ class TransactionLogController extends Controller
     }
 
 
-    public static function depositLog( $withdrawDetails,$safe)
+    public static function depositLog($depositDetails, $safe)
     {
 
-        $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been deposited to the  safe '.$safe->name.' for this statement '
-            . $withdrawDetails->statement . '...' . 'The Safe credit is ' . $safe->value;
+        $statement_en = 'The amount ' . $depositDetails->amount . ' has been deposited to the  safe '.$safe->name.' for this statement '
+            . $depositDetails->statement . '...' . 'The Safe credit is ' . $safe->value;
 
-        $statement_ar = 'لقد تم ايداع المبلغ  ' . $withdrawDetails->amount . ' الي خزنة '.$safe->name.' لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
+        $statement_ar = 'لقد تم ايداع المبلغ  ' . $depositDetails->amount . ' الي خزنة '.$safe->name.' لهذا السبب  '
+            . $depositDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
         // $log->company_id = $company->id;
-        $log->amount = $withdrawDetails->amount;
+        $log->amount = $depositDetails->amount;
         $log->type_ar = 'ايداع';
         $log->type_en = 'deposit';
         $log->statement_ar = $statement_ar;

@@ -85,7 +85,7 @@ class BorrowingController extends Controller
         return view('borrowing.create', compact('employees', 'flag', 'safes'));
     }
 
-    // public function store(BorrowingRequest $request)
+  /*  // public function store(BorrowingRequest $request)
     // {
 
     //     $companyId = Session::get('companyId');
@@ -206,7 +206,7 @@ class BorrowingController extends Controller
     //     return redirect(route('borrowing.index'))->with('success','Successfully');
 
     // }
-
+*/
 
     public function store(BorrowingRequest $request)
     {
@@ -244,6 +244,7 @@ class BorrowingController extends Controller
         $borrowing->month = $month;
         $borrowing->amount = $request['amount'];
         $borrowing->statement = $request['statement'];
+        $borrowing->safe_id = $request['safe_id'];
         // $borrowing->percentage=$request['Percentage'];
 
 
@@ -296,7 +297,7 @@ class BorrowingController extends Controller
             }
         } else {*/
             $monthFormat = $month;
-            $yearFormat = Carbon::parse($request['start_date']);
+            $yearFormat = $year;
             $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
 
             $amount_value = $request['amount'];
@@ -342,11 +343,30 @@ class BorrowingController extends Controller
 
     public function destroy(Borrow $borrow)
     {
+        $borrow->load('employee');
+        $username = $borrow->employee->name;
+        $safe = (new SafeActions($borrow->safe_id, "تم ارجاع سلفة للموظف $username ", $borrow->amount, User::class, $borrow->employee->id));
+        $safe =  $safe->deposit();
+        $withdrawDetails = (object)[
+            'amount'=> $borrow->amount,
+            'statement' => ".. ارجاع سلفة الموظف $username "
+
+    ];
+        $month = $borrow->month;
+        $year = $borrow->year;
+        TransactionLogController::depositLog($withdrawDetails, $safe);
+
+       $employeeBorrow =  employeeBorrowing::where('user_id',$borrow->employee->id)->whereHas('date',function ($query)use ($month,$year){
+$query->where('year',$year)->where('month',$month);
+        })->get();
+$employeeBorrow->first();
 
         $borrow->delete();
 
         return back();
     }
+
+
 
 
     public  function decreaseCompanyCredit($company, $amount)
@@ -369,6 +389,7 @@ class BorrowingController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $companyId = Session::get('companyId');
 
         $borrow = Borrow::with('employee')->where('id', $id)->first();
