@@ -31,7 +31,7 @@
                                 {{ $item->name }}
                             </td>
                             <td>{{ $item->position }}</td>
-                            <td>{{ $item->daily_fare * $item->attendances->count() }}</td>
+                            <td>{{ $item->daily_fare .'*'. $item->getAttendanceCountForMonth($year, $month)   }}</td>
                             @foreach ($period as $date)
 {{--                                {{$item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d'))?? \Carbon\Carbon::parse($date)->format('Y-m-d')}}--}}
                                 <td class="attendance-cell" data-employee-id="{{ $item->id }}" data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}">

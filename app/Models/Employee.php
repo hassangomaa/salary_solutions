@@ -26,6 +26,20 @@ class   Employee extends Model
         return   $attendance ? $attendance->status : null;
     }
 
+    public function getAttendanceCountForMonth($year, $month)
+    {
+        // Calculate the first and last day of the month
+        $firstDayOfMonth = "{$year}-{$month}-01";
+        $lastDayOfMonth = "{$year}-{$month}-" . date('t', strtotime($firstDayOfMonth));
+
+        // Retrieve the attendance records for the specified month where status is 1
+        $attendanceCount = $this->attendances()
+            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->where('status', 1)
+            ->count();
+
+        return $attendanceCount;
+    }
 
     public function commissions()
     {

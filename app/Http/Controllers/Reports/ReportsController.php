@@ -139,9 +139,15 @@ class ReportsController extends Controller
 
         $companyId = Session::get('companyId');
         $date=(isset($request->date))?$request->date:Carbon::now();
-        $month=Carbon::parse($date)->format('m');
-        $year=Carbon::parse($date)->format('Y');
+//        $month=Carbon::parse($date)->format('M');
+//        $year=Carbon::parse($date)->format('Y');
         $date=Carbon::parse($date)->format('Y-M');
+
+        $date2 = (isset($request->date)) ? Carbon::parse($request->date) : Carbon::now();
+
+        $year = $date2->format('Y');
+        $month = $date2->format('m');
+
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
@@ -152,7 +158,10 @@ class ReportsController extends Controller
 //        return $employees->first()->getAttendanceStatus("2023-11-16");
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
-        return view('reports.attendance',compact('employees','period','flag','date','month_name'));
+        return view('reports.attendance',
+            compact('employees','period','flag','date','month_name'
+            ,'companyId','date','month','year','date'));
+
     }
 
 
