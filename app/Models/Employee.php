@@ -17,6 +17,16 @@ class   Employee extends Model
         return $this->hasMany(Attendance::class, 'employee_id');
     }
 
+    public function getAttendanceStatus($date)
+    {
+        // Retrieve the attendance record for the given date
+          $attendance = $this->attendances()->where('date', $date)->first();
+
+        // If attendance record exists, return its status; otherwise, return null
+        return   $attendance ? $attendance->status : null;
+    }
+
+
     public function commissions()
     {
         return $this->hasMany(Commission::class, 'employee_id');

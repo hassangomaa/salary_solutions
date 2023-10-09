@@ -213,6 +213,7 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
     // Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
 
 });
+ Route::post('/save-attendance', [ReportsController::class, 'saveAttendance'])->name('save-attendance');
 
 Route::controller(SafeController::class)->prefix('safes')->group(function () {
     Route::get('index', 'index')->name('safes.index');

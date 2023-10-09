@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Reports;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Exports\ExcelReportController;
+use App\Models\Attendance;
 use App\Models\Borrow;
 use App\Models\CompanyPayment;
 use App\Models\Employee;
@@ -62,9 +63,52 @@ class ReportsController extends Controller
         return view('reports.salaries',compact('followUps','flag','date'));
     }
 
+    //saveAttendance
+    //saveAttendance
+    public function saveAttendance(Request $request)
+    {
+        // Retrieve data from the request
+        $employeeId = $request->input('employee_id');
+        $date = $request->input('date');
+        $attendanceStatus = $request->input('attendance_status');
+
+//        return $request->all();
+
+        // Validate the inputs (you can add more validation rules as needed)
+        $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'date' => 'required|date_format:Y-m-d',
+            'attendance_status' => 'required|in:0,1', // Should be 0 or 1
+        ]);
+
+        // Find the employee
+        $employee = Employee::find($employeeId);
+
+        // Check if the employee exists
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        // Check if the date is valid (you can add more date validation logic)
+        $parsedDate = Carbon::parse($date);
+        if (!$parsedDate->isValid()) {
+            return response()->json(['message' => 'Invalid date format'], 400);
+        }
+
+        // Update or create the attendance record
+        $attendanceRecord = Attendance::updateOrCreate(
+            ['employee_id' => $employeeId, 'date' => $date],
+            ['status' => $attendanceStatus]
+        );
+
+        // Return a response (e.g., success message or confirmation)
+        return response()->json(['message' => 'Attendance data saved successfully']);
+    }
+
+
     public function attendance(Request $request){
 
-        $company_id=session()->all()['companyId'];
+         $company_id=session()->all()['companyId'];
 
         $date=(isset($request->date))?Carbon::parse($request->date)->format('Y-m'):Carbon::now()->format('Y-m');
         $to_date=(isset($request->date))?Carbon::parse($request->date)->addMonth()->format('Y-m'):Carbon::now()->addMonth()->format('Y-m');
@@ -85,7 +129,7 @@ class ReportsController extends Controller
 
         }
          $employees =Employee::where('company_id',$company_id)->get();
-
+//        return $employees->first()->getAttendanceStatus("2023-11-16");
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.attendance',compact('employees','period','flag','date','month_name'));
