@@ -369,10 +369,40 @@ class ReportsController extends Controller
     }
 
     //removetransaction
-    public function removeTransaction(Request $request){
-        $transaction=SafeTransactions::find($request->safe_id);
-        $transaction->delete();
-        return redirect()->back()->with('success','تم الحذف بنجاح');
+    public function removeTransaction(Request $request)
+    {
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            // Find the transaction by its ID
+            $transaction = SafeTransactions::find($request->safe_id);
+
+            if (!$transaction) {
+                return redirect()->back()->with('error', 'Transaction not found.');
+            }
+
+            // Retrieve the associated safe
+            $safe = $transaction->safe;
+
+            // Increment the safe's value by the transaction's value
+            $safe->value += $transaction->value;
+            $safe->save();
+
+            // Delete the transaction
+            $transaction->delete();
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->back()->with('success', 'تم الحذف بنجاح');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Error deleting the transaction: ' . $e->getMessage());
+        }
     }
+
 
 }

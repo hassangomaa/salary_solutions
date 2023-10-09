@@ -24,7 +24,7 @@
                 <td>
                     <form method="POST" action="{{route('remove.transaction')}}" >
                         @csrf
-                        <input type="hidden" name="safe_id" value="{{ $item->safe_id }}">
+                        <input type="hidden" name="safe_id" value="{{ $item->id }}">
                         <button class="btn-danger" type="submit"> Delete & Refund </button>
                     </form>
                 </td>
