@@ -19,6 +19,73 @@ use Yajra\DataTables\Facades\DataTables;
 class AttendanceController extends Controller
 {
 
+    //removeDays
+    public function removeDays(Request $request)
+    {
+        $companyId = Session::get('companyId');
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        // Retrieve the company and its employees
+        $company = Company::findOrFail($companyId);
+        $employees = $company->employees;
+
+        // Loop through each employee and update attended_days for the specified month and year
+        foreach ($employees as $employee) {
+            $employee->setAttendanceToZero($year, $month);
+            $employee->save();
+        }
+
+        // Redirect or return a response as needed
+        return redirect()->back()->with('success', 'Data removed successfully.');
+    }
+
+
+    public function removeData(Request $request)
+    {
+//        return $request->all();
+        $companyId = Session::get('companyId');
+
+        // Validate and get the month and year from the request
+//        $request->validate([
+//            'month' => 'required|date_format:Y-m',
+//        ]);
+
+           $month = Carbon::parse($request->input('month')); // Parse the sent month variable
+
+            $month->month ;
+
+        // Retrieve the company and its employees
+        $company = Company::findOrFail($companyId);
+        $employees = $company->employees;
+
+        // Loop through each employee and update attended_days for the specified month and year
+        foreach ($employees as $employee) {
+            // Find the corresponding follow_up record for the employee in the specified month and year
+            $followUp = $employee->followUps()
+                ->where('year', '=', $month->year)
+                ->where('month', '=', $month->month)
+                ->first();
+
+            // If a follow_up record is found, update the attended_days to 0
+            if ($followUp) {
+                $followUp->attended_days = 0;
+//                $followUp->update(['attended_days' => 0]);
+//                $followUp->update(['extra_hours' => 0]);
+                $followUp->save();
+                $employee->save();
+
+            }
+
+
+        }
+//        return  $followUp;
+
+        // Redirect or return a response as needed
+     return    redirect()->back()->with('success', 'Data removed successfully.');
+    }
+
+
 
     public function index()
     {
@@ -42,8 +109,17 @@ class AttendanceController extends Controller
         $date = Carbon::now()->format('Y-m');
 //        return $date;
         $flag = 1;
+
+        $date2 = (isset($request->date)) ? Carbon::parse($request->date) : Carbon::now();
+
+        $year = $date2->format('Y');
+
+        $month = $date2->format('m');
+
         //    return $followUps;
-        return view('attendance.index', compact('flag', 'followUps', 'date', 'total_attendance_houres', 'total_extra_hours'));
+        return view('attendance.index', compact('flag', 'followUps', 'date', 'total_attendance_houres', 'total_extra_hours'
+
+        ,'year','month'));
     }
 
     public function updateNumberOfDays(Request $request)
@@ -264,8 +340,14 @@ class AttendanceController extends Controller
         $followUps = $followUps->paginate(10);
 
         $flag = 1;
+
+        $date2 = (isset($request->date)) ? Carbon::parse($request->date) : Carbon::now();
+
+        $year = $date2->format('Y');
+
+        $month = $date2->format('m');
         //    return $followUps;
-        return view('attendance.index', compact('flag', 'date', 'followUps', 'total_attendance_houres', 'total_extra_hours'));
+        return redirect()->  route('attendance.index');
 
     }
 

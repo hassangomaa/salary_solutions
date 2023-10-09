@@ -71,6 +71,10 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
+    //day
+    Route::get('/removeData', [\App\Http\Controllers\AttendanceController::class, 'removeData'])->name('removeData');
+    //removeDays
+    Route::post('/removeDays', [\App\Http\Controllers\AttendanceController::class, 'removeDays'])->name('removeDays');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
     Route::get('/refreshData', [\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
     Route::get('/filter', [\App\Http\Controllers\AttendanceController::class, 'filterAttendanceByMonth'])->name('filter');
@@ -213,7 +217,8 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
     // Route::get('/downloadFile/{id}', [\App\Http\Controllers\ExcelController::class, 'downloadFile'])->name('downloadFile');
 
 });
- Route::post('/save-attendance', [ReportsController::class, 'saveAttendance'])->name('save-attendance');
+Route::post('/save-attendance', [ReportsController::class, 'saveAttendance'])->name('save-attendance');
+Route::post('/remove.transaction', [ReportsController::class, 'removetransaction'])->name('remove.transaction');
 
 Route::controller(SafeController::class)->prefix('safes')->group(function () {
     Route::get('index', 'index')->name('safes.index');

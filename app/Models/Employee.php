@@ -6,11 +6,54 @@ use App\Models\Borrowing\employeeBorrowing;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class   Employee extends Model
 {
     use HasFactory,SoftDeletes;
     protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','company_id','phone','overtime_hour_fare'];
+
+
+
+
+
+    public function getTotalAttendedDaysForMonth($year, $month)
+    {
+        // Retrieve the company associated with the employee
+        $company = $this->company;
+
+        if (!$company) {
+            return 0; // Handle the case where the employee is not associated with a company
+        }
+        $company = $this->company;
+
+        if (!$company) {
+            return 0; // Handle the case where the employee is not associated with a company
+        }
+
+        // Determine the start and end days of the salary policy month
+        $startDay = $company->start_month;
+        $endDay = $company->end_month;
+
+
+        // Calculate the start date of the salary policy period (25th of the previous month)
+//        $startDate = Carbon::create($year, $month, 25)->subMonth();
+        $startDate = Carbon::create($year, $month, $startDay);
+
+        // Calculate the end date of the salary policy period (26th of the current month)
+//        $endDate = Carbon::create($year, $month, 26);
+
+        $endDate = Carbon::create($year, $month, $endDay)->addMonth();
+
+        // Retrieve the attendance records for the specified month and year
+        $attendedDays = $this->attendances()
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('status', 1)
+            ->count();
+
+        return $attendedDays;
+    }
+
 
     public function attendances()
     {
@@ -25,6 +68,23 @@ class   Employee extends Model
         // If attendance record exists, return its status; otherwise, return null
         return   $attendance ? $attendance->status : null;
     }
+    //setAttendanceTozero
+    public function setAttendanceToZero($year, $month)
+    {
+        // Retrieve the attendance records for the given year and month
+        $attendances = $this->attendances()
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get();
+
+        // Update the attendance records to set the status to 0
+        $attendances->each(function ($attendance) {
+            $attendance->update(['status' => 0]);
+        });
+
+        return $attendances;
+    }
+
 
     public function getAttendanceCountForMonth($year, $month)
     {

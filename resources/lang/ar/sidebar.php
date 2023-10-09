@@ -6,6 +6,8 @@ return [
     'users' => 'المستخدمين',
     'show_employees' => 'عرض الموظفين',
     'attendance' => 'الحضور',
+    'attendance_all' => 'الحضور اجمالي',
+    "attendance_day" => "الحضور تفصيلي",
     'borrowing' => 'الاقتراض',
     'user_management' => 'إدارة المستخدمين',
     'payments' => 'المدفوعات',

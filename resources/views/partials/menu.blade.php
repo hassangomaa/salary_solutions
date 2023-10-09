@@ -83,16 +83,56 @@
                     </li>
 
 
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs("attendance.index") ? "active" : "" }}"
-                           href="{{ route("attendance.index") }}">
-                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
-                            </i>
-                            <p>
-                                {{ trans('sidebar.attendance') }}
-                            </p>
-                        </a>
-                    </li>
+
+
+
+
+                                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                            data-accordion="false">
+
+                                            <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
+                                                <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}"
+                                                   href="#">
+                                                    <i class="fa-fw nav-icon fas fa-users">
+
+                                                    </i>
+                                                    <p>
+                                                        {{ trans('sidebar.attendance') }}
+                                                        <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                                                    </p>
+                                                </a>
+                                                <ul class="nav nav-treeview">
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{ request()->routeIs("attendance.index") ? "active" : "" }}"
+                                                           href="{{ route("attendance.index") }}">
+                                                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                                            </i>
+                                                            <p>
+                                                                {{ trans('sidebar.attendance_all') }}
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{ request()->routeIs("Reports.attendance") ? "active" : "" }}"
+                                                           href="{{ route("Reports.attendance") }}">
+                                                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                                                            </i>
+                                                            <p>
+                                                                {{ trans('sidebar.attendance_day') }}
+                                                            </p>
+                                                        </a>
+                                                    </li>
+
+
+                                                </ul>
+                                            </li>
+
+
+
+
+
+
 
                     {{-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs("extraHours.index") ? "active" : "" }}"

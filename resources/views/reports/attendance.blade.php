@@ -21,7 +21,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <input class="form-control" type="month" id="" name="date"
-                                placeholder="{{ trans('global.search_placeholder') }}">
+                                   placeholder="{{ trans('global.search_placeholder') }}">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -63,6 +63,21 @@
 
 
             </form>
+
+{{--            <div class="form-group">--}}
+{{--                <input  class="btn btn-danger col-md-12 mt-1" type="button" id="clear" name="clearDate" value="مسح التاريخ">--}}
+{{--            </div>--}}
+            <form method="POST" action="{{ route('attendance.removeDays') }}">
+                @csrf
+                <div class="form-group">
+{{--                    <label for="month">Month:</label>--}}
+                    <input type="text" name="month" id="month" class="form-control" value="{{  $month }}" hidden>
+                    <input type="text" name="year" id="month" class="form-control" value="{{  $year }}" hidden>
+
+                </div>
+                <button type="submit" class="btn btn-danger col-md-12 mt-1"> {{ $date}} ازاله جميع ايام الحضور</button>
+            </form>
+
             <div style="overflow-x: auto;">
             @include('reports.tables.attendance')
             </div>

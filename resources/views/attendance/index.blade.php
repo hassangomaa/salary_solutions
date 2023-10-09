@@ -11,6 +11,7 @@
         <div class="card-body">
             <div class="form-group">
                 <div class="row">
+
 {{--                    <div class="col-md-6">--}}
 {{--                        <form action="{{ route('salary_pay') }}" method="get">--}}
 {{--                            <div class="row">--}}
@@ -21,14 +22,18 @@
 {{--                            <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
+
                     <div class="col-md-6">
                         <div class="row">
                             <input type="month" name="month" id="month" class="form-control col-md-6" value="{{$date}}">
-                            <button type="button" class="btn btn-primary col-md-3" onclick="filterAttendance()">اظهار الشهر</button>
+                            <button  type="button" class="btn btn-primary col-md-3" onclick="filterAttendance()">اظهار الشهر</button>
                             <button type="button" class="btn btn-primary col-md-3" onclick="return confirmPay(event)">  دفع مرتبات </button>
                         </div>
-                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>
+                        <br>
 
+                        <a href="{{ route('attendance.refreshData') }}" class="btn btn-success col-md-3">Refresh Data</a>
+                        <br>
+                        <br>
                     </div>
 
                     <div class="col-md-6">
@@ -43,9 +48,14 @@
                         <input type="number" name="extra_hours" id="extra_hours" class="form-control col-md-6 " placeholder="الساعات الإضافية">
                         <br>
                         <button type="button" class="btn btn-primary col-md-12 mt-1" id="addForAll" onclick="submitData()">إضافة لجميع العمال في هذا الشهر</button>
+
                     </div>
                 </div>
             </div>
+
+            <br>
+            <button type="button" class="btn btn-danger col-md-12 mt-1" id="addForAll" onclick="removeData()">ازاله  ايام الحضور للجميع بهذا الشهر</button>
+
             <div class="form-group">
                 <label for="search">{{ trans('global.search') }}</label>
                 <input class="form-control" type="text" id="search" name="search" placeholder="{{ trans('global.search_placeholder') }}">
@@ -71,7 +81,7 @@
                         <td>{{ $followUp->employee->name }}</td>
                         <td>{{ $followUp->employee->position }}</td>
                         <td>{{ $followUp->employee->daily_fare }}</td>
-                        <td id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }}</td>
+                        <td id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }} >> {{$followUp->employee->getAttendanceCountForMonth($year, $month)}}</td>
                         <td>
                             <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
                             <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('attendance.save') }}</button>
@@ -191,6 +201,12 @@
         window.location.href = url;
     }
 
+    //removeData
+    function removeData() {
+        const selectedMonth = document.getElementById('month').value;
+        const url = `{{ route('attendance.removeData') }}?month=${selectedMonth}`;
+        window.location.href = url;
+    }
 
     $(function () {
         $('#addForAll').on('click', function () {

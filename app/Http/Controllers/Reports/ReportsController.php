@@ -7,6 +7,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Exports\ExcelReportController;
 use App\Models\Attendance;
 use App\Models\Borrow;
+use App\Models\Company;
 use App\Models\CompanyPayment;
 use App\Models\Employee;
 use App\Models\Safe\Safe;
@@ -128,12 +129,15 @@ class ReportsController extends Controller
 
     public function attendance(Request $request){
 
-         $company_id=session()->all()['companyId'];
+          $company_id=session()->all()['companyId'];
+         $company =  Company::find($company_id);
 
         $date=(isset($request->date))?Carbon::parse($request->date)->format('Y-m'):Carbon::now()->format('Y-m');
         $to_date=(isset($request->date))?Carbon::parse($request->date)->addMonth()->format('Y-m'):Carbon::now()->addMonth()->format('Y-m');
-        $from=$date.'-25';
-        $to=$to_date.'-26';
+        $from=$date.'-'.$company->start_month;
+        $to=$to_date.'-'.$company->end_month;
+//        $from=$date.'-25';
+//        $to=$to_date.'-26';
         $period = CarbonPeriod::create($from,$to);
         $month_name=Carbon::parse($date)->format('Y-M');
 
@@ -362,6 +366,13 @@ class ReportsController extends Controller
         $flag = 1;
         $safes=Safe::all();
         return view('reports.safeTransactions',compact('safes','flag','safes_trans'));
+    }
+
+    //removetransaction
+    public function removeTransaction(Request $request){
+        $transaction=SafeTransactions::find($request->safe_id);
+        $transaction->delete();
+        return redirect()->back()->with('success','تم الحذف بنجاح');
     }
 
 }
