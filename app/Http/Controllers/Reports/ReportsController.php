@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session ;
 
 class ReportsController extends Controller
@@ -65,45 +66,64 @@ class ReportsController extends Controller
 
     //saveAttendance
     //saveAttendance
+
     public function saveAttendance(Request $request)
     {
-        // Retrieve data from the request
-        $employeeId = $request->input('employee_id');
-        $date = $request->input('date');
-        $attendanceStatus = $request->input('attendance_status');
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
 
-//        return $request->all();
+            // Retrieve data from the request
+            $employeeId = $request->input('employee_id');
+            $date = $request->input('date');
+            $attendanceStatus = $request->input('attendance_status');
 
-        // Validate the inputs (you can add more validation rules as needed)
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'date' => 'required|date_format:Y-m-d',
-            'attendance_status' => 'required|in:0,1', // Should be 0 or 1
-        ]);
+            // Validate the inputs (you can add more validation rules as needed)
+            $request->validate([
+                'employee_id' => 'required|exists:employees,id',
+                'date' => 'required|date_format:Y-m-d',
+                'attendance_status' => 'required|in:0,1', // Should be 0 or 1
+            ]);
 
-        // Find the employee
-        $employee = Employee::find($employeeId);
+            // Find the employee
+            $employee = Employee::find($employeeId);
 
-        // Check if the employee exists
-        if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+            // Check if the employee exists
+            if (!$employee) {
+                return response()->json(['message' => 'Employee not found'], 404);
+            }
+
+            // Check if the date is valid (you can add more date validation logic)
+            $parsedDate = Carbon::parse($date);
+            if (!$parsedDate->isValid()) {
+                return response()->json(['message' => 'Invalid date format'], 400);
+            }
+
+            // Update or create the attendance record
+            $attendanceRecord = Attendance::updateOrCreate(
+                ['employee_id' => $employeeId, 'date' => $date],
+                ['status' => $attendanceStatus]
+            );
+
+            // Commit the transaction
+            DB::commit();
+
+            // Return a response (e.g., success message or confirmation)
+            return response()->json(
+                [
+                    'message' => 'Attendance data saved successfully',
+                    'previous_status' => $attendanceStatus,
+                    'new_status' => $attendanceStatus
+                ]);
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            // Handle the error and return an error response
+            return response()->json(['message' => 'Error saving attendance data: ' . $e->getMessage()], 500);
         }
-
-        // Check if the date is valid (you can add more date validation logic)
-        $parsedDate = Carbon::parse($date);
-        if (!$parsedDate->isValid()) {
-            return response()->json(['message' => 'Invalid date format'], 400);
-        }
-
-        // Update or create the attendance record
-        $attendanceRecord = Attendance::updateOrCreate(
-            ['employee_id' => $employeeId, 'date' => $date],
-            ['status' => $attendanceStatus]
-        );
-
-        // Return a response (e.g., success message or confirmation)
-        return response()->json(['message' => 'Attendance data saved successfully']);
     }
+
 
 
     public function attendance(Request $request){

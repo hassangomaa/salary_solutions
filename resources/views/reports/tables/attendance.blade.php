@@ -31,12 +31,19 @@
                                 {{ $item->name }}
                             </td>
                             <td>{{ $item->position }}</td>
-                            <td>{{ $item->daily_fare }}</td>
+                            <td>{{ $item->daily_fare * $item->attendances->count() }}</td>
                             @foreach ($period as $date)
 {{--                                {{$item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d'))?? \Carbon\Carbon::parse($date)->format('Y-m-d')}}--}}
                                 <td class="attendance-cell" data-employee-id="{{ $item->id }}" data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}">
-                                    <input type="radio" name="attendance[{{ $item->id }}][{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}]" value="1" {{ $item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d')) == 1 ? 'checked' : '' }}> حضور
-                                    <input type="radio" name="attendance[{{ $item->id }}][{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}]" value="0" {{ $item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d')) == 0 ? 'checked' : '' }}> غياب
+                                    <input
+                                        type="radio"
+                                        name="attendance[{{ $item->id }}][{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}]"
+                                        value="1"
+                                        {{ $item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d')) == 1 ? 'checked' : '' }}> حضور
+                                    <input
+                                        type="radio"
+                                        name="attendance[{{ $item->id }}][{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}]"
+                                        value="0" {{ $item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d')) == 0 ? 'checked' : '' }}> غياب
                                 </td>
                             @endforeach
                         </tr>
@@ -47,24 +54,13 @@
             </table>
 
 <script>
-
     $(document).ready(function () {
         // Add click event handler for attendance cells
-        $('.attendance-cell').click(function () {
-            var cell = $(this);
-            var employeeId = cell.data('employee-id');
-            var date = cell.data('date');
-            var radioInput = cell.find('input[type="radio"]');
+        $('.attendance-cell input[type="radio"]').click(function () {
+            var radioInput = $(this);
+            var employeeId = radioInput.closest('.attendance-cell').data('employee-id');
+            var date = radioInput.closest('.attendance-cell').data('date');
             var currentValue = radioInput.val();
-
-            // Toggle the value between "0" and "1"
-            var newValue = (currentValue === "0") ? "1" : "0";
-
-            // Set the new value to the radio input
-            radioInput.val(newValue);
-
-            // Toggle attendance status visually
-            radioInput.prop('checked', newValue === "1");
 
             // Format the date in "Y-m-d" format
             var formattedDate = new Date(date);
@@ -78,15 +74,23 @@
                     _token: '{{ csrf_token() }}', // Add CSRF token for security
                     employee_id: employeeId,
                     date: formattedDate, // Send the formatted date
-                    attendance_status: newValue
+                    attendance_status: currentValue
                 },
                 success: function (response) {
-                    // Handle the response if needed
+                    // Handle the response
                     console.log('Attendance data saved successfully.');
+
+                    // Update the radio input value if the response indicates a different status
+                    if (response.new_status !== undefined) {
+                        // Update the checked state
+                        radioInput.prop('checked', response.new_status === "1");
+                    }
                 },
                 error: function (error) {
-                    // Handle errors if necessary
+                    // Handle errors
                     console.error('Error saving attendance data: ' + error.responseText);
+                    // Reset the checked state if an error occurs
+                    radioInput.prop('checked', currentValue === "1");
                 }
             });
         });
