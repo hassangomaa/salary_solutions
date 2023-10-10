@@ -28,7 +28,7 @@ class AttendanceExport implements FromView , WithEvents
 
         $employees =Employee::where('company_id',$company_id)->get();
 
-        return view('reports.tables.attendance',['employees'=>$employees,'period'=>$this->period,'month_name'=>$this->month_name]);
+        return view('reports.tables.attendance2',['employees'=>$employees,'period'=>$this->period,'month_name'=>$this->month_name]);
     }
 
     public function registerEvents(): array

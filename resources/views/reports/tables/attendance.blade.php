@@ -22,12 +22,12 @@
                         <th>الاسم</th>
                         <th>المهنه</th>
                         <th>راتب يومي</th>
-{{--                        @foreach ($period as $date)--}}
-{{--                        <th>{{ \Carbon\Carbon::parse($date)->format('d') }}</th>--}}
-{{--                        @endforeach--}}
-                        @foreach ($daysInSalaryMonth as $day)
-                            <th>{{  $day  }}</th>
+                        @foreach ($period as $date)
+                        <th>{{ \Carbon\Carbon::parse($date)->format('d') }}</th>
                         @endforeach
+{{--                        @foreach ($daysInSalaryMonth as $day)--}}
+{{--                            <th>{{  $day  }}</th>--}}
+{{--                        @endforeach--}}
                     </tr>
                     @foreach ($employees as $item)
                         <tr>
@@ -35,7 +35,9 @@
                                 {{ $item->name }}
                             </td>
                             <td>{{ $item->position }}</td>
-                            <td>{{ $item->daily_fare .'*'. $item->getTotalAttendedDaysForMonth($year, $month)   }}</td>
+                            <td>{{ $item->daily_fare }}
+{{--                       .'*'.$item->getTotalAttendedDaysForMonth($year, $month)??''   --}}
+                            </td>
                             @foreach ($period as $date)
 {{--                                {{$item->getAttendanceStatus(\Carbon\Carbon::parse($date)->format('Y-m-d'))?? \Carbon\Carbon::parse($date)->format('Y-m-d')}}--}}
                                 <td class="attendance-cell" data-employee-id="{{ $item->id }}" data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}">

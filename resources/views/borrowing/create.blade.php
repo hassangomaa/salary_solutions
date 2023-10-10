@@ -10,6 +10,8 @@
         <div class="card-body">
             <form method="POST" action="{{ route('borrowing.store') }}">
                 @csrf
+
+
                 <div class="form-group">
                     <label class="required" for="employee_id">{{ trans('borrow.employee') }}</label>
                     <select class="form-control {{ $errors->has('employee_id') ? 'is-invalid' : '' }}" name="employee_id" id="employee_id" required>

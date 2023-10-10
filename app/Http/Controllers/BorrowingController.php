@@ -74,17 +74,6 @@ class BorrowingController extends Controller
         return view('borrowing.index', compact('flag'));
     }
 
-    public function create()
-    {
-        $companyId = Session::get('companyId');
-
-        $employees = Employee::where('company_id', $companyId)->get();
-        $company = Company::find($companyId);
-
-        $flag = 1;
-        $safes = Safe::get();
-        return view('borrowing.create', compact('employees', 'flag', 'safes'));
-    }
 
 
 
@@ -297,21 +286,46 @@ $employeeBorrow->first();
     {
         $borrow->load('employee');
         $flag = 1;
+
         return view('borrowing.edit', compact('borrow', 'flag'));
     }
 
+    public function create()
+    {
+        $companyId = Session::get('companyId');
+
+        $employees = Employee::where('company_id', $companyId)->get();
+        $company = Company::find($companyId);
+
+        $flag = 1;
+        $safes = Safe::get();
+        return view('borrowing.create', compact('employees', 'flag', 'safes'));
+    }
     public function update(Request $request, $id)
     {
 
         $companyId = Session::get('companyId');
 
         $borrow = Borrow::with('employee')->where('id', $id)->first();
+        $borrow->transactionLog()->delete()  ;
+        $borrow->safeTransaction()->delete()  ;
+
+
+
+
+
+
+
 
         $this->updateCompanyCredit($companyId, $borrow->amount, $request->amount);
         $borrow->update($request->all());
         $borrow->save();
         return redirect(route('borrowing.show', $id));
     }
+
+
+
+
 
     private function updateCompanyCredit($companyId, $oldAmount, $newAmount)
     {

@@ -10,7 +10,7 @@
             <th style="background:#c6d9f1">القيمه</th>
             <th style="background:#c6d9f1">التفاصيل </th>
             <th style="background:#c6d9f1">الاجمالي</th>
-            <th style="background:#c6d9f1">Actions</th>
+{{--            <th style="background:#c6d9f1">Actions</th>--}}
         </tr>
     </thead>
     <tbody>
@@ -21,13 +21,13 @@
                 <td>{{ $item->value }}</td>
                 <td>{{  $item->details  }}</td>
                 <td >{{ $safes_trans->sum('value') }}</td>
-                <td>
-                    <form method="POST" action="{{route('remove.transaction')}}" >
-                        @csrf
-                        <input type="hidden" name="safe_id" value="{{ $item->id }}">
-                        <button class="btn-danger" type="submit"> Delete & Refund </button>
-                    </form>
-                </td>
+{{--                <td>--}}
+{{--                    <form method="POST" action="{{route('remove.transaction')}}" >--}}
+{{--                        @csrf--}}
+{{--                        <input type="hidden" name="safe_id" value="{{ $item->id }}">--}}
+{{--                        <button class="btn-danger" type="submit"> Delete & Refund </button>--}}
+{{--                    </form>--}}
+{{--                </td>--}}
             </tr>
         @endforeach
     </tbody>
