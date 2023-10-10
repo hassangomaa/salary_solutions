@@ -246,18 +246,17 @@ class BorrowingController extends Controller
         $safe = (new SafeActions($borrow->safe_id, "تم ارجاع سلفة للموظف $username ", $borrow->amount, User::class, $borrow->employee->id));
         $safe =  $safe->deposit();
         $withdrawDetails = (object)[
-            'amount'=> $borrow->amount,
-            'statement' => ".. ارجاع سلفة الموظف $username "
-
-    ];
+                'amount'=> $borrow->amount,
+                'statement' => ".. ارجاع سلفة الموظف $username "
+              ];
         $month = $borrow->month;
         $year = $borrow->year;
         TransactionLogController::depositLog($withdrawDetails, $safe);
 
        $employeeBorrow =  employeeBorrowing::where('user_id',$borrow->employee->id)->whereHas('date',function ($query)use ($month,$year){
-$query->where('year',$year)->where('month',$month);
-        })->get();
-$employeeBorrow->first();
+            $query->where('year',$year)->where('month',$month);
+                    })->get();
+            $employeeBorrow->first();
 
         $borrow->transactionLog()->delete()  ;
         $borrow->safeTransaction()->delete()  ;

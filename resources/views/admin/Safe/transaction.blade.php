@@ -38,7 +38,8 @@
             <tr>
                 {{-- <td>{{  }}</td> --}}
                 <td>{{ $item->value }}</td>
-                <td>{{ $item->details}} {{ ($item->reasonable_type==$user)?$item->user->name:''}} </td>
+{{--                @dd($item)--}}
+                <td>{{ $item->details}} {{ ($item->reasonable_type==$user)?$item->user->name??'':''}} </td>
                 <td>{{ $item->created_at }}</td>
             </tr>
         @endforeach

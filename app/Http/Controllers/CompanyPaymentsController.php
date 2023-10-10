@@ -8,6 +8,7 @@ use App\Models\CompanyPayment;
 use App\Models\Safe\Safe;
 use App\Models\Safe\SafeTransactions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -69,36 +70,72 @@ class CompanyPaymentsController extends Controller
 
     public function store(Request $request)
     {
+        try{
         //TODO
-        $companyId = Session::get('companyId');
-        $safe=Safe::find($request->safe);
+        DB::beginTransaction();
+         $companyId = Session::get('companyId');
+             $safe=Safe::find($request->safe);
 
         if ($request->type == 'deposit') {
             $depositDetails = $request;
-            $this->deposit($safe,$request);
-            $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
+            $companyPayment = $this->deposit($safe,$request);
 
-            $safe=$safe->deposit();
-            TransactionLogController::depositLog($depositDetails,$safe);
+
+              $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
+
+               $safe=$safe->deposit();
+             $transactionLog = TransactionLogController::depositLog($depositDetails,$safe);
+
+
+            $companyPayment->transaction_logs_id=$transactionLog->id;
+            //transaction_logs_id
+            $companyPayment->safe_transactions_id=$safe->id;
+            $companyPayment->save();
+
+//                 $companyPayment->transactionLog()->get();
+//            return   $companyPayment->safeTransaction()->get();
+//
+//            return "done"   ;
+            DB::commit();
         }
 
         if ($request->type == 'withdrawal') {
             $withdrawDetails = $request;
-             $this->withdraw($safe,$request);
+            $companyPayment =   $this->withdraw($safe,$request);
 
             $safe=(new SafeActions($request->safe,$request->statement,$request['amount'],0,0));
             $safe=$safe->withdraw();
-            TransactionLogController::withdrawLog($withdrawDetails,$safe);
+            $transactionLog = TransactionLogController::withdrawLog($withdrawDetails,$safe);
+
+
+            $companyPayment->transaction_logs_id=$transactionLog->id;
+            //transaction_logs_id
+            $companyPayment->safe_transactions_id=$safe->id;
+            $companyPayment->save();
+//            $companyPayment->transactionLog()->get();
+//            return   $companyPayment->safeTransaction()->get();
+//
+//            return "done"   ;
+
+            DB::commit();
 
         }
 
+
         return redirect()->route('companyPayments.index')->with('message','تم بنجاح');
+        }catch (\Exception $e){
+            DB::rollback();
+            return $e;
+                //redirect()->back()->with('error','حدث خطأ ما');
+        }
+
+
     }
 
     private function deposit($safe, $request)
     {
 
-        $this->saveTransactionDetails($safe->id, $request);
+        return $this->saveTransactionDetails($safe->id, $request);
 
     }
 
@@ -106,7 +143,7 @@ class CompanyPaymentsController extends Controller
     {
         // $amount = $request->amount;
         // $company->credit -= $amount;
-        $this->saveTransactionDetails($safe->id, $request);
+        return   $this->saveTransactionDetails($safe->id, $request);
 
     }
 
@@ -119,6 +156,7 @@ class CompanyPaymentsController extends Controller
         $companyPayment->type = $request->type;
         $companyPayment->company_id = $safe;
         $companyPayment->save();
+        return $companyPayment;
     }
 
     /*
@@ -196,10 +234,38 @@ class CompanyPaymentsController extends Controller
 
     public function destroy($paymentId)
     {
-        $pay = CompanyPayment::find($paymentId);
-        $pay->delete();
+        try {
+            DB::beginTransaction();
 
-        return back();
+            $pay = CompanyPayment::find($paymentId);
+            //            $companyPayment->transactionLog()->get();
+                $safe = $pay->safeTransaction->safe;
+            $amount = $pay->amount;
+
+            if ($pay->type == 'deposit')
+                $safe->value = $safe->value - $pay->amount;
+            elseif ($pay->type == 'withdrawal')
+                $safe->value = $safe->value + $pay->amount;
+
+            $safe->save();
+//            return $safe;
+
+
+//             "done";
+            $pay->transactionLog()->delete();
+            $pay->safeTransaction()->delete();
+
+            $pay->delete();
+
+            DB::commit();
+
+            return   back();
+        }
+        catch (\Exception $e){
+            DB::rollback();
+            return $e;
+            //redirect()->back()->with('error','حدث خطأ ما');
+        }
     }
 
 

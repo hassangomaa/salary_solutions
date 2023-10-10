@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Safe\Safe;
+
+
 class SafeTransactions extends Model
 {
     use HasFactory;
@@ -21,5 +24,15 @@ class SafeTransactions extends Model
 
     //guraded
     protected $guarded = [];
+
+    public function safe()
+    {
+        return $this->belongsTo(Safe::class, 'safe_id');
+    }
+
+    public function reasonable()
+    {
+        return $this->morphTo();
+    }
 
 }

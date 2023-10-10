@@ -39,8 +39,8 @@ class SafeActions {
         $this->safe->value=($value+$this->ammount);
         $this->safe->save();
 
-        self::transactions($this->ammount);
-        return $this->safe;
+        return  self::transactions($this->ammount);
+         $this->safe;
 
     }
 

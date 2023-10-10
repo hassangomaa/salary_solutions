@@ -129,6 +129,8 @@ class TransactionLogController extends Controller
 
         $log->save();
 
+        return $log;
+
 
     }
 
@@ -151,6 +153,8 @@ class TransactionLogController extends Controller
         $log->statement_en = $statement_en;
 
         $log->save();
+
+        return $log;
 
 
     }
