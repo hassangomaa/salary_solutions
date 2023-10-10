@@ -71,10 +71,26 @@ class   Employee extends Model
     //setAttendanceTozero
     public function setAttendanceToZero($year, $month)
     {
-        // Retrieve the attendance records for the given year and month
+        // Retrieve the company associated with the employee
+        $company = $this->company;
+
+        if (!$company) {
+            return null; // Handle the case where the employee is not associated with a company
+        }
+
+        // Determine the start and end days of the salary policy month
+        $startDay = $company->start_month;
+        $endDay = $company->end_month;
+
+        // Calculate the start date of the salary policy period
+        $startDate = Carbon::create($year, $month, $startDay);
+
+        // Calculate the end date of the salary policy period
+        $endDate = Carbon::create($year, $month, $endDay)->addMonth();
+
+        // Retrieve the attendance records for the given year and month within the salary policy period
         $attendances = $this->attendances()
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+            ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
         // Update the attendance records to set the status to 0

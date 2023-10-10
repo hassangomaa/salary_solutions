@@ -81,7 +81,10 @@
                         <td>{{ $followUp->employee->name }}</td>
                         <td>{{ $followUp->employee->position }}</td>
                         <td>{{ $followUp->employee->daily_fare }}</td>
-                        <td id="attended-days-{{ $followUp->id }}">{{ $followUp->attended_days }} >> {{$followUp->employee->getAttendanceCountForMonth($year, $month)}}</td>
+                        <td id="attended-days-{{ $followUp->id }}">
+                            {{ $followUp->attended_days }}
+                            >> {{$followUp->employee->getTotalAttendedDaysForMonth($year, $month)}}
+                        </td>
                         <td>
                             <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
                             <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('attendance.save') }}</button>

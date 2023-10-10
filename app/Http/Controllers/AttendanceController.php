@@ -76,6 +76,25 @@ class AttendanceController extends Controller
         // Loop through each employee and update attended_days for the specified month and year
         foreach ($employees as $employee) {
             $employee->setAttendanceToZero($year, $month);
+
+            $followUp = $employee->followUps()
+                ->where('year', '=', $year)
+                ->where('month', '=', $month)
+                ->first();
+
+            if ($followUp) {
+                $followUp->attended_days = 0;
+                $followUp->save();
+            } else {
+                $followUp = new FollowUp([
+                    'attended_days' => 0,
+                    'month' => $month,
+                    'year' => $year,
+                    'employee_id' => $employee->id,
+                ]);
+                $followUp->save();
+            }
+
             $employee->save();
         }
 
