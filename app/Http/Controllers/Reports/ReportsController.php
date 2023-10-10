@@ -127,47 +127,70 @@ class ReportsController extends Controller
 
 
 
-    public function attendance(Request $request){
+    public function attendance(Request $request)
+    {
+        $company_id = session()->all()['companyId'];
+        $company = Company::find($company_id);
 
-          $company_id=session()->all()['companyId'];
-         $company =  Company::find($company_id);
+        $date = (isset($request->date)) ? Carbon::parse($request->date)->format('Y-m') : Carbon::now()->format('Y-m');
+        $to_date = (isset($request->date)) ? Carbon::parse($request->date)->addMonth()->format('Y-m') : Carbon::now()->addMonth()->format('Y-m');
+        $from = $date . '-' . $company->start_month;
+        $to = $to_date . '-' . $company->end_month;
 
-        $date=(isset($request->date))?Carbon::parse($request->date)->format('Y-m'):Carbon::now()->format('Y-m');
-        $to_date=(isset($request->date))?Carbon::parse($request->date)->addMonth()->format('Y-m'):Carbon::now()->addMonth()->format('Y-m');
-        $from=$date.'-'.$company->start_month;
-        $to=$to_date.'-'.$company->end_month;
-//        $from=$date.'-25';
-//        $to=$to_date.'-26';
-        $period = CarbonPeriod::create($from,$to);
-        $month_name=Carbon::parse($date)->format('Y-M');
+        $period = CarbonPeriod::create($from, $to);
+        $month_name = Carbon::parse($date)->format('Y-M');
 
         $companyId = Session::get('companyId');
-        $date=(isset($request->date))?$request->date:Carbon::now();
-//        $month=Carbon::parse($date)->format('M');
-//        $year=Carbon::parse($date)->format('Y');
-        $date=Carbon::parse($date)->format('Y-M');
+        $date = (isset($request->date)) ? $request->date : Carbon::now();
+        $date = Carbon::parse($date)->format('Y-M');
 
         $date2 = (isset($request->date)) ? Carbon::parse($request->date) : Carbon::now();
 
         $year = $date2->format('Y');
         $month = $date2->format('m');
 
-
-        if(isset($request->action) && $request->action=='excel'){
-            $excel=new ExcelReportController;
-            return $excel->attendanceExport($period,$month_name);
-
+        if (isset($request->action) && $request->action == 'excel') {
+            $excel = new ExcelReportController;
+            return $excel->attendanceExport($period, $month_name);
         }
-         $employees =Employee::where('company_id',$company_id)->get();
-//        return $employees->first()->getAttendanceStatus("2023-11-16");
-        $flag = 1;
-        $date=Carbon::now()->format('Y-M');
-        return view('reports.attendance',
-            compact('employees','period','flag','date','month_name'
-            ,'companyId','date','month','year','date'));
 
+        $employees = Employee::where('company_id', $company_id)->get();
+        $flag = 1;
+        $date = Carbon::now()->format('Y-M');
+
+        // Loop through the period to get the days of the salary month
+        $daysInSalaryMonth = [];
+        foreach ($period as $day) {
+            $daysInSalaryMonth[] = $day->format('d');
+        }
+
+        $daysInSalaryMonth = $this->getDaysInSalaryMonth($company, $year, $month);
+
+        return view('reports.attendance', compact('employees', 'period', 'flag', 'date', 'month_name', 'companyId', 'date', 'month', 'year', 'date', 'daysInSalaryMonth'));
     }
 
+
+    public function getDaysInSalaryMonth($company, $year, $month)
+    {
+        $startDay = $company->start_month;
+        $endDay = $company->end_month;
+
+        // Calculate the start date of the salary policy period
+        $startDate = Carbon::create($year, $month, $startDay);
+
+        // Calculate the end date of the salary policy period
+        $endDate = Carbon::create($year, $month, $endDay)->addMonth();
+
+        // Generate the array of days for the salary month
+        $daysInMonth = [];
+        $currentDate = $startDate->copy();
+        while ($currentDate->lte($endDate)) {
+            $daysInMonth[] = $currentDate->format('d');
+            $currentDate->addDay();
+        }
+
+        return $daysInMonth;
+    }
 
 
     public function report(Request $request){

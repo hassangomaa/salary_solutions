@@ -75,6 +75,9 @@ Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => [
     Route::get('/removeData', [\App\Http\Controllers\AttendanceController::class, 'removeData'])->name('removeData');
     //removeDays
     Route::post('/removeDays', [\App\Http\Controllers\AttendanceController::class, 'removeDays'])->name('removeDays');
+
+    //apply
+    Route::post('/apply', [\App\Http\Controllers\AttendanceController::class, 'apply'])->name('apply');
     Route::post('/updateNumberOfDays', [\App\Http\Controllers\AttendanceController::class, 'updateNumberOfDays'])->name('updateNumberOfDays');
     Route::get('/refreshData', [\App\Http\Controllers\AttendanceController::class, 'refreshData'])->name('refreshData');
     Route::get('/filter', [\App\Http\Controllers\AttendanceController::class, 'filterAttendanceByMonth'])->name('filter');

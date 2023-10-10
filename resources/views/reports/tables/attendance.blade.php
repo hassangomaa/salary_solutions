@@ -12,13 +12,21 @@
                         @foreach ($period as $date)
                             <th>{{ \Carbon\Carbon::parse($date)->format('D') }}</th>
                         @endforeach
+{{--                        @dd($daysInSalaryMonth)--}}
+{{--                        @foreach ($daysInSalaryMonth as $day)--}}
+{{--                            <th>{{  $day  }}</th>--}}
+{{--                        @endforeach--}}
+
                     </tr>
                     <tr>
                         <th>الاسم</th>
                         <th>المهنه</th>
                         <th>راتب يومي</th>
-                        @foreach ($period as $date)
-                        <th>{{ \Carbon\Carbon::parse($date)->format('d') }}</th>
+{{--                        @foreach ($period as $date)--}}
+{{--                        <th>{{ \Carbon\Carbon::parse($date)->format('d') }}</th>--}}
+{{--                        @endforeach--}}
+                        @foreach ($daysInSalaryMonth as $day)
+                            <th>{{  $day  }}</th>
                         @endforeach
                     </tr>
                     @foreach ($employees as $item)

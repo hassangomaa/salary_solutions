@@ -19,6 +19,49 @@ use Yajra\DataTables\Facades\DataTables;
 class AttendanceController extends Controller
 {
 
+    //apply
+    public function apply(Request $request)
+    {
+        $companyId = Session::get('companyId');
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        // Retrieve the company and its employees
+        $company = Company::findOrFail($companyId);
+        $employees = $company->employees;
+
+        // Loop through each employee and update attended_days for the specified month and year
+        foreach ($employees as $employee) {
+           $totalDays = $employee->getTotalAttendedDaysForMonth($year, $month);
+            // Find the corresponding follow_up record for the employee in the specified month and year and update the attended_days
+            $followUp = $employee->followUps()
+                ->where('year', '=', $year)
+                ->where('month', '=', $month)
+                ->first();
+
+            if ($followUp) {
+                $followUp->attended_days = $totalDays;
+                $followUp->save();
+            } else {
+                $followUp = new FollowUp([
+                    'attended_days' => $totalDays,
+                    'month' => $month,
+                    'year' => $year,
+                    'employee_id' => $employee->id,
+                ]);
+                $followUp->save();
+            }
+
+            $employee->save();
+        }
+
+
+
+
+        // Redirect or return a response as needed
+        return redirect()->back()->with('success', 'Data Applied successfully.');
+    }
+
     //removeDays
     public function removeDays(Request $request)
     {

@@ -78,6 +78,17 @@
                 <button type="submit" class="btn btn-danger col-md-12 mt-1"> {{ $date}} ازاله جميع ايام الحضور</button>
             </form>
 
+            <form method="POST" action="{{ route('attendance.apply') }}">
+                @csrf
+                <div class="form-group">
+                    {{--                    <label for="month">Month:</label>--}}
+                    <input type="text" name="month" id="month" class="form-control" value="{{  $month }}" hidden>
+                    <input type="text" name="year" id="month" class="form-control" value="{{  $year }}" hidden>
+
+                </div>
+                <button type="submit" class="btn btn-success col-md-12 mt-1"> {{ $date}} تطبيق ايام الحضور علي الاجمالي </button>
+            </form>
+
             <div style="overflow-x: auto;">
             @include('reports.tables.attendance')
             </div>
