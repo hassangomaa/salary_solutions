@@ -395,11 +395,14 @@ class ReportsController extends Controller
     public function removeTransaction(Request $request)
     {
         try {
+             $request->all();
             // Start a database transaction
             DB::beginTransaction();
 
             // Find the transaction by its ID
-            $transaction = SafeTransactions::find($request->safe_id);
+               $transaction = SafeTransactions::find($request->safe_id);
+//              $transaction->safe()->increment('value',$transaction->value);
+//            return   $transaction->safe()->get(); ;
 
             if (!$transaction) {
                 return redirect()->back()->with('error', 'Transaction not found.');

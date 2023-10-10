@@ -49,7 +49,7 @@ class SafeActions {
 
         $this->safe->value=($value-$this->ammount);
         $this->safe->save();
-        self::transactions(-$this->ammount);
+        return  self::transactions(-$this->ammount);
         return $this->safe;
     }
 
@@ -62,12 +62,12 @@ class SafeActions {
         $safe_to->value=($value_to+$this->ammount);
         $safe_to->save();
         // $safe=Safe::find($safe_to);
-        self::transactions(-$this->ammount);
-        return $this->safe;
+          self::transactions(-$this->ammount);
+         $this->safe;
     }
     public function transactions($ammount){
         $reason=$this->reason_id;
-        SafeTransactions::create([
+       return SafeTransactions::create([
             'safe_id'=>$this->safe->id,
             'value'=>$ammount,
             'reasonable_type'=>$this->reasonable_type,

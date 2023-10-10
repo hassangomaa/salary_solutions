@@ -84,8 +84,9 @@ class TransactionLogController extends Controller
 
     public static function borrowLog($employeeId, $amount,$date,$safe)
     {
-        // return $safe;
+//           $safe;
 
+//        return     $safe->value ;
         // $safe
 
         $employee = Employee::where('id', $employeeId)->first();
@@ -106,6 +107,7 @@ class TransactionLogController extends Controller
         $log->statement_en = $statement_en;
 
         $log->save();
+        return $log;
     }
 
     public static function withdrawLog($withdrawDetails,$safe)

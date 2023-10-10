@@ -16,6 +16,7 @@ use App\Models\TransactionLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Percentage;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,134 +86,16 @@ class BorrowingController extends Controller
         return view('borrowing.create', compact('employees', 'flag', 'safes'));
     }
 
-  /*  // public function store(BorrowingRequest $request)
-    // {
 
-    //     $companyId = Session::get('companyId');
-    //     $company = Company::find($companyId);
-
-    //     // $this->decreaseCompanyCredit($company,$request->amount);
-    //     // $company->save();
-
-    //     if($request->has('other_employee_id') && $request->other_employee_id != NULL){
-    //         $request['employee_id']=$request->other_employee_id;
-    //         $user=Employee::find($request['employee_id']);
-    //         if(!$user)
-    //             return redirect()->back()->withErrors('this User Not Found');
-    //     }
-    //     $user=Employee::find($request['employee_id']);
-
-
-    //     $date=[$request->start_month ,$request->end_month];
-
-
-    //     $borrowing = new Borrow();
-    //     $modifiedStartMonth =  $request['start_month'].'-1';
-
-    //     $start = \Carbon\Carbon::parse($modifiedStartMonth);
-    //     $month = $start->format('m');
-
-
-    //     $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
-    //     $borrowing->month = $month;
-    //     $borrowing->amount = $request['amount'];
-    //     $borrowing->statement = $request['statement'];
-    //     // $borrowing->percentage=$request['Percentage'];
-
-
-
-    //     // Save the new borrowing record
-    //     $borrowing->save();
-
-
-    //     $safe=(new SafeActions($request['safe_id'],"سلفه للموظف $user->name ",$request['amount'],User::class,$request['employee_id']));
-
-    //     $safe=$safe->withdraw();
-
-    //         if(!isset($request['percentage_check'])){
-    //         // return "F";
-    //             $start = Carbon::parse($request['start_month'].'-1');
-    //             $end = Carbon::parse($request['end_month'].'-1')->addMonth();
-
-    //                 $numberOfMonths = $end->diffInMonths($start);
-
-    //             $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
-
-    //                 foreach ($period as $date) {
-    //                     $monthFormat = $date->format('m');
-    //                     $yearFormat = $date->format('Y');
-
-    //                     $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
-
-    //                     $amount_value = ($numberOfMonths > 0) ? $request['amount'] / $numberOfMonths : $request['amount'];
-    //                     $percentage = ($numberOfMonths > 0) ? ($amount_value / $request['amount']) * 100 : 100;
-
-    //                     if($borrowing_date){
-    //                         employeeBorrowing::create([
-    //                         'user_id'=>$request['employee_id'],
-    //                         'amount'=>$amount_value,
-    //                         'date_id'=>$borrowing_date->id,
-    //                         'percentage'=>$percentage
-    //                     ]);
-    //                 }else{
-    //                     $borrowing_date=borrowing_dates::create([
-    //                         'month'=>$monthFormat,
-    //                         'year'=>$yearFormat,
-    //                     ]);
-    //                     employeeBorrowing::create([
-    //                         'user_id'=>$request['employee_id'],
-    //                         'amount'=>$amount_value,
-    //                         'date_id'=>$borrowing_date->id,
-    //                         'percentage'=>$percentage
-    //                     ]);
-    //                     }
-
-    //                 }
-    //             }else{
-    //                 $monthFormat = $month;
-    //                 $yearFormat = Carbon::parse($request['start_date']);
-    //                 $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
-
-    //                 $amount_value=$request['amount'];
-    //                 $percentage=$request['percentage'];
-    //                 if($borrowing_date){
-    //                     employeeBorrowing::create([
-    //                     'user_id'=>$request['employee_id'],
-    //                     'amount'=>$amount_value,
-    //                     'date_id'=>$borrowing_date->id,
-    //                     'percentage'=>$percentage
-    //                 ]);
-    //             }else{
-    //                 $borrowing_date=borrowing_dates::create([
-    //                     'month'=>$monthFormat,
-    //                     'year'=>$yearFormat,
-    //                 ]);
-    //                 employeeBorrowing::create([
-    //                     'user_id'=>$request['employee_id'],
-    //                     'amount'=>$amount_value,
-    //                     'date_id'=>$borrowing_date->id,
-    //                     'percentage'=>$percentage
-    //                 ]);
-    //                 }
-    //             }
-
-
-
-
-    //     TransactionLogController::borrowLog($request['employee_id'],$request->amount,$date,$safe);
-
-
-
-    //     return redirect(route('borrowing.index'))->with('success','Successfully');
-
-    // }
-*/
 
     public function store(BorrowingRequest $request)
     {
-//        return $request->all();
+         $request->all();
+        try{
+        DB::beginTransaction();
+
         $companyId = Session::get('companyId');
-        $company = Company::find($companyId);
+             $company = Company::find($companyId);
 
         // $this->decreaseCompanyCredit($company,$request->amount);
         // $company->save();
@@ -223,114 +106,140 @@ class BorrowingController extends Controller
             if (!$user)
                 return redirect()->back()->withErrors('this User Not Found');
         }
-        $user = Employee::find($request['employee_id']);
+               $user = Employee::find($request['employee_id']);
 
 
-        $date = [$request->start_month, $request->end_month];
+               $date = [$request->start_month, $request->end_month];
 
 
         $borrowing = new Borrow();
-        $modifiedStartMonth =  $request['start_month'] . '-1';
+             $modifiedStartMonth = $request['start_month'] . '-1';
 
         $start = \Carbon\Carbon::parse($modifiedStartMonth);
         $month = $start->format('m');
 
-        if($request['start_month']=== null && $request['end_month'] === null)
-        {
+//        if ($request['start_month'] === null && $request['end_month'] === null) {
             $month = $company->current_month;
             $year = $company->current_year;
-        }
+//        }
+
         $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
         $borrowing->month = $month;
         $borrowing->amount = $request['amount'];
         $borrowing->statement = $request['statement'];
-        $borrowing->safe_id = $request['safe_id'];
+       $borrowing->safe_id = $request['safe_id'];
         // $borrowing->percentage=$request['Percentage'];
 
-
+            $borrowing->save();
 
         // Save the new borrowing record
-        $borrowing->save();
 
 
         $safe = (new SafeActions($request['safe_id'], "سلفه للموظف $user->name ", $request['amount'], User::class, $request['employee_id']));
 
-        $safe = $safe->withdraw();
+               $safeTransactions = $safe->withdraw();
+               $safe = $safeTransactions->safe()->first();
 
-      /*  if (!isset($request['percentage_check'])) {
-            // return "F";
-            $start = Carbon::parse($request['start_month'] . '-1');
-            $end = Carbon::parse($request['end_month'] . '-1')->addMonth();
-
-            $numberOfMonths = $end->diffInMonths($start);
-
-            $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
-
-            foreach ($period as $date) {
-                $monthFormat = $date->format('m');
-                $yearFormat = $date->format('Y');
-
-                $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
-
-                $amount_value = ($numberOfMonths > 0) ? $request['amount'] / $numberOfMonths : $request['amount'];
-                $percentage = ($numberOfMonths > 0) ? ($amount_value / $request['amount']) * 100 : 100;
-
-                if ($borrowing_date) {
-                    employeeBorrowing::create([
-                        'user_id' => $request['employee_id'],
-                        'amount' => $amount_value,
-                        'date_id' => $borrowing_date->id,
-                        'percentage' => $percentage
-                    ]);
-                } else {
-                    $borrowing_date = borrowing_dates::create([
-                        'month' => $month,
-                        'year' => $year,
-                    ]);
-                    employeeBorrowing::create([
-                        'user_id' => $request['employee_id'],
-                        'amount' => $amount_value,
-                        'date_id' => $borrowing_date->id,
-                        'percentage' => $percentage
-                    ]);
-                }
-            }
-        } else {*/
-            $monthFormat = $month;
-            $yearFormat = $year;
-            $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
-
-            $amount_value = $request['amount'];
-            $percentage = 100.00;
-            if ($borrowing_date) {
-                employeeBorrowing::create([
-                    'user_id' => $request['employee_id'],
-                    'amount' => $amount_value,
-                    'date_id' => $borrowing_date->id,
-                    'percentage' => $percentage
-                ]);
-            } else {
-                $borrowing_date = borrowing_dates::create([
-                    'month' =>  $month,
-                    'year' => $year,
-                ]);
-                employeeBorrowing::create([
-                    'user_id' => $request['employee_id'],
-                    'amount' => $amount_value,
-                    'date_id' => $borrowing_date->id,
-                    'percentage' => $percentage
-                ]);
-            }
-      //  }
+               $borrowing->safe_transactions_id = $safeTransactions->id;
+             $borrowing->save();
 
 
+            /*  if (!isset($request['percentage_check'])) {
+                  // return "F";
+                  $start = Carbon::parse($request['start_month'] . '-1');
+                  $end = Carbon::parse($request['end_month'] . '-1')->addMonth();
+
+                  $numberOfMonths = $end->diffInMonths($start);
+
+                  $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
+
+                  foreach ($period as $date) {
+                      $monthFormat = $date->format('m');
+                      $yearFormat = $date->format('Y');
+
+                      $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+                      $amount_value = ($numberOfMonths > 0) ? $request['amount'] / $numberOfMonths : $request['amount'];
+                      $percentage = ($numberOfMonths > 0) ? ($amount_value / $request['amount']) * 100 : 100;
+
+                      if ($borrowing_date) {
+                          employeeBorrowing::create([
+                              'user_id' => $request['employee_id'],
+                              'amount' => $amount_value,
+                              'date_id' => $borrowing_date->id,
+                              'percentage' => $percentage
+                          ]);
+                      } else {
+                          $borrowing_date = borrowing_dates::create([
+                              'month' => $month,
+                              'year' => $year,
+                          ]);
+                          employeeBorrowing::create([
+                              'user_id' => $request['employee_id'],
+                              'amount' => $amount_value,
+                              'date_id' => $borrowing_date->id,
+                              'percentage' => $percentage
+                          ]);
+                      }
+                  }
+              } else {*/
+        $monthFormat = $month;
+        $yearFormat = $year;
+        $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+        $amount_value = $request['amount'];
+        $percentage = 100.00;
+        if ($borrowing_date) {
+            employeeBorrowing::create([
+                'user_id' => $request['employee_id'],
+                'amount' => $amount_value,
+                'date_id' => $borrowing_date->id,
+                'percentage' => $percentage
+            ]);
+        } else {
+            $borrowing_date = borrowing_dates::create([
+                'month' => $month,
+                'year' => $year,
+            ]);
+            employeeBorrowing::create([
+                'user_id' => $request['employee_id'],
+                'amount' => $amount_value,
+                'date_id' => $borrowing_date->id,
+                'percentage' => $percentage
+            ]);
+        }
+        //  }
 
 
-        TransactionLogController::borrowLog($request['employee_id'], $request->amount, $date, $safe);
+             $request->all();
+             $safe;
+             $transaction =   TransactionLogController::borrowLog($request['employee_id'], $request->amount, $date, $safe);
+             $transaction->id;
 
+
+
+            $borrowing->transaction_logs_id = $transaction->id  ;
+            $borrowing->save();
+//                $borrowing->transactionLog()->first()  ;
+//            return $borrowing->safeTransaction()->first()  ;
+
+
+//            return "done" ;
+
+            Db::commit();
 
 
         return redirect(route('borrowing.index'))->with('success', 'Successfully');
+
+    }
+    catch(\Exception $e){
+        Db::rollback();
+        return  $e;
+        //redirect(route('borrowing.index'))->with('error', 'Error');
+
+    }
+
+
     }
 
 
@@ -360,6 +269,10 @@ class BorrowingController extends Controller
 $query->where('year',$year)->where('month',$month);
         })->get();
 $employeeBorrow->first();
+
+        $borrow->transactionLog()->delete()  ;
+        $borrow->safeTransaction()->delete()  ;
+
 
         $borrow->delete();
 
@@ -431,4 +344,128 @@ $employeeBorrow->first();
         $followUp->borrow_week_four = $request->week4;
         $followUp->save();
     }
+
+
+    /*  // public function store(BorrowingRequest $request)
+  // {
+
+  //     $companyId = Session::get('companyId');
+  //     $company = Company::find($companyId);
+
+  //     // $this->decreaseCompanyCredit($company,$request->amount);
+  //     // $company->save();
+
+  //     if($request->has('other_employee_id') && $request->other_employee_id != NULL){
+  //         $request['employee_id']=$request->other_employee_id;
+  //         $user=Employee::find($request['employee_id']);
+  //         if(!$user)
+  //             return redirect()->back()->withErrors('this User Not Found');
+  //     }
+  //     $user=Employee::find($request['employee_id']);
+
+
+  //     $date=[$request->start_month ,$request->end_month];
+
+
+  //     $borrowing = new Borrow();
+  //     $modifiedStartMonth =  $request['start_month'].'-1';
+
+  //     $start = \Carbon\Carbon::parse($modifiedStartMonth);
+  //     $month = $start->format('m');
+
+
+  //     $borrowing->employee_id = $request['employee_id'] === 0 ? $request['other_employee_id'] : $request['employee_id'];
+  //     $borrowing->month = $month;
+  //     $borrowing->amount = $request['amount'];
+  //     $borrowing->statement = $request['statement'];
+  //     // $borrowing->percentage=$request['Percentage'];
+
+
+
+  //     // Save the new borrowing record
+  //     $borrowing->save();
+
+
+  //     $safe=(new SafeActions($request['safe_id'],"سلفه للموظف $user->name ",$request['amount'],User::class,$request['employee_id']));
+
+  //     $safe=$safe->withdraw();
+
+  //         if(!isset($request['percentage_check'])){
+  //         // return "F";
+  //             $start = Carbon::parse($request['start_month'].'-1');
+  //             $end = Carbon::parse($request['end_month'].'-1')->addMonth();
+
+  //                 $numberOfMonths = $end->diffInMonths($start);
+
+  //             $period = \Carbon\CarbonPeriod::create($start, '1 month', $end);
+
+  //                 foreach ($period as $date) {
+  //                     $monthFormat = $date->format('m');
+  //                     $yearFormat = $date->format('Y');
+
+  //                     $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+  //                     $amount_value = ($numberOfMonths > 0) ? $request['amount'] / $numberOfMonths : $request['amount'];
+  //                     $percentage = ($numberOfMonths > 0) ? ($amount_value / $request['amount']) * 100 : 100;
+
+  //                     if($borrowing_date){
+  //                         employeeBorrowing::create([
+  //                         'user_id'=>$request['employee_id'],
+  //                         'amount'=>$amount_value,
+  //                         'date_id'=>$borrowing_date->id,
+  //                         'percentage'=>$percentage
+  //                     ]);
+  //                 }else{
+  //                     $borrowing_date=borrowing_dates::create([
+  //                         'month'=>$monthFormat,
+  //                         'year'=>$yearFormat,
+  //                     ]);
+  //                     employeeBorrowing::create([
+  //                         'user_id'=>$request['employee_id'],
+  //                         'amount'=>$amount_value,
+  //                         'date_id'=>$borrowing_date->id,
+  //                         'percentage'=>$percentage
+  //                     ]);
+  //                     }
+
+  //                 }
+  //             }else{
+  //                 $monthFormat = $month;
+  //                 $yearFormat = Carbon::parse($request['start_date']);
+  //                 $borrowing_date = borrowing_dates::where('month', $monthFormat)->where('year', $yearFormat)->first();
+
+  //                 $amount_value=$request['amount'];
+  //                 $percentage=$request['percentage'];
+  //                 if($borrowing_date){
+  //                     employeeBorrowing::create([
+  //                     'user_id'=>$request['employee_id'],
+  //                     'amount'=>$amount_value,
+  //                     'date_id'=>$borrowing_date->id,
+  //                     'percentage'=>$percentage
+  //                 ]);
+  //             }else{
+  //                 $borrowing_date=borrowing_dates::create([
+  //                     'month'=>$monthFormat,
+  //                     'year'=>$yearFormat,
+  //                 ]);
+  //                 employeeBorrowing::create([
+  //                     'user_id'=>$request['employee_id'],
+  //                     'amount'=>$amount_value,
+  //                     'date_id'=>$borrowing_date->id,
+  //                     'percentage'=>$percentage
+  //                 ]);
+  //                 }
+  //             }
+
+
+
+
+  //     TransactionLogController::borrowLog($request['employee_id'],$request->amount,$date,$safe);
+
+
+
+  //     return redirect(route('borrowing.index'))->with('success','Successfully');
+
+  // }
+*/
 }

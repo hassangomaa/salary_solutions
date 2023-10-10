@@ -33,7 +33,7 @@
                     <label class="required" for="start_month">بدايه من </label>
                     <input type="month"
 
-                    class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month">
+                    class="form-control {{ $errors->has('start_month') ? 'is-invalid' : '' }}" name="start_month" id="start_month">
                     {{-- @if($errors->has('start_month'))
                         <span class="text-danger">{{ $errors->first('start_month') }}</span>
                     @endif --}}
@@ -42,7 +42,7 @@
                     <label class="required" for="end_month">نهايه في </label>
                     <input type="month"
                      class="form-control {{ $errors->has('end_month') ? 'is-invalid' : '' }}"
-                     name="end_month" id="end_month">
+                     name="end_month" id="end_month" id="end_month">
                     {{-- @if($errors->has('end_month'))
                         <span class="text-danger">{{ $errors->first('end_month') }}</span>
                     @endif --}}
@@ -115,6 +115,19 @@
                     otherEmployeeInput.removeAttribute("required");
                 }
             });
+        });
+        ////////////////////////
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the current date
+            const currentDate = new Date();
+
+            // Get the year and month in "YYYY-MM" format
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // Add 1 to month since it's zero-based
+
+            // Set the default value of the input field
+            document.getElementById("start_month").value = `${currentYear}-${currentMonth}`;
+            document.getElementById("end_month").value = `${currentYear}-${currentMonth}`;
         });
     </script>
 @endsection

@@ -12,13 +12,15 @@ class Borrow extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [
-        'employee_id',
-        'month',
-        'amount',
-        'statement',
-        'safe_id'
-    ];
+//    protected $fillable = [
+//        'employee_id',
+//        'month',
+//        'amount',
+//        'statement',
+//        'safe_id'
+//    ];
+
+    protected $guarded = [];
 
     public function employee(){
         return $this->belongsTo(Employee::class);
@@ -27,6 +29,16 @@ class Borrow extends Model
     public function safe()
     {
         return $this->belongsTo(Safe::class, 'safe_id');
+    }
+
+    public function transactionLog()
+    {
+        return $this->belongsTo(TransactionLog::class, 'transaction_logs_id');
+    }
+
+    public function safeTransaction()
+    {
+        return $this->belongsTo(SafeTransactions::class, 'safe_transactions_id');
     }
 
 }
