@@ -83,7 +83,7 @@
                         <td>{{ $followUp->employee->daily_fare }}</td>
                         <td id="attended-days-{{ $followUp->id }}">
                             {{ $followUp->attended_days }}
-                            >> {{$followUp->employee->getTotalAttendedDaysForMonth($year, $month)}}
+{{--                            >> {{$followUp->employee->getTotalAttendedDaysForMonth($year, $month)}}--}}
                         </td>
                         <td>
                             <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
