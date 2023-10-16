@@ -30,7 +30,7 @@
             </div>
              <div class="form-group">
                 <label class="required" for="balance">{{ trans('cruds.safe.fields.balance') }}</label>
-                <input class="form-control {{ $errors->has('balance') ? 'is-invalid' : '' }}" type="number" min="1" name="balance" id="balance" value="{{ $safe->value }}" required>
+                <input class="form-control {{ $errors->has('balance') ? 'is-invalid' : '' }}" type="number"  name="balance" id="balance" value="{{ $safe->value }}" required>
                 @if($errors->has('balance'))
                     <span class="text-danger">{{ $errors->first('balance') }}</span>
                 @endif
