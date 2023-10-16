@@ -10,6 +10,7 @@ use App\Models\Safe\Safe;
 use App\Models\Safe\SafeTransactions;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SafeController extends Controller
@@ -110,14 +111,36 @@ class SafeController extends Controller
      */
     public function update(SafeRequest $request, string $id)
     {
-        Safe::findOrFail($id)->update([
-            'value'=>$request->balance,
-            'name'=>$request->name,
-            'type'=>$request->type
-        ]);
-        return redirect()->route('safes.index')->with('success',"Safe Updated Successfully");
+        try {
+            DB::beginTransaction(); // Begin a database transaction
 
+            $safe = Safe::findOrFail($id);
+            $safe->update([
+                'value' => $request->balance,
+                'name' => $request->name,
+                'type' => $request->type,
+            ]);
+
+            // Update safe transactions
+            $safe_transactions = SafeTransactions::where('safe_id', $safe->id)->get();
+            foreach ($safe_transactions as $transaction) {
+                $transaction->update([
+                    'reasonable_type' => Safe::class,
+                    'reasonable_id' => $safe->id,
+                    'value' => $request->balance,
+                ]);
+            }
+
+            DB::commit(); // Commit the changes to the database
+
+            return redirect()->route('safes.index')->with('success', "Safe Updated Successfully");
+        } catch (Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of an exception
+
+            return back()->with('error', 'Error updating safe: ' . $e->getMessage());
+        }
     }
+
 
 
     public function transactions($id){
