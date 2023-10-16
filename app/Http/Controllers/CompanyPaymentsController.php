@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\CompanyPayment;
 use App\Models\Safe\Safe;
 use App\Models\Safe\SafeTransactions;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -241,13 +242,18 @@ class CompanyPaymentsController extends Controller
             //            $companyPayment->transactionLog()->get();
                 $safe = $pay->safeTransaction->safe;
             $amount = $pay->amount;
+            $safeActions = new SafeActions($safe->id, "Payment Operation", $pay->amount, CompanyPayment::class, $pay->id);
+//            $log=        null;
 
             if ($pay->type == 'deposit')
-                $safe->value = $safe->value - $pay->amount;
+//                $safe->value = $safe->value - $pay->amount;
+              $log=  $safeActions->deposit();
             elseif ($pay->type == 'withdrawal')
-                $safe->value = $safe->value + $pay->amount;
-
+              $log=  $safeActions->withdraw();
+//                $safe->value = $safe->value + $pay->amount;
+//            $log->delete();
             $safe->save();
+
 //            return $safe;
 
 

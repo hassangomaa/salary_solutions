@@ -242,32 +242,45 @@ class BorrowingController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
+
     public function destroy(Borrow $borrow)
     {
-        $borrow->load('employee');
-        $username = $borrow->employee->name;
-        $safe = (new SafeActions($borrow->safe_id, "تم ارجاع سلفة للموظف $username ", $borrow->amount, User::class, $borrow->employee->id));
-        $safe =  $safe->deposit();
-        $withdrawDetails = (object)[
-                'amount'=> $borrow->amount,
+        try {
+             $borrow;
+            DB::beginTransaction(); // Begin a database transaction
+
+            $borrow->load('employee');
+            $username = $borrow->employee->name;
+
+            $safeActions = new SafeActions($borrow->safe_id, "تم ارجاع سلفة للموظف $username ", $borrow->amount, User::class, $borrow->employee->id);
+              $safe = $safeActions->deposit();
+
+            $withdrawDetails = (object)[
+                'amount' => $borrow->amount,
                 'statement' => ".. ارجاع سلفة الموظف $username "
-              ];
-        $month = $borrow->month;
-        $year = $borrow->year;
-        TransactionLogController::depositLog($withdrawDetails, $safe);
+            ];
+            $month = $borrow->month;
+            $year = $borrow->year;
+            TransactionLogController::depositLog($withdrawDetails, $safe);
 
-       $employeeBorrow =  employeeBorrowing::where('user_id',$borrow->employee->id)->whereHas('date',function ($query)use ($month,$year){
-            $query->where('year',$year)->where('month',$month);
-                    })->get();
-            $employeeBorrow->first();
+            $employeeBorrow = employeeBorrowing::where('user_id', $borrow->employee->id)->whereHas('date', function ($query) use ($month, $year) {
+                $query->where('year', $year)->where('month', $month);
+            })->get()->first();
 
-        $borrow->transactionLog()->delete()  ;
-        $borrow->safeTransaction()->delete()  ;
+            $borrow->transactionLog()->delete();
+            $borrow->safeTransaction()->delete();
 
+            $borrow->delete();
+//            $safe->delete();
 
-        $borrow->delete();
+            DB::commit(); // Commit the changes to the database
 
-        return back();
+            return back();
+        } catch (Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of an exception
+
+            return back()->with('error', 'Error deleting the borrow: ' . $e->getMessage());
+        }
     }
 
 

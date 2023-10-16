@@ -121,13 +121,20 @@ class SafeController extends Controller
                 'type' => $request->type,
             ]);
 
-            // Update safe transactions
-            $safe_transactions = SafeTransactions::where('safe_id', $safe->id)->get();
-            foreach ($safe_transactions as $transaction) {
-                $transaction->update([
+            // Update only the latest safe transaction
+            $latestSafeTransaction = SafeTransactions::where('safe_id', $safe->id)
+                ->latest('created_at')
+                ->first();
+
+            if ($latestSafeTransaction) {
+                $latestSafeTransaction->update([
                     'reasonable_type' => Safe::class,
                     'reasonable_id' => $safe->id,
                     'value' => $request->balance,
+                    'deposite' => $request->balance,
+                    'withdraw' => 0,
+                    'details' => 'تم تعديل الخزنة ',
+
                 ]);
             }
 
