@@ -70,6 +70,9 @@ return [
             'address_helper' => ' ',
         ],
     ], 'safe' => [
+        "safe" => "الخزن",
+        "Type" => "النوع",
+        "Balance" => "الرصيد",
         'title' => 'الخزن',
         'title_singular' => 'خزنه',
         'create'=>'اضافه خزنه',

@@ -9,15 +9,15 @@
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
-            <th>{{ trans('safe') }}</th>
+            <th>{{ trans('cruds.safe.safe') }}</th>
             <td>{{ $safe_transactions->name }}</td>
         </tr>
         <tr>
-            <th>{{ trans('Type') }}</th>
+            <th>{{ trans('cruds.safe.Type') }}</th>
             <td>{{ $safe_transactions->type }}</td>
         </tr>
         <tr>
-            <th>{{ trans('Balance') }}</th>
+            <th>{{ trans('cruds.safe.Balance') }}</th>
             <td>{{ $safe_transactions->value }}</td>
         </tr>
       <tr>
