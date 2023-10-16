@@ -23,7 +23,10 @@ class SafeTransactions extends Model
         'reasonable_type',
         'reasonable_id',
         'details',
-        'created_at'
+        'created_at',
+        'updated_at',
+        'deposite',
+        'withdraw',
     ];
 
     public function user(){

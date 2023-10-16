@@ -16,6 +16,8 @@ class TransactionLog extends Model
         'type_ar',
         'type_en',
         'statement_en',
+        'deposit',
+        'withdraw',
     ];
 
     public function company(){

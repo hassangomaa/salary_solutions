@@ -6,10 +6,12 @@
     <thead>
         <tr>
             <th style="background:#c6d9f1">مسلسل</th>
-            <th style="background:#c6d9f1">الاسم </th>
-            <th style="background:#c6d9f1">القيمه</th>
-            <th style="background:#c6d9f1">التفاصيل </th>
-            <th style="background:#c6d9f1">الاجمالي</th>
+            <th style="background:#c6d9f1">الخزنه </th>
+            <th style="background:#c6d9f1">الرصيد</th>
+            <th style="background:#c6d9f1">مدين (وارد)</th>
+            <th style="background:#c6d9f1">دائن (منصرف)</th>
+            <th style="background:#c6d9f1">البيان </th>
+{{--            <th style="background:#c6d9f1">الاجمالي</th>--}}
 {{--            <th style="background:#c6d9f1">Actions</th>--}}
         </tr>
     </thead>
@@ -19,8 +21,10 @@
                 <td>{{ $i++ }}</td>
                 <td>{{ ($item->safe)?$item->safe->name:'' }}</td>
                 <td>{{ $item->value }}</td>
+                <td>{{ $item->deposite }}</td>
+                <td>{{ $item->withdraw }}</td>
                 <td>{{  $item->details  }}</td>
-                <td >{{ $safes_trans->sum('value') }}</td>
+{{--                <td >{{ $safes_trans->sum('value') }}</td>--}}
 {{--                <td>--}}
 {{--                    <form method="POST" action="{{route('remove.transaction')}}" >--}}
 {{--                        @csrf--}}

@@ -14,6 +14,8 @@ class Safe extends Model
         'value',
         'name',
         'type',
+        'deposit',
+        'withdraw',
     ];
 
 

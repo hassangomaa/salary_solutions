@@ -95,12 +95,15 @@ class TransactionLogController extends Controller
         $statement_en = 'The employee ' . $employee->name . ' has borrowed the money amount ' . $amount .
             '. The current safe credit is ' . $safe->value;
 
-        $statement_ar = 'الموظف ' . $employee->name . ' استلف ' . $amount .
+        $statement_ar = 'الموظف ' . $employee->name .
+            ' استلف ' . $amount .
             '. المال المتوفر في الخزينة:  ' . $safe->value;
 
 
         // $log->company_id = $employee->company->id;
-        $log->amount = $amount;
+        $log->amount = $safe->value;
+        $log->deposite = 0;
+        $log->withdraw = $amount;
         $log->type_ar = 'سلفه';
         $log->type_en = 'Borrowing';
         $log->statement_ar = $statement_ar;
@@ -116,12 +119,16 @@ class TransactionLogController extends Controller
         $statement_en = 'The amount ' . $withdrawDetails->amount . ' has been withdrawn from  safe '.$safe->name.' for this statement '
             . $withdrawDetails->statement . '...' . 'The current safe is ' . $safe->value;
 
-        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount . ' من خزنة '.$safe->name.' لهذا السبب  '
-            . $withdrawDetails->statement . '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
+        $statement_ar = 'لقد تم سحب  ' . $withdrawDetails->amount .
+            ' من خزنة '.$safe->name.
+            ' لهذا السبب  ' . $withdrawDetails->statement .
+            '...' . 'رصيد الخزنه الحالي:  ' . $safe->value;
 
         $log = new TransactionLog();
         // $log->company_id = $company->id;
-        $log->amount = $withdrawDetails->amount;
+        $log->amount = $safe->value;
+        $log->deposite = 0;
+        $log->withdraw = $withdrawDetails->amount;
         $log->type_ar = 'سحب';
         $log->type_en = 'withdraw';
         $log->statement_ar = $statement_ar;
@@ -146,7 +153,9 @@ class TransactionLogController extends Controller
 
         $log = new TransactionLog();
         // $log->company_id = $company->id;
-        $log->amount = $depositDetails->amount;
+        $log->amount = $safe->value;
+        $log->deposite = $depositDetails->amount;
+        $log->withdraw = 0;
         $log->type_ar = 'ايداع';
         $log->type_en = 'deposit';
         $log->statement_ar = $statement_ar;
@@ -171,7 +180,9 @@ class TransactionLogController extends Controller
 
 
         $log = new TransactionLog();
-        $log->amount = $totalNetSalaries;
+        $log->amount = $safe->value;
+        $log->deposite = 0;
+        $log->withdraw = $totalNetSalaries;
         $log->type_ar = 'مرتبات';
         $log->type_en = 'Salaries';
         $log->statement_ar = $statement_ar;

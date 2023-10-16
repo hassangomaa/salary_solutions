@@ -124,10 +124,13 @@ class BorrowingController extends Controller
         // Save the new borrowing record
 
 
-        $safe = (new SafeActions($request['safe_id'], " سلفه للموظف $user->name ", $request['amount'], User::class, $request['employee_id']));
 
-               $safeTransactions = $safe->withdraw();
-               $safe = $safeTransactions->safe()->first();
+            $safe = (new SafeActions($request['safe_id'], " سلفه للموظف $user->name ", $request['amount'], User::class, $request['employee_id']));
+
+            $safeTransactions = $safe->withdraw();
+//            return $request['amount'];
+
+            $safe = $safeTransactions->safe()->first();
 
                $borrowing->safe_transactions_id = $safeTransactions->id;
              $borrowing->save();
