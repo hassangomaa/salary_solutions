@@ -218,7 +218,7 @@ class EmployeeController extends Controller
 //           if ($employee->company_id !== $companyId) {
 //            return 'Unauthorized to permanently delete this employee.';
 //        }
-           #####$id;
+           #####$id; ###
 
         $employee->forceDelete();
 
