@@ -31,3 +31,4 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="submit" class="btn btn-xs btn-danger" value="   {{ trans('global.permanent_delete') }}  ">
 </form>
+
