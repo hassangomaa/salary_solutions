@@ -203,17 +203,22 @@ class EmployeeController extends Controller
 
     public function deletePermanent($id)
     {
-        $employee = Employee::withTrashed()->find($id);
+
+          $employee = Employee::withTrashed()->find($id);
 
         if (!$employee) {
             return back()->with('error', 'Employee not found.');
         }
 
         // Ensure the authenticated user can access this employee
-        $companyId = Session::get('companyId');
-        if ($employee->company_id !== $companyId) {
-            return back()->with('error', 'Unauthorized to permanently delete this employee.');
-        }
+          $companyId = Session::get('companyId');
+
+//        return $companyId==$employee->company_id+1;
+
+//           if ($employee->company_id !== $companyId) {
+//            return 'Unauthorized to permanently delete this employee.';
+//        }
+           $id;
 
         $employee->forceDelete();
 

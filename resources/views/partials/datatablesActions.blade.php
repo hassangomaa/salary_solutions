@@ -15,8 +15,19 @@
         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
     </form>
 {{--@endcan--}}
-<a class="btn btn-xs btn-danger" href="{{ route('employee.deletePermanent', $row->id) }}"
+
+{{--<a class="btn btn-xs btn-danger" href="{{ route('employee.deletePermanent', $row->id) }}"--}}
 {{--   onclick="return confirm('Are you sure you want to permanently delete this employee?');"--}}
->
-    {{ trans('global.permanent_delete') }}
-</a>
+{{-->--}}
+{{--    {{ trans('global.permanent_delete') }}--}}
+{{--</a>--}}
+
+
+<form action="{{  route('employee.deletePermanent', $row->id) }}" method="POST"
+{{--      onsubmit="return confirm('{{ trans('global.areYouSure') }}');"--}}
+      style="display: inline-block;">
+
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="submit" class="btn btn-xs btn-danger" value="   {{ trans('global.permanent_delete') }}  ">
+</form>
