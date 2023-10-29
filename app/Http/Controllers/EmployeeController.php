@@ -23,7 +23,7 @@ class EmployeeController extends Controller
     {
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = Employee::select('*')->where('company_id', $companyId);
+            $query = Employee::select('*')->where('company_id', $companyId)->withTrashed();
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -198,5 +198,29 @@ class EmployeeController extends Controller
 
         return redirect()->back()->with('success', 'Excel file imported successfully.');
     }
+
+
+
+    public function deletePermanent($id)
+    {
+        $employee = Employee::withTrashed()->find($id);
+
+        if (!$employee) {
+            return back()->with('error', 'Employee not found.');
+        }
+
+        // Ensure the authenticated user can access this employee
+        $companyId = Session::get('companyId');
+        if ($employee->company_id !== $companyId) {
+            return back()->with('error', 'Unauthorized to permanently delete this employee.');
+        }
+
+        $employee->forceDelete();
+
+        return back()->with('success', 'Employee permanently deleted.');
+    }
+
+
+
 
 }

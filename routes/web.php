@@ -175,6 +175,10 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::put('/update/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('update');
     Route::delete('/destroy/{employee}', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('destroy');
     Route::delete('/massDestroy', [\App\Http\Controllers\EmployeeController::class, 'massDestroy'])->name('massDestroy');
+
+    Route::delete('/employee/destroyPermanent/{id}', [\App\Http\Controllers\Employee\EmployeeController::class, 'deletePermanent'])
+        ->name('deletePermanent');
+
 });
 
 Route::group(['prefix' => 'companyPayments', 'as' => 'companyPayments.', 'middleware' => ['auth'], 'namespace' => 'Company'], function () {

@@ -1,6 +1,7 @@
 <?php
 return
     [
+        'permanent_delete' => 'حذف نهائي',
         'view' => 'اظهار',
         'show' => 'عرض',
         'dashboard' => 'لوحة التحكم',
