@@ -21,9 +21,10 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
+
         $companyId = Session::get('companyId');
         if ($request->ajax()) {
-            $query = Employee::select('*')->where('company_id', $companyId)->withTrashed();
+            $query = Employee::select('*')->where('company_id', $companyId);
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');

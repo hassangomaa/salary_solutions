@@ -9,6 +9,7 @@
                         <div class="card-header">
                             <h5 class="card-title"> {{ $company->name }} : اسم الفرع  </h5>
                         </div>
+
                         {{-- <div class="card-body"> --}}
                             {{-- <p class="card-text">{{trans('company-management.company_credit')}}: {{ $company->credit }}</p> --}}
                         {{-- </div> --}}

@@ -5,10 +5,11 @@ namespace App\Models\Safe;
 use App\Models\Borrow;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Safe extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table="safes";
     protected $fillable=[
         'value',
@@ -16,6 +17,7 @@ class Safe extends Model
         'type',
         'deposit',
         'withdraw',
+        'deleted_at',
     ];
 
 

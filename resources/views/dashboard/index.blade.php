@@ -11,6 +11,7 @@
                         <div class="card-body" >
                             <h2 class="card-text" style="text-align: center">{{ trans('company-management.module')." ".trans('company-management.salaries')}}</h2>
                         </div>
+                        
                     </div>
                 </a>
             </div>

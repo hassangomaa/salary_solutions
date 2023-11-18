@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\RevertController;
 use App\Http\Controllers\Exports\ExcelReportController;
 use App\Http\Controllers\Safe\PaymentController;
 use App\Models\Company;
@@ -293,6 +294,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']/*,
 
 
 });
+
+Route::get('revert',[RevertController::class,'__invoke'])->name('revert');
 
 
 Route::get('/test',function (){
