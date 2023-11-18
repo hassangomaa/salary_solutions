@@ -232,6 +232,8 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
     //appositionOnlyTrashed
     Route::get('/appositionOnlyTrashed', [ReportsController::class, 'appositionOnlyTrashed'])->name('appositionOnlyTrashed');
     Route::get('/deduction', [ReportsController::class, 'deduction'])->name('deduction');
+    //deductionOnlyTrashed
+    Route::get('/deductionOnlyTrashed', [ReportsController::class, 'deductionOnlyTrashed'])->name('deductionOnlyTrashed');
     Route::get('/incentives', [ReportsController::class, 'incentives'])->name('incentives');
     Route::get('/bouns', [ReportsController::class, 'bouns'])->name('bouns');
     Route::get('/safe-transactions', [ReportsController::class, 'safe_transactions'])->name('safe_transactions');

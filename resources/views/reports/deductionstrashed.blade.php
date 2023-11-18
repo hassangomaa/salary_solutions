@@ -11,25 +11,23 @@
         <div class="card-body">
 
 
-            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.deduction') }}">
+            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.deductionOnlyTrashed') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <input class="form-control" type="month" id="" name="date"
                                 placeholder="{{ trans('global.search_placeholder') }}">
                         </div>
-
                         <div class="row">
-                            <a href="{{ route('Reports.deductionOnlyTrashed') }}" >
+                            <a href="{{ route('Reports.deduction') }}" >
                                 <button name="revert"
                                         value="revert"
                                         class="btn btn-info"
                                         type="button">
-                                    الذهاب الي  المرحله
+                                    الذهاب الي   الحاليه
 
                                 </button>
                             </a>
-
                         </div>
                     </div>
                     <div class="col-md-2">

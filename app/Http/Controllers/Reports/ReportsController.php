@@ -495,6 +495,44 @@ class ReportsController extends Controller
 
         return view('reports.deductions',compact('employees','flag'));
     }
+
+
+    //deductionOnlyTrashed
+    public function deductionOnlyTrashed(Request $request){
+
+        $company_id = session()->get('companyId');
+
+        $date = $request->filled('date') ? $request->date : Carbon::now();
+          $month = Carbon::parse($date)->format('m');
+        $year = Carbon::parse($date)->format('Y');
+        $date_name = Carbon::parse($date)->format('Y-M');
+
+        if ($request->filled('action') && $request->action == 'excel') {
+            $excel = new ExcelReportController;
+            return $excel->deduction($month, $year);
+        }
+
+           $employees = Employee::onlyTrashed() // Retrieve only trashed employees
+        ->with([
+            'deductions' => function ($q) use ($month, $year) {
+                $q->where('month', $month)->where('year', $year);
+            },
+        ])
+            ->where('company_id', $company_id)
+            ->whereYear('created_at', '<=', $year)
+            ->whereMonth('created_at', '<=', $month)
+            ->paginate(10);
+
+        $flag = 1;
+
+        return view('reports.deductionstrashed', compact('employees', 'flag'));
+    }
+
+
+
+
+
+
     public function incentives(Request $request){
         $company_id=session()->all()['companyId'];
 

@@ -129,6 +129,12 @@ class  Employee extends Model
         return $this->hasMany(Deduction::class, 'employee_id');
     }
 
+    //deductions only trashed
+    public function deductionsOnlyTrashed()
+    {
+        return $this->hasMany(Deduction::class, 'employee_id')->onlyTrashed();
+    }
+
     public function company(){
         return $this->belongsTo(Company::class);
     }
