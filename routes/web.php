@@ -223,6 +223,8 @@ Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'
 
     Route::get('/attendance', [ReportsController::class, 'attendance'])->name('attendance');
     Route::get('/report', [ReportsController::class, 'report'])->name('report');
+    //reportOnlyTrashed
+    Route::get('/reportOnlyTrashed', [ReportsController::class, 'reportOnlyTrashed'])->name('reportOnlyTrashed');
     Route::get('/expenses', [ReportsController::class, 'expenses'])->name('expenses');
     Route::get('/apposition', [ReportsController::class, 'apposition'])->name('apposition');
     Route::get('/deduction', [ReportsController::class, 'deduction'])->name('deduction');

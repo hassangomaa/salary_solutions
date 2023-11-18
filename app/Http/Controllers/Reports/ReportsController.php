@@ -328,6 +328,50 @@ class ReportsController extends Controller
         return view('reports.report',compact('followUps','flag','date_name','followUps_count'));
     }
 
+    //reportOnlyTrashed
+    public function reportOnlyTrashed(Request $request){
+
+        $company_id=session()->all()['companyId'];
+        $date=(isset($request->date))?$request->date:Carbon::now();
+        $month=Carbon::parse($date)->format('m');
+        $year=Carbon::parse($date)->format('Y');
+        $date_name=Carbon::parse($date)->format('Y-M');
+
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->reportDataExport($month,$year,$date_name);
+
+        }
+        $followUps =Employee::
+        onlyTrashed()->
+        with([
+            'followUps'=>function($q)use($month,$year){
+                $q->where('month',$month)->where('year',$year);
+            },
+            "deductions"=>function($dq)use($month,$year){
+                $dq->where('month',$month)->where('year',$year);
+            },
+            "incentives"=>function($qi)use($month,$year){
+                $qi->where('month',$month)->where('year',$year);
+            },
+            "employeeBorrowinng"=>function($qb)use($month,$year){
+                $qb->whereHas('date',function($subq)use($month,$year){
+
+                    $subq->where('month',$month)->where('year',$year);
+                });
+            },
+        ])->where('company_id',$company_id)
+            ->whereYear('created_at','<=',$year)
+            ->whereMonth('created_at','<=',$month)
+//             ->withTrashed()
+            ->paginate(1);
+        $followUps_count=Employee::where('company_id',$company_id)->count();
+        $flag = 1;
+
+        $date=Carbon::now()->format('Y-M');
+        return view('reports.reporttrashed',compact('followUps','flag','date_name','followUps_count'));
+    }
+
 
     public function expenses(Request $request){
         $date=(isset($request->date))?$request->date:Carbon::now();

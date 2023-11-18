@@ -41,21 +41,20 @@
         <div class="card-body">
 
 
-            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.report') }}">
+            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.reportOnlyTrashed') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <input class="form-control" type="month" id="" name="date"
                                 placeholder="{{ trans('global.search_placeholder') }}">
                         </div>
-
                         <div class="row">
-                            <a href="{{ route('Reports.reportOnlyTrashed') }}" >
+                            <a href="{{ route('Reports.report') }}" >
                                 <button name="revert"
                                         value="revert"
                                         class="btn btn-info"
                                         type="button">
-                                    الذهاب الي  المرحله
+                                    الذهاب الي   الحاليه
 
                                 </button>
                             </a>
