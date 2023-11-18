@@ -434,6 +434,37 @@ class ReportsController extends Controller
         return view('reports.apposition',compact('employees','flag'));
     }
 
+    //appositionOnlyTrashed
+    public function appositionOnlyTrashed(Request $request){
+        $company_id=session()->all()['companyId'];
+
+        $date=(isset($request->date))?$request->date:Carbon::now();
+        $month=Carbon::parse($date)->format('m');
+        $year=Carbon::parse($date)->format('Y');
+        $date_name=Carbon::parse($date)->format('Y-M');
+
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->apposition($month,$year);
+
+        }
+        $employees=Employee::onlyTrashed()->
+        with([
+            "borrows"=>function($q)use($month,$year){
+                $q->where('month',$month)->where('year',$year);
+            },
+        ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
+            ->whereMonth('created_at','<=',$month)
+//             ->withTrashed()
+            ->paginate(10);
+
+        $flag = 1;
+
+        return view('reports.appositiontrashed',compact('employees','flag'));
+
+    }
+
+
     public function deduction(Request $request){
 //        return $request->all();
         $company_id=session()->all()['companyId'];
