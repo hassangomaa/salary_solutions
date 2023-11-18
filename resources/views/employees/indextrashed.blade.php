@@ -14,10 +14,9 @@
                 استيراد الموظفين
             </a>
 
-            <a class="btn btn-info" href="{{route('employee.indexTrashedOnly') }}">
-                قائمة الموظفين المرحلين
+            <a class="btn btn-info" href="{{route('employee.index') }}">
+                قائمة الموظفين الحاليين
             </a>
-
         </div>
     </div>
 
@@ -100,7 +99,7 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('employee.index') }}",
+                ajax: "{{ route('employee.indexTrashedOnly') }}",
                 columns: [
                     {data: 'placeholder', name: 'placeholder'},
                     {data: 'id', name: 'id'},

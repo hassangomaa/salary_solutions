@@ -35,7 +35,8 @@ class ReportsController extends Controller
             return $excel->salariesExport($month,$year,$date);
 
         }
-         $followUps =Employee::whereHas('followUps',function($s)use($request){
+         $followUps =Employee::
+         whereHas('followUps',function($s)use($request){
                     if((isset($request->from_days)&& $request->from_days != "") && isset($request->to_days)&& $request->to_days != "")
                     $s->where('attended_days','>=',$request->from_days)
                     ->where('attended_days','<=',$request->to_days);
@@ -59,11 +60,59 @@ class ReportsController extends Controller
                 ])->where('company_id',$company_id)
              ->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
-             ->withTrashed()->get();
+//             ->withTrashed()
+             ->get();
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.salaries',compact('followUps','flag','date'));
     }
+
+    public function indexOnlyTrashed(Request $request){
+
+        $company_id=session()->all()['companyId'];
+        $date=(isset($request->date))?$request->date:Carbon::now();
+        $month=Carbon::parse($date)->format('m');
+        $year=Carbon::parse($date)->format('Y');
+        $date=Carbon::parse($date)->format('Y-M');
+
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->salariesExport($month,$year,$date);
+
+        }
+        $followUps =Employee::
+        onlyTrashed()->
+        whereHas('followUps',function($s)use($request){
+            if((isset($request->from_days)&& $request->from_days != "") && isset($request->to_days)&& $request->to_days != "")
+                $s->where('attended_days','>=',$request->from_days)
+                    ->where('attended_days','<=',$request->to_days);
+        })->with([
+            'followUps'=>function($q)use($month,$year,$request){
+                $q->where('month',$month)->where('year',$year);
+
+            },
+            "deductions"=>function($dq)use($month,$year){
+                $dq->where('month',$month)->where('year',$year);
+            },
+            "incentives"=>function($qi)use($month,$year){
+                $qi->where('month',$month)->where('year',$year);
+            },
+            "employeeBorrowinng"=>function($qb)use($month,$year){
+                $qb->whereHas('date',function($subq)use($month,$year){
+
+                    $subq->where('month',$month)->where('year',$year);
+                });
+            },
+        ])->where('company_id',$company_id)
+            ->whereYear('created_at','<=',$year)
+            ->whereMonth('created_at','<=',$month)
+//             ->withTrashed()
+            ->get();
+        $flag = 1;
+        $date=Carbon::now()->format('Y-M');
+        return view('reports.salariestrashed',compact('followUps','flag','date'));
+    }
+
 
     //saveAttendance
     //saveAttendance
@@ -155,6 +204,51 @@ class ReportsController extends Controller
         }
 
         $employees = Employee::where('company_id', $company_id)->get();
+        $flag = 1;
+        $date = Carbon::now()->format('Y-M');
+
+        // Loop through the period to get the days of the salary month
+        $daysInSalaryMonth = [];
+        foreach ($period as $day) {
+            $daysInSalaryMonth[] = $day->format('d');
+        }
+
+        $daysInSalaryMonth = $this->getDaysInSalaryMonth($company, $year, $month);
+
+        return view('reports.attendance', compact('employees', 'period', 'flag', 'date', 'month_name', 'companyId', 'date', 'month', 'year', 'date', 'daysInSalaryMonth'));
+    }
+
+
+    public function attendanceOnlyTrashed(Request $request)
+    {
+        $company_id = session()->all()['companyId'];
+        $company = Company::find($company_id);
+
+        $date = (isset($request->date)) ? Carbon::parse($request->date)->format('Y-m') : Carbon::now()->format('Y-m');
+        $to_date = (isset($request->date)) ? Carbon::parse($request->date)->addMonth()->format('Y-m') : Carbon::now()->addMonth()->format('Y-m');
+        $from = $date . '-' . $company->start_month;
+        $to = $to_date . '-' . $company->end_month;
+
+        $period = CarbonPeriod::create($from, $to);
+        $month_name = Carbon::parse($date)->format('Y-M');
+
+        $companyId = Session::get('companyId');
+        $date = (isset($request->date)) ? $request->date : Carbon::now();
+        $date = Carbon::parse($date)->format('Y-M');
+
+        $date2 = (isset($request->date)) ? Carbon::parse($request->date) : Carbon::now();
+
+        $year = $date2->format('Y');
+        $month = $date2->format('m');
+
+        if (isset($request->action) && $request->action == 'excel') {
+            $excel = new ExcelReportController;
+            return $excel->attendanceExport($period, $month_name);
+        }
+
+        $employees = Employee::
+        onlyTrashed()->
+        where('company_id', $company_id)->get();
         $flag = 1;
         $date = Carbon::now()->format('Y-M');
 

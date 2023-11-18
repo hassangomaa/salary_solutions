@@ -12,6 +12,14 @@
             <div class="form-group">
                 <div class="row">
 
+{{--                    <div class="col-md-12" style="text-align: center">--}}
+
+
+{{--                        <a href="{{ route('attendance.attendance_trashed_only') }}" class="btn btn-success col-md-3">قائمه الحضور المرحله</a>--}}
+{{--                        <br>--}}
+{{--                        <br>--}}
+{{--                    </div>--}}
+
 {{--                    <div class="col-md-6">--}}
 {{--                        <form action="{{ route('salary_pay') }}" method="get">--}}
 {{--                            <div class="row">--}}
@@ -37,8 +45,8 @@
                     </div>
 
                     <div class="col-md-6">
-                        <p>{{ $total_attendance_houres }}: اجمالي عدد ساعات الحضور</p>
-                        <p>{{ $total_extra_hours }}: اجمالي عدد الساعات الاضافيه</p>
+                        <p>{{ $total_attendance_houres??0 }}: اجمالي عدد ساعات الحضور</p>
+                        <p>{{ $total_extra_hours??0 }}: اجمالي عدد الساعات الاضافيه</p>
                     </div>
 
                 </div>
@@ -78,9 +86,9 @@
                 @foreach($followUps as $followUp)
                     <tr>
                         <td>{{ $followUp->id }}</td>
-                        <td>{{ $followUp->employee->name }}</td>
-                        <td>{{ $followUp->employee->position }}</td>
-                        <td>{{ $followUp->employee->daily_fare }}</td>
+                        <td>{{ $followUp->employee->name??0 }}</td>
+                        <td>{{ $followUp->employee->position ??0}}</td>
+                        <td>{{ $followUp->employee->daily_fare ??0}}</td>
                         <td id="attended-days-{{ $followUp->id }}">
                             {{ $followUp->attended_days }}
 {{--                            >> {{$followUp->employee->getTotalAttendedDaysForMonth($year, $month)}}--}}
@@ -89,8 +97,8 @@
                             <input type="number" class="days-input" name="numberOfDays" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('attendance.enter_days') }}">
                             <button class="btn btn-primary save-days-btn" data-followUp-id="{{ $followUp->id }}">{{ trans('attendance.save') }}</button>
                         </td>
-                        <td>{{ $followUp->employee->overtime_hour_fare }}</td>
-                        <td id="attended-hours-{{ $followUp->id }}">{{ $followUp->extra_hours }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                        <td>{{ $followUp->employee->overtime_hour_fare ??0}}</td>
+                        <td id="attended-hours-{{ $followUp->id }}">{{ $followUp->extra_hours??0 }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
 
                         <td>
                             <input type="number" class="extra_days-input" name="extra_numberOFHoures" data-followUp-id="{{ $followUp->id }}" placeholder="{{ trans('extra-hours.enter_hours') }}">

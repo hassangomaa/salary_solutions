@@ -72,6 +72,8 @@ Route::group(['prefix' => 'company', 'as' => 'company.', 'middleware' => ['auth'
 Route::group(['prefix' => 'attendance', 'as' => 'attendance.', 'middleware' => ['auth']], function () {
 
     Route::get('/index', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('index');
+    //attendance_trashed_only
+    Route::get('/attendance_trashed_only', [\App\Http\Controllers\AttendanceController::class, 'attendance_trashed_only'])->name('attendance_trashed_only');
     //day
     Route::get('/removeData', [\App\Http\Controllers\AttendanceController::class, 'removeData'])->name('removeData');
     //removeDays
@@ -169,6 +171,8 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::get('/importEmployeesBlade', [\App\Http\Controllers\EmployeeController::class, 'importEmployeesBlade'])->name('importEmployeesBlade');
     Route::post('/importEmployees', [\App\Http\Controllers\EmployeeController::class, 'importEmployees'])->name('importEmployees');
     Route::get('/index', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('index');
+    //indexTrashedOnly
+    Route::get('/indexTrashedOnly', [\App\Http\Controllers\EmployeeController::class, 'indexTrashedOnly'])->name('indexTrashedOnly');
     Route::get('/show/{employee}', [\App\Http\Controllers\EmployeeController::class, 'show'])->name('show');
     Route::get('/create', [\App\Http\Controllers\EmployeeController::class, 'create'])->name('create');
     Route::post('/store', [\App\Http\Controllers\EmployeeController::class, 'store'])->name('store');
@@ -214,6 +218,9 @@ Route::group(['prefix' => 'excel', 'as' => 'excel.', 'middleware' => ['auth'],],
 
 Route::group(['prefix' => 'Reports', 'as' => 'Reports.', 'middleware' => ['auth'],], function () {
     Route::get('/index', [ReportsController::class, 'index'])->name('index');
+    //indexOnlyTrashed
+    Route::get('/indexOnlyTrashed', [ReportsController::class, 'indexOnlyTrashed'])->name('indexOnlyTrashed');
+
     Route::get('/attendance', [ReportsController::class, 'attendance'])->name('attendance');
     Route::get('/report', [ReportsController::class, 'report'])->name('report');
     Route::get('/expenses', [ReportsController::class, 'expenses'])->name('expenses');

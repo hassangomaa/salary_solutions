@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-class   Employee extends Model
+class  Employee extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name', 'position', 'daily_fare', 'credit','address','company_id','phone','overtime_hour_fare'];
+    protected $fillable = [
+        'name', 'position', 'daily_fare', 'credit','address','company_id','phone','overtime_hour_fare'
+    ,'deleted_at','created_at','updated_at'
+    ];
 
 
 

@@ -20,20 +20,19 @@
 
         <div class="card-body">
 
-            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.index') }}">
+            <form method="get" style="display: flex;flex-direction: row-reverse;" action="{{ route('Reports.indexOnlyTrashed') }}">
                 {{-- <label for="search">{{ trans('global.filter') }}</label> --}}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
 
                             <div class="row">
-                                <a href="{{ route('Reports.indexOnlyTrashed') }}" >
+                                <a href="{{ route('Reports.index') }}" >
                                 <button name="revert"
                                         value="revert"
                                         class="btn btn-info"
                                         type="button">
-                                    الذهاب الي  المرحله
-
+                                  الذهاب الي   الحاليه
                                 </button>
                                 </a>
 

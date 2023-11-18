@@ -16,6 +16,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
+
+
 //use Yajra\DataTables\DataTables;
 class EmployeeController extends Controller
 {
@@ -67,6 +69,65 @@ class EmployeeController extends Controller
 //        $roles = Role::get();
         $flag = 1;
         return view('employees.index', compact('flag'));//, compact('roles'));
+    }
+
+
+
+    public function indexTrashedOnly(Request $request)
+    {
+
+        $companyId = Session::get('companyId');
+          Employee::onlyTrashed()->where('company_id', $companyId)->get();
+//        where('company_id', $companyId)
+//            ->where('deleted_at', '!=', null)
+//           ->get()
+        ;
+
+
+        if ($request->ajax()) {
+            $query =Employee::onlyTrashed()->where('company_id', $companyId);
+            $table = Datatables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', function ($row) {
+                $crudRoutePart = 'employee';
+                return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('name', function ($row) {
+                return $row->name ? $row->name : '';
+            });
+
+            $table->editColumn('position', function ($row) {
+                return $row->position ? $row->position : '';
+            });
+            $table->editColumn('daily_fare', function ($row) {
+                return $row->daily_fare ? $row->daily_fare : '';
+            });
+
+            $table->editColumn('overtime_hour_fare', function ($row) {
+                return $row->overtime_hour_fare ? $row->overtime_hour_fare : '';
+            });
+
+            $table->editColumn('address', function ($row) {
+                return $row->address ? $row->address : '';
+            });
+            $table->editColumn('phone', function ($row) {
+                return $row->phone ? $row->phone : '';
+            });
+
+
+            $table->rawColumns(['actions', 'placeholder', 'roles']);
+
+            return $table->make(true);
+        }
+
+//        $roles = Role::get();
+        $flag = 1;
+        return view('employees.indextrashed', compact('flag'));//, compact('roles'));
     }
 
 

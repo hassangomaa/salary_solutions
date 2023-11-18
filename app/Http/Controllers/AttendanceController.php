@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Session as FacadesSession;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AttendanceController extends Controller
 {
@@ -185,6 +186,31 @@ class AttendanceController extends Controller
 
         ,'year','month'));
     }
+
+
+    public function attendance_trashed_only()
+    {
+        $companyId = Session::get('companyId');
+
+             $followUps = FollowUp::with(['employee' => function ($query) use ($companyId) {
+            $query->withTrashed()->where('company_id', $companyId);
+        }])
+            ->onlyTrashed()
+            ->where('month', Carbon::now()->format('m'))
+            ->where('year', Carbon::now()->format('Y'))
+            ->paginate(10);
+         $followUps->first();
+
+
+
+        $total_attendance_hours = $followUps->sum('attended_days');
+        $total_extra_hours = $followUps->sum('extra_hours');
+        $date = Carbon::now()->format('Y-m');
+        $flag = 1;
+
+        return   view('attendance.index', compact('flag', 'followUps', 'date', 'total_attendance_hours', 'total_extra_hours'));
+    }
+
 
     public function updateNumberOfDays(Request $request)
     {
