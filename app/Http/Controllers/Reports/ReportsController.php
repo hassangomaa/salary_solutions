@@ -604,9 +604,9 @@ class ReportsController extends Controller
             return $excel->safeTransactions($date,$request->safe_id);
 
         }
-         $safes_trans=SafeTransactions::
-            whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
-            ->with('safe')->where(function($q)use($request){
+          $safes_trans=SafeTransactions::
+//            whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])->
+            with('safe')->where(function($q)use($request){
                 if( (isset($request->safe_id))&& $request->safe_id != "")
                 $q->where('safe_id',$request->safe_id);
             })->get();
@@ -615,7 +615,34 @@ class ReportsController extends Controller
 
         $flag = 1;
         $safes=Safe::all();
-        return view('reports.safeTransactions',compact('safes','flag','safes_trans'));
+        return    view('reports.safeTransactions',compact('safes','flag','safes_trans'));
+    }
+    //safe_transactionsOnlyTrashed
+    public function safe_transactionsOnlyTrashed(Request $request){
+
+        $company_id=session()->all()['companyId'];
+        $date=(isset($request->date))?$request->date:Carbon::now();
+
+
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->safeTransactions($date,$request->safe_id);
+
+        }
+          $safes_trans= SafeTransactions::
+        onlyTrashed()
+//            ->
+//        whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
+            ->with('safe')->where(function($q)use($request){
+                if( (isset($request->safe_id))&& $request->safe_id != "")
+                    $q->where('safe_id',$request->safe_id);
+            })->get();
+
+
+
+        $flag = 1;
+        $safes=Safe::all();
+        return    view('reports.safeTransactionstrashed',compact('safes','flag','safes_trans'));
     }
 
     //removetransaction
