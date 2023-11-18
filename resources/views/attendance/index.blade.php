@@ -187,7 +187,6 @@
             const url = `{{ route('salary_pay') }}?month=${selectedMonth}`;
             window.location.href = url;
 
-
         }
     }
 

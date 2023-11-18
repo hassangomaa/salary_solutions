@@ -263,6 +263,16 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link "
+                           href="{{ route("revert") }}" onclick="confirmRevert()">
+                            <i class="fas fa-fw fa-tachometer-alt nav-icon">
+                            </i>
+                            <p>
+                                ترحيل
+                            </p>
+                        </a>
+                    </li>
                         @endif
                         <li class="nav-item">
                             <a href="#" class="nav-link"
@@ -279,3 +289,12 @@
         </nav>
     </div>
 </aside>
+
+<script>
+    function confirmRevert() {
+        var confirmation = confirm('هل انت متاكد انك تريد ترحيل جميع بيانات الشهر الحاليه ؟');
+        if (!confirmation) {
+            event.preventDefault();
+        }
+        }
+    </script>

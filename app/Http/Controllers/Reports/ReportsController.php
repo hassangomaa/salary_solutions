@@ -225,7 +225,8 @@ class ReportsController extends Controller
                 ])->where('company_id',$company_id)
              ->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
-             ->withTrashed()->paginate(1);
+            //  ->withTrashed()
+             ->paginate(1);
                 $followUps_count=Employee::where('company_id',$company_id)->count();
         $flag = 1;
 
@@ -268,7 +269,7 @@ class ReportsController extends Controller
             },
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
-             ->withTrashed()
+            //  ->withTrashed()
              ->paginate(10);
 
 
@@ -299,7 +300,7 @@ class ReportsController extends Controller
             },
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
               ->whereMonth('created_at','<=',$month)
-              ->withTrashed()
+            //   ->withTrashed()
               ->paginate(10);
 
 //        return $employees;
@@ -328,7 +329,8 @@ class ReportsController extends Controller
             ])->where('company_id',$company_id)
               ->whereMonth('created_at','<=',$month)
               ->whereYear('created_at','<=',$year)
-              ->withTrashed()->paginate(10);
+            //   ->withTrashed()
+              ->paginate(10);
 
 
 
@@ -356,7 +358,8 @@ class ReportsController extends Controller
             ])->where('company_id',$company_id)
               ->whereYear('created_at','<=',$year)
               ->whereMonth('created_at','<=',$month)
-              ->withTrashed()->paginate(10);
+            //   ->withTrashed()
+              ->paginate(10);
 
 
 
