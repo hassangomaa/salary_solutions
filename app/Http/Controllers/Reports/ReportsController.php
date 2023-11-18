@@ -388,6 +388,23 @@ class ReportsController extends Controller
         return view('reports.expenses',compact('expenses','flag'));
     }
 
+    //expensesOnlyTrashed
+    public function expensesOnlyTrashed(Request $request){
+        $date=(isset($request->date))?$request->date:Carbon::now();
+        if(isset($request->action) && $request->action=='excel'){
+            $excel=new ExcelReportController;
+            return $excel->expensesExport($date);
+
+        }
+        $expenses=CompanyPayment::onlyTrashed()->
+        whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
+        ->paginate(25);
+        $flag = 1;
+
+        $date=Carbon::now()->format('Y-M');
+        return view('reports.expensestrashed',compact('expenses','flag'));
+    }
+
     public function apposition(Request $request){
         $company_id=session()->all()['companyId'];
 
