@@ -10,6 +10,7 @@
             <th style="background:#c6d9f1">الرصيد</th>
             <th style="background:#c6d9f1">مدين (وارد)</th>
             <th style="background:#c6d9f1">دائن (منصرف)</th>
+            <th style="background:#c6d9f1">تاريخ العمليه </th>
             <th style="background:#c6d9f1">البيان </th>
 {{--            <th style="background:#c6d9f1">الاجمالي</th>--}}
 {{--            <th style="background:#c6d9f1">Actions</th>--}}
@@ -23,6 +24,7 @@
                 <td>{{ $item->value }}</td>
                 <td>{{ $item->deposite }}</td>
                 <td>{{ $item->withdraw }}</td>
+                <td>{{  $item->created_at  }}</td>
                 <td>{{  $item->details  }}</td>
 {{--                <td >{{ $safes_trans->sum('value') }}</td>--}}
 {{--                <td>--}}
