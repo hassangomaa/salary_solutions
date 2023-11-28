@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('safes', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('commissions', function (Blueprint $table) {
+            //
+            $table->decimal('amount', 8, 2)->change(); // Adjust precision and scale as needed
         });
     }
 
@@ -21,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('safes', function (Blueprint $table) {
+        Schema::table('commissions', function (Blueprint $table) {
             //
-            $table->dropSoftDeletes();
+            $table->integer('amount')->change();
         });
     }
 };

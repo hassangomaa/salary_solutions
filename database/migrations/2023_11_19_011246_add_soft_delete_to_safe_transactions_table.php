@@ -23,7 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('safe_transactions', function (Blueprint $table) {
-            //
+            //roolback the soft delete
+            $table->dropSoftDeletes();
+
         });
     }
 };
