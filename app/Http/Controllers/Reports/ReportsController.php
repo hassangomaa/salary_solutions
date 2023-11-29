@@ -488,7 +488,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->deduction($month,$year);
+            return $excel->deduction($month,$year, $trashed = false);
 
         }
           $employees=Employee::with([
@@ -498,7 +498,7 @@ class ReportsController extends Controller
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
               ->whereMonth('created_at','<=',$month)
             //   ->withTrashed()
-              ->paginate(10);
+            ->get() ;
 
 //        return $employees;
 
@@ -520,7 +520,7 @@ class ReportsController extends Controller
 
         if ($request->filled('action') && $request->action == 'excel') {
             $excel = new ExcelReportController;
-            return $excel->deduction($month, $year);
+            return $excel->deduction($month, $year , $trashed = true);
         }
 
            $employees = Employee::onlyTrashed() // Retrieve only trashed employees
@@ -532,7 +532,7 @@ class ReportsController extends Controller
             ->where('company_id', $company_id)
             ->whereYear('created_at', '<=', $year)
             ->whereMonth('created_at', '<=', $month)
-            ->paginate(10);
+               ->get() ;
 
         $flag = 1;
 
