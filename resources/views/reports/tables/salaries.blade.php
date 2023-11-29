@@ -122,4 +122,9 @@ $net_salary = 0;
                     </tr>
 
                 </tbody>
-            </table>
+
+    @if(isset($followUps) && method_exists($followUps, 'links'))
+        {{ $followUps->links("pagination::bootstrap-4") }}
+    @endif
+
+</table>

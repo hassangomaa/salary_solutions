@@ -37,4 +37,8 @@
             </tr>
         @endforeach
     </tbody>
+    @if(isset($safes_trans) && method_exists($safes_trans, 'links'))
+        {{ $safes_trans->links("pagination::bootstrap-4") }}
+    @endif
+
 </table>

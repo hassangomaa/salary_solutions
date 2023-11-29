@@ -57,7 +57,8 @@ class ExcelReportController extends Controller
     public function bouns($month,$year){
         return Excel::download(new bounsExport($month,$year),'bouns.xlsx');
     }
-    public function safeTransactions($date,$safe_id){
-        return Excel::download(new safeTransactionsExport($date,$safe_id),'safetransactions.xlsx');
+    public function safeTransactions($date,$safe_id,$trashed){
+        return Excel::download(new safeTransactionsExport($date,$safe_id,$trashed)
+            ,'safetransactions.xlsx');
     }
 }

@@ -25,4 +25,7 @@
             </tr>
         @endforeach
     </tbody>
+    @if(isset($employees) && method_exists($employees, 'links'))
+        {{ $employees->links("pagination::bootstrap-4") }}
+    @endif
 </table>

@@ -62,8 +62,8 @@ class ReportsController extends Controller
              ->where('company_id',$company_id)
              ->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
-//             ->withTrashed()
-             ->get();
+             ->paginate(20)
+         ;
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.salaries',compact('followUps','flag','date'));
@@ -108,7 +108,8 @@ class ReportsController extends Controller
         ])->where('company_id',$company_id)
             ->whereYear('created_at','<=',$year)
             ->whereMonth('created_at','<=',$month)
-            ->get();
+            ->paginate(20)
+        ;
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
         return view('reports.salariestrashed',compact('followUps','flag','date'));
@@ -321,7 +322,7 @@ class ReportsController extends Controller
              ->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
             //  ->withTrashed()
-             ->paginate(1);
+             ->paginate(20);
                 $followUps_count=Employee::where('company_id',$company_id)->count();
         $flag = 1;
 
@@ -365,7 +366,7 @@ class ReportsController extends Controller
             ->whereYear('created_at','<=',$year)
             ->whereMonth('created_at','<=',$month)
 //             ->withTrashed()
-            ->paginate(1);
+            ->paginate(20);
         $followUps_count=Employee::where('company_id',$company_id)->count();
         $flag = 1;
 
@@ -435,8 +436,8 @@ class ReportsController extends Controller
             },
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
-            //  ->withTrashed()
-              ->get() ;
+             ->paginate(20)
+               ;
 
 
 
@@ -466,9 +467,8 @@ class ReportsController extends Controller
             },
         ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
             ->whereMonth('created_at','<=',$month)
-//             ->withTrashed()
-            ->get() ;
-
+            ->paginate(20)
+        ;
         $flag = 1;
 
         return view('reports.appositiontrashed',compact('employees','flag'));
@@ -497,8 +497,8 @@ class ReportsController extends Controller
             },
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
               ->whereMonth('created_at','<=',$month)
-            //   ->withTrashed()
-            ->get() ;
+              ->paginate(20)
+          ;
 
 //        return $employees;
 
@@ -532,7 +532,8 @@ class ReportsController extends Controller
             ->where('company_id', $company_id)
             ->whereYear('created_at', '<=', $year)
             ->whereMonth('created_at', '<=', $month)
-               ->get() ;
+               ->paginate(20)
+           ;;
 
         $flag = 1;
 
@@ -565,7 +566,7 @@ class ReportsController extends Controller
               ->whereMonth('created_at','<=',$month)
               ->whereYear('created_at','<=',$year)
             //   ->withTrashed()
-              ->paginate(10);
+              ->paginate(20);
 
 
 
@@ -594,7 +595,7 @@ class ReportsController extends Controller
               ->whereYear('created_at','<=',$year)
               ->whereMonth('created_at','<=',$month)
             //   ->withTrashed()
-              ->paginate(10);
+              ->paginate(20);
 
 
 
@@ -612,7 +613,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->safeTransactions($date,$request->safe_id);
+            return $excel->safeTransactions($date,$request->safe_id, $trashed = false);
 
         }
           $safes_trans=SafeTransactions::
@@ -620,7 +621,9 @@ class ReportsController extends Controller
             with('safe')->where(function($q)use($request){
                 if( (isset($request->safe_id))&& $request->safe_id != "")
                 $q->where('safe_id',$request->safe_id);
-            })->get();
+            })
+              ->paginate(20)
+          ;
 
 
 
@@ -637,7 +640,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->safeTransactions($date,$request->safe_id);
+            return $excel->safeTransactions($date,$request->safe_id, $trashed = true);
 
         }
           $safes_trans= SafeTransactions::
@@ -647,7 +650,9 @@ class ReportsController extends Controller
             ->with('safe')->where(function($q)use($request){
                 if( (isset($request->safe_id))&& $request->safe_id != "")
                     $q->where('safe_id',$request->safe_id);
-            })->get();
+            })
+
+                ->paginate(20) ;
 
 
 
