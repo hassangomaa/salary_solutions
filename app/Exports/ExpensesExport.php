@@ -8,36 +8,52 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
+
 // use Maatwebsite\Excel\Concerns\FromView;
 // use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class ExpensesExport implements FromView , WithEvents
+class ExpensesExport implements FromView, WithEvents
 {
     public $date;
+    public $trashed;
+    public $request;
 
-    public function __construct($date)
+    public function __construct($date, $request, $trashed)
     {
         $this->date = $date;
+        $this->trashed = $trashed;
+        $this->request = $request;
+
     }
+
     public function view(): View
     {
+        $date = $this->date;
+        $company_id = Session::get('companyId');
 
-        $date=$this->date;
-        $company_id=Session::get('companyId');
+        $expenses = CompanyPayment::whereBetween('created_at',
+            [
+                Carbon::parse($date)->startOfMonth(),
+                Carbon::parse($date)->endOfMonth()
+            ])
+            ->where('company_id', $company_id)
+            ->when($this->trashed, function ($q) {
+                return $q->onlyTrashed(); // Use onlyTrashed() with a lowercase 'o'
+            })
+            ->get();
 
-        $expenses=CompanyPayment::whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
-        ->where('company_id',$company_id)->get();
 
-        return view('reports.tables.expenses',['expenses'=>$expenses]);
+        return view('reports.tables.expenses', ['expenses' => $expenses]);
     }
+
 
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 /** @var Sheet $sheet */
                 $sheet = $event->sheet;
 
@@ -55,12 +71,11 @@ class ExpensesExport implements FromView , WithEvents
                 return [
                     AfterSheet::class => function (AfterSheet $event) {
                         $event->sheet->getStyle('A1:B199') // Modify the cell range as per your table
-                            ->getBorders()
+                        ->getBorders()
                             ->getAllBorders()
                             ->setBorderStyle(Border::BORDER_THIN);
                     },
                 ];
-
 
 
             },

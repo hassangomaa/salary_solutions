@@ -91,6 +91,8 @@ class CompanyPaymentsController extends Controller
             $companyPayment->transaction_logs_id=$transactionLog->id;
             //transaction_logs_id
             $companyPayment->safe_transactions_id=$safe->id;
+            //$companyId
+            $companyPayment->company_id=$companyId;
             $companyPayment->save();
 
 //                 $companyPayment->transactionLog()->get();
@@ -112,6 +114,8 @@ class CompanyPaymentsController extends Controller
             $companyPayment->transaction_logs_id=$transactionLog->id;
             //transaction_logs_id
             $companyPayment->safe_transactions_id=$safe->id;
+            //$companyId
+            $companyPayment->company_id=$companyId;
             $companyPayment->save();
 //            $companyPayment->transactionLog()->get();
 //            return   $companyPayment->safeTransaction()->get();

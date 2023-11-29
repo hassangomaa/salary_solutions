@@ -33,7 +33,7 @@ class ReportsController extends Controller
         if(isset($request->action) && $request->action=='excel'){
                $request->all();
               $excel=new ExcelReportController;
-            return $excel->salariesExport($month,$year,$date);
+            return $excel->salariesExport($month,$year,$date,$request, $trashed = false);
 
         }
          $followUps =Employee::
@@ -79,7 +79,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->salariesExport($month,$year,$date);
+            return $excel->salariesExport($month,$year,$date,$request, $trashed = true);
 
         }
         $followUps =Employee::
@@ -108,7 +108,6 @@ class ReportsController extends Controller
         ])->where('company_id',$company_id)
             ->whereYear('created_at','<=',$year)
             ->whereMonth('created_at','<=',$month)
-//             ->withTrashed()
             ->get();
         $flag = 1;
         $date=Carbon::now()->format('Y-M');
@@ -299,7 +298,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->reportDataExport($month,$year,$date_name);
+            return $excel->reportDataExport($month,$year,$date_name,$request, $trashed = false);
 
         }
          $followUps =Employee::with([
@@ -341,7 +340,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->reportDataExport($month,$year,$date_name);
+            return $excel->reportDataExport($month,$year,$date_name,$request, $trashed = true);
 
         }
         $followUps =Employee::
@@ -376,15 +375,22 @@ class ReportsController extends Controller
 
 
     public function expenses(Request $request){
+        $company_id = Session::get('companyId');
+
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->expensesExport($date);
+            return $excel->expensesExport($date, $request, $trashed = false);
 
         }
-        $expenses=CompanyPayment::whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
+        $expenses=CompanyPayment::
+        whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),
+            Carbon::parse($date)->endOfMonth()])
+            ->where('company_id', $company_id)
         ->paginate(25);
         $flag = 1;
+
 
         $date=Carbon::now()->format('Y-M');
         return view('reports.expenses',compact('expenses','flag'));
@@ -392,14 +398,17 @@ class ReportsController extends Controller
 
     //expensesOnlyTrashed
     public function expensesOnlyTrashed(Request $request){
+        $company_id = Session::get('companyId');
+
         $date=(isset($request->date))?$request->date:Carbon::now();
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->expensesExport($date);
+            return $excel->expensesExport($date, $request, $trashed = true);
 
         }
         $expenses=CompanyPayment::onlyTrashed()->
         whereBetween('created_at',[Carbon::parse($date)->startOfMonth(),Carbon::parse($date)->endOfMonth()])
+            ->where('company_id', $company_id)
         ->paginate(25);
         $flag = 1;
 

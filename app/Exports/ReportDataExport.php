@@ -16,44 +16,56 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 class ReportDataExport implements FromView , WithEvents
 {
     public $month, $year, $month_salary;
+    public $request;
+     public $trashed;
 
-    public function __construct($month, $year, $month_salary)
+
+
+    public function __construct($month, $year, $month_salary, $request, $trashed)
     {
         $this->month = $month;
         $this->year = $year;
         $this->month_salary = $month_salary;
+        $this->request = $request;
+        $this->trashed = $trashed;
     }
+
     public function view(): View
     {
+        $month = $this->month;
+        $year = $this->year;
+        $company_id = Session::get('companyId');
 
-        $month=$this->month;
-        $year=$this->year;
-        $company_id=Session::get('companyId');
-
-        // return
-        $followUps =Employee::with([
-            'followUps'=>function($q)use($month,$year){
-                        $q->where('month',$month)->where('year',$year);
-                    },
-            "deductions"=>function($dq)use($month,$year){
-                $dq->where('month',$month)->where('year',$year);
+        $followUps = Employee::with([
+            'followUps' => function ($q) use ($month, $year) {
+                $q->where('month', $month)->where('year', $year);
             },
-            "incentives"=>function($qi)use($month,$year){
-                $qi->where('month',$month)->where('year',$year);
+            "deductions" => function ($dq) use ($month, $year) {
+                $dq->where('month', $month)->where('year', $year);
             },
-            "employeeBorrowinng"=>function($qb)use($month,$year){
-                $qb->whereHas('date',function($subq)use($month,$year){
-
-                    $subq->where('month',$month)->where('year',$year);
+            "incentives" => function ($qi) use ($month, $year) {
+                $qi->where('month', $month)->where('year', $year);
+            },
+            "employeeBorrowinng" => function ($qb) use ($month, $year) {
+                $qb->whereHas('date', function ($subq) use ($month, $year) {
+                    $subq->where('month', $month)->where('year', $year);
                 });
             },
-            ])->where('company_id',$company_id)
-            ->whereYear('created_at','<=',$year)
-            ->whereMonth('created_at','<=',$month)
-            ->withTrashed()
+        ])->where('company_id', $company_id)
+            ->whereYear('created_at', '<=', $year)
+            ->whereMonth('created_at', '<=', $month)
+            //if trashed  true then call ->withTrashed() then anyway get()
+            ->when($this->trashed, function ($q) {
+                return $q->onlyTrashed();
+            })
             ->get();
 
-        return view('reports.tables.report',['followUps'=>$followUps,'date_name'=>$this->month_salary,'i'=>$i=1]);
+        return view('reports.tables.report', [
+            'followUps' => $followUps,
+            'date_name' => $this->month_salary,
+            'i' => $i = 1,
+            'request' => $this->request, // Pass the request to the view
+        ]);
     }
 
     public function registerEvents(): array

@@ -20,9 +20,10 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExcelReportController extends Controller
 {
 
-    public function salariesExport($month,$year,$date){
+    public function salariesExport($month,$year,$date,$request, $trashed ){
 
-        return Excel::download(new salariesExport($month,$year,$date), 'salaries.xlsx');
+        return Excel::download(new salariesExport($month,$year,$date, $request, $trashed)
+            , 'salaries.xlsx');
     }
 
 
@@ -31,13 +32,15 @@ class ExcelReportController extends Controller
         return Excel::download(new AttendanceExport($period,$month_name), 'attendance.xlsx');
     }
 
-    public function reportDataExport($month,$year,$month_name){
+    public function reportDataExport($month,$year,$month_name,$request,$trashed){
 
-        return Excel::download(new ReportDataExport($month,$year,$month_name), 'report.xlsx');
+        return Excel::download(new ReportDataExport($month,$year,$month_name,$request,$trashed)
+            , 'report.xlsx');
     }
 
-    public function expensesExport($date){
-        return Excel::download(new ExportsExpensesExport($date),'expenses.xlsx');
+    public function expensesExport($date , $request, $trashed){
+        return Excel::download(new ExportsExpensesExport($date,$request,$trashed)
+            ,'expenses.xlsx');
     }
 
     public function apposition($month,$year){
