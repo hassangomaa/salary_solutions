@@ -31,7 +31,8 @@ class ReportsController extends Controller
         $date=Carbon::parse($date)->format('Y-M');
 
         if(isset($request->action) && $request->action=='excel'){
-            $excel=new ExcelReportController;
+               $request->all();
+              $excel=new ExcelReportController;
             return $excel->salariesExport($month,$year,$date);
 
         }
@@ -57,7 +58,8 @@ class ReportsController extends Controller
                         $subq->where('month',$month)->where('year',$year);
                     });
                 },
-                ])->where('company_id',$company_id)
+                ])
+             ->where('company_id',$company_id)
              ->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
 //             ->withTrashed()
