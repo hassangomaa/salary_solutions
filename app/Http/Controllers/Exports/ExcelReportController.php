@@ -43,8 +43,9 @@ class ExcelReportController extends Controller
             ,'expenses.xlsx');
     }
 
-    public function apposition($month,$year){
-        return Excel::download(new AppositionExport($month,$year),'apposition.xlsx');
+    public function apposition($month,$year, $trahsed){
+        return Excel::download(new AppositionExport($month,$year, $trahsed)
+            ,'apposition.xlsx');
     }
     public function deduction($month,$year){
         return Excel::download(new deductionaExport($month,$year),'deduction.xlsx');

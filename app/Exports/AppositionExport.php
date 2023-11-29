@@ -16,11 +16,14 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 class AppositionExport implements FromView , WithEvents
 {
     public $month, $year;
+    public $trashed;
 
-    public function __construct($month, $year)
+
+    public function __construct($month, $year, $trashed)
     {
         $this->month = $month;
         $this->year = $year;
+        $this->trashed = $trashed;
     }
     public function view(): View
     {
@@ -35,7 +38,10 @@ class AppositionExport implements FromView , WithEvents
         },
         ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
         ->whereMonth('created_at','<=',$month)
-        ->withTrashed()
+        //if trashed  true then call ->withTrashed() then anyway get()
+        ->when($this->trashed, function ($q) {
+            return $q->onlyTrashed();
+        })
         ->get();
 
         return view('reports.tables.apposition',['employees'=>$employees]);

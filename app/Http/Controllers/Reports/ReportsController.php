@@ -426,7 +426,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->apposition($month,$year);
+            return $excel->apposition($month,$year, $trashed = false);
 
         }
          $employees=Employee::with([
@@ -436,7 +436,7 @@ class ReportsController extends Controller
             ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
              ->whereMonth('created_at','<=',$month)
             //  ->withTrashed()
-             ->paginate(10);
+              ->get() ;
 
 
 
@@ -456,7 +456,7 @@ class ReportsController extends Controller
 
         if(isset($request->action) && $request->action=='excel'){
             $excel=new ExcelReportController;
-            return $excel->apposition($month,$year);
+            return $excel->apposition($month,$year, $trashed = true);
 
         }
         $employees=Employee::onlyTrashed()->
@@ -467,7 +467,7 @@ class ReportsController extends Controller
         ])->where('company_id',$company_id)->whereYear('created_at','<=',$year)
             ->whereMonth('created_at','<=',$month)
 //             ->withTrashed()
-            ->paginate(10);
+            ->get() ;
 
         $flag = 1;
 
